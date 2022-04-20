@@ -14,26 +14,37 @@ Si la palabra no fue reconocida por el Autómata entonces dirá simplemente que 
 #define cantEstados 7
 #define gruposDeCaracteres 6
 
-void cargarTablaTransiciones(int[cantEstados][gruposDeCaracteres]); // Carga la tabla de transiciones (la del OneDrive)
-void recorrerAutomata(int[cantEstados][gruposDeCaracteres]); // Esta función recorre el autómata utilizando la Tabla de Transiciones ya cargada!
+void cargarTablaTransiciones(); // Carga la tabla de transiciones (la del OneDrive)
+void recorrerAutomata(FILE*, FILE*); // Esta función recorre el autómata utilizando la Tabla de Transiciones ya cargada!
 int definirTipoDato(char); // Define que tipo de dato es el leido por el autómata.
 
+// Variable global tabla de transiciones
+int TablaTransiciones[cantEstados][gruposDeCaracteres];
+
 int main(){ 
-    int TablaTransiciones[cantEstados][gruposDeCaracteres];
-    cargarTablaTransiciones(TablaTransiciones); 
-    recorrerAutomata(TablaTransiciones); 
-    
+    FILE* archEntrada = fopen("entrada.txt","r");
+    if(!archEntrada){
+        printf("El archivo no existe o su nombre es incorrecto (entrada.txt)\n");
+        getchar();
+        return 0;
+    }
+
+    cargarTablaTransiciones();
+
+    FILE* archSalida = fopen("salida.txt","w");
+    recorrerAutomata(archEntrada,archSalida);
+
+    fclose(archEntrada);
+    fclose(archSalida);
+
     getchar();
     return 0;
 }
 
-void recorrerAutomata(int TablaTransiciones[cantEstados][gruposDeCaracteres]){
+void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
     int estadoActual = 0;
     int tipoDato;
     char t;
-
-    FILE* archEntrada = fopen("entrada.txt","r");
-    FILE* archSalida = fopen("salida.txt","w");
     
     while(t!=EOF){
         t = getc(archEntrada); // Cada vez que se ejecuta getc() se lee un caracter del archivo (va avanzando hasta el final)
@@ -60,38 +71,40 @@ void recorrerAutomata(int TablaTransiciones[cantEstados][gruposDeCaracteres]){
         // Estamos en un estado, dependiendo el tipo de dato leido, pasaremos a otro estado (esto está indicado en la Tabla de Transiciones).
         estadoActual = TablaTransiciones[estadoActual][tipoDato];
     }
-
-    fclose(archEntrada);
-    fclose(archSalida);
 }
 
+// Estas están como variables globales, no es el mejor uso pero tampoco vale la pena declararlas más de una vez.
 char num1al7[7] = {'1','2','3','4','5','6','7'};
 char letrasHexa[12] = {'a','b','c','d','e','f','A','B','C','D','E','F'};
 
 // Esta función toma el dato ingresado y devuelve que tipo de dato es (para que la Tabla de Transiciones lo reconozca como tal).
-int definirTipoDato(char t){
-    int tipo = 5;
-    for(int j=0;j<7;j++){
-        if(t==num1al7[j]){
-            tipo = 1;
-        }
-    }
-    for(int j=0;j<12;j++){
-        if(t==letrasHexa[j]){
-            tipo = 3;
-        }
-    }        
+int definirTipoDato(char t){  
+    
     if(t == '0'){
-        tipo = 0;
-    }
-    else if(t == '8' || t == '9'){
-        tipo = 2;
-    }
-    else if(t=='x' || t=='X'){
-        tipo = 4;
+        return 0;
     }
 
-    return tipo;
+    for(int j=0;j<7;j++){
+        if(t==num1al7[j]){
+            return 1;
+        }
+    }
+
+    if(t == '8' || t == '9'){
+        return 2;
+    }
+
+    for(int j=0;j<12;j++){
+        if(t==letrasHexa[j]){
+            return 3;
+        }
+    }
+
+    if(t=='x' || t=='X'){
+        return 4;
+    }
+    
+    return 5;
 }
 
 
@@ -113,7 +126,7 @@ Tipos de Datos y sus valores numéricos:
 // Para saber cual es el estado siguiente dado un estado actual y un dato ingresado!
 // Así es como se recorre un autómata!!! Pasando de un estado al otro a medida que vamos leyendo los caracteres de la palabra.
 
-void cargarTablaTransiciones(int TablaTransiciones[cantEstados][gruposDeCaracteres]){
+void cargarTablaTransiciones(){
     TablaTransiciones[0][0] = 1;
     TablaTransiciones[0][1] = 2;
     TablaTransiciones[0][2] = 2;

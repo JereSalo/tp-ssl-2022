@@ -11,15 +11,17 @@ Si la palabra no fue reconocida por el Autómata entonces dirá simplemente que 
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define cantEstados 7
 #define gruposDeCaracteres 6
 
-void cargarTablaTransiciones(); // Carga la tabla de transiciones (la del OneDrive)
-void recorrerAutomata(FILE*, FILE*); // Esta función recorre el autómata utilizando la Tabla de Transiciones ya cargada!
-int definirTipoDato(char); // Define que tipo de dato es el leido por el autómata.
-
-// Variable global tabla de transiciones
 int TablaTransiciones[cantEstados][gruposDeCaracteres];
+
+void cargarTablaTransiciones(); // Llena de datos la tabla de transiciones (la del OneDrive)
+void recorrerAutomata(FILE*, FILE*); // Esta función recorre el autómata utilizando la Tabla de Transiciones ya cargada!
+int definirTipoDato(char); // Define que tipo de dato es el leido por el autómata. (Le asigna un valor numérico a cada tipo de dato)
+void tipoPalabra(int,FILE*); // Se ejecuta al terminar de leer una palabra, dependiendo en que estado finalice me dice que tipo de constante es (lo muestra en pantalla e imprime en el archSalida).
+
 
 int main(){ 
     FILE* archEntrada = fopen("entrada.txt","r");
@@ -41,6 +43,7 @@ int main(){
     return 0;
 }
 
+
 void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
     int estadoActual = 0;
     int tipoDato;
@@ -50,15 +53,8 @@ void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
         t = getc(archEntrada); // Cada vez que se ejecuta getc() se lee un caracter del archivo (va avanzando hasta el final)
 
         if(t == ',' || t == EOF){
-            switch(estadoActual){
-                case 1: printf(" -> Octal\n"); fprintf(archSalida,"%s", " -> Octal\n"); break;
-                case 2: printf(" -> Decimal\n"); fprintf(archSalida,"%s", " -> Decimal\n");break;
-                case 4: printf(" -> Hexadecimal\n"); fprintf(archSalida,"%s", " -> Hexadecimal\n");break;
-                case 5: printf(" -> Octal\n"); fprintf(archSalida,"%s", " -> Octal\n"); break;
-                default: printf(" -> No reconocida\n"); fprintf(archSalida,"%s", " -> No reconocida\n"); break;
-            }
-
-            estadoActual = 0;
+            tipoPalabra(estadoActual,archSalida);
+            estadoActual = 0; // Resetea al estado inicial para empezar a leer la próxima palabra.
             continue;
         }
         else{
@@ -73,7 +69,7 @@ void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
     }
 }
 
-// Estas están como variables globales, no es el mejor uso pero tampoco vale la pena declararlas más de una vez.
+
 char num1al7[7] = {'1','2','3','4','5','6','7'};
 char letrasHexa[12] = {'a','b','c','d','e','f','A','B','C','D','E','F'};
 
@@ -106,6 +102,27 @@ int definirTipoDato(char t){
     
     return 5;
 }
+
+// Escribe en el archivo y en pantalla que tipo de palabra se leyó.
+void tipoPalabra(int estActual,FILE* archSalida){
+    char tipoConstante[15];
+
+    switch(estActual){
+        case 1: 
+        case 5:
+        strcpy(tipoConstante,"Octal"); break;
+        case 2: 
+        strcpy(tipoConstante,"Decimal"); break;
+        case 4: 
+        strcpy(tipoConstante,"Hexadecimal"); break;
+        default: 
+        strcpy(tipoConstante,"No reconocida"); break;
+    }
+
+    printf(" -> %s\n", tipoConstante);
+    fprintf(archSalida," -> %s\n", tipoConstante);
+}
+
 
 
 // Esta es la tabla de transiciones del OneNote de Sintaxis! (https://onedrive.live.com/redir?resid=73A86BFF829778D1%21269&authkey=%21AO1GED7Gink1j1g&page=View&wd=target%28AF.one%7C98d52e32-fca4-4b4d-9e51-a21304f9edc1%2FEjemplo%20Constantes%20Enteras%20de%20C%7Cc06b2d48-a235-485d-8c64-e0219aa9cb46%2F%29)

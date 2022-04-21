@@ -25,7 +25,7 @@ void tipoPalabra(int,FILE*); // Se ejecuta al terminar de leer una palabra, depe
 
 int main(){ 
     FILE* archEntrada = fopen("entrada.txt","r");
-    if(!archEntrada){
+    if(!archEntrada){ //analiza si el archivo a abrir existe
         printf("El archivo no existe o su nombre es incorrecto (entrada.txt)\n");
         getchar();
         return 0;
@@ -47,22 +47,22 @@ int main(){
 void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
     int estadoActual = 0;
     int tipoDato;
-    char t;
+    char dato;
     
-    while(t!=EOF){
-        t = getc(archEntrada); // Cada vez que se ejecuta getc() se lee un caracter del archivo (va avanzando hasta el final)
+    while(dato!=EOF){
+        dato = getc(archEntrada); // Cada vez que se ejecuta getc() se lee un caracter del archivo (va avanzando hasta el final)
 
-        if(t == ',' || t == EOF){
+        if(dato == ',' || dato == EOF){
             tipoPalabra(estadoActual,archSalida);
             estadoActual = 0; // Resetea al estado inicial para empezar a leer la próxima palabra.
             continue;
         }
         else{
-            printf("%c",t);
-            fprintf(archSalida,"%c", t);
+            printf("%c",dato);
+            fprintf(archSalida,"%c", dato);
         }
 
-        tipoDato = definirTipoDato(t);
+        tipoDato = definirTipoDato(dato);
 
         // Estamos en un estado, dependiendo el tipo de dato leido, pasaremos a otro estado (esto está indicado en la Tabla de Transiciones).
         estadoActual = TablaTransiciones[estadoActual][tipoDato];

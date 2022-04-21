@@ -34,6 +34,7 @@ int main(){
     cargarTablaTransiciones();
 
     FILE* archSalida = fopen("salida.txt","w");
+
     recorrerAutomata(archEntrada,archSalida);
 
     fclose(archEntrada);
@@ -49,10 +50,8 @@ void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
     int estadoActual = 0; // Guarda estado actual del autómata a medida que se va recorriendo.
     int tipoDato; // Guarda el tipo de dato ingresado (ver función definirTipoDato)
 
-    while(dato!=EOF){
-        dato = getc(archEntrada); // Cada vez que se ejecuta getc() se lee un caracter del archivo (va avanzando hasta el final)
-
-        if(dato == ',' || dato == EOF){
+    while((dato = getc(archEntrada)) != EOF){
+        if(dato == ','){
             tipoPalabra(estadoActual,archSalida);
             estadoActual = 0; // Resetea al estado inicial para empezar a leer la próxima palabra.
             continue; // Ejecuta siguiente ciclo del while. Ya que no me interesa que tipo de dato es la coma.
@@ -63,9 +62,11 @@ void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
 
         tipoDato = definirTipoDato(dato);
 
-        // Estamos en un estado, dependiendo el tipo de dato leido, pasaremos a otro estado (esto está indicado en la Tabla de Transiciones).
+        // Estamos en un estado, dependiendo el tipo de dato leido pasaremos al siguiente estado (esto está indicado en la Tabla de Transiciones).
         estadoActual = TablaTransiciones[estadoActual][tipoDato];
     }
+    tipoPalabra(estadoActual,archSalida);
+    // Por la última palabra, que en el while no se ejecuta ya que no hay una ","
 }
 
 
@@ -73,26 +74,24 @@ char num1al7[7] = {'1','2','3','4','5','6','7'};
 char letrasHexa[12] = {'a','b','c','d','e','f','A','B','C','D','E','F'};
 
 // Esta función toma el dato ingresado y devuelve que tipo de dato es (para que la Tabla de Transiciones lo reconozca como tal).
-int definirTipoDato(char dato){  
-    
+int definirTipoDato(char dato){
+
     if(dato == '0'){
         return 0;
     }
 
-    for(int j=0;j<7;j++){
-        if(dato==num1al7[j]){
-            return 1;
-        }
+    // strchr busca un caracter dentro de una cadena de texto.
+    // Devuelve NULL si no la contiene, o un puntero a la posición en que se encuentra, en caso contrario
+    if(strchr(num1al7, dato) != NULL){
+        return 1;
     }
 
     if(dato == '8' || dato == '9'){
         return 2;
     }
 
-    for(int j=0;j<12;j++){
-        if(dato==letrasHexa[j]){
-            return 3;
-        }
+    if(strchr(letrasHexa, dato) != NULL){
+        return 3;
     }
 
     if(dato=='x' || dato=='X'){
@@ -189,3 +188,5 @@ void cargarTablaTransiciones(){
         TablaTransiciones[6][i] = 6;
     }
 }
+// La única fila que cargamos usando un for fue la última porque todos sus campos son iguales.
+// Se podría haber cargado el resto de las filas de una manera similar pero así nos parece más entendible.

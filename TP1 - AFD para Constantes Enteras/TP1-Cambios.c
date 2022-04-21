@@ -45,22 +45,21 @@ int main(){
 
 
 void recorrerAutomata(FILE* archEntrada, FILE* archSalida){
-    int estadoActual = 0;
-    int tipoDato;
-    char dato;
-    
+    char dato; // Almacena el caracter que se lee del archivo.
+    int estadoActual = 0; // Guarda estado actual del autómata a medida que se va recorriendo.
+    int tipoDato; // Guarda el tipo de dato ingresado (ver función definirTipoDato)
+
     while(dato!=EOF){
         dato = getc(archEntrada); // Cada vez que se ejecuta getc() se lee un caracter del archivo (va avanzando hasta el final)
 
         if(dato == ',' || dato == EOF){
             tipoPalabra(estadoActual,archSalida);
             estadoActual = 0; // Resetea al estado inicial para empezar a leer la próxima palabra.
-            continue;
+            continue; // Ejecuta siguiente ciclo del while. Ya que no me interesa que tipo de dato es la coma.
         }
-        else{
-            printf("%c",dato);
-            fprintf(archSalida,"%c", dato);
-        }
+
+        printf("%c",dato);
+        fprintf(archSalida,"%c", dato);
 
         tipoDato = definirTipoDato(dato);
 

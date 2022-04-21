@@ -74,29 +74,29 @@ char num1al7[7] = {'1','2','3','4','5','6','7'};
 char letrasHexa[12] = {'a','b','c','d','e','f','A','B','C','D','E','F'};
 
 // Esta función toma el dato ingresado y devuelve que tipo de dato es (para que la Tabla de Transiciones lo reconozca como tal).
-int definirTipoDato(char t){  
+int definirTipoDato(char dato){  
     
-    if(t == '0'){
+    if(dato == '0'){
         return 0;
     }
 
     for(int j=0;j<7;j++){
-        if(t==num1al7[j]){
+        if(dato==num1al7[j]){
             return 1;
         }
     }
 
-    if(t == '8' || t == '9'){
+    if(dato == '8' || dato == '9'){
         return 2;
     }
 
     for(int j=0;j<12;j++){
-        if(t==letrasHexa[j]){
+        if(dato==letrasHexa[j]){
             return 3;
         }
     }
 
-    if(t=='x' || t=='X'){
+    if(dato=='x' || dato=='X'){
         return 4;
     }
     

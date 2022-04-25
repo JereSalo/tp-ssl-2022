@@ -9,6 +9,8 @@ Si la palabra no fue reconocida por el Autómata entonces dirá simplemente que 
 ========================================================================================================*/
 
 #include <stdio.h>
+#include <conio.h>
+#include <string.h>
 #define cantEstados 7
 #define gruposDeCaracteres 6
 

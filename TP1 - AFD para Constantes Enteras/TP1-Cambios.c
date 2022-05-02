@@ -37,12 +37,13 @@ void tipoPalabra(int,FILE*); // Dependiendo en que estado finalice, establece qu
 
 int main(){ 
     FILE* archEntrada = fopen("Entrada.txt","r");
-    FILE* archSalida = fopen("Salida.txt","w");
     if (!archEntrada){ // Analizar si el archivo de lectura "Entrada.txt" existe
         printf("El archivo \"Entrada.txt\" no existe o su nombre es incorrecto\n");
         getch();
         return 0;
     }
+
+    FILE* archSalida = fopen("Salida.txt","w");
 
     cargarTablaTransiciones();
     recorrerAutomata(archEntrada,archSalida);

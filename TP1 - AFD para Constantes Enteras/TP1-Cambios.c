@@ -110,7 +110,7 @@ int definirTipoDato(char dato){ // Se toma un dato ingresado y se devuelve su ti
 }
 
 void tipoPalabra(int estActual,FILE* archSalida){ // Escribir en el archivo y en pantalla que tipo de palabra se leyó.
-    char tipoConstante[15];
+    char* tipoConstante[15];
 
     switch (estActual){
         case 1: 

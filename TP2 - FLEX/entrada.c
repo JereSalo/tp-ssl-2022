@@ -1,10 +1,32 @@
-/*Me pica la cabeza !!
+.
+,
++
+-
+(
+;
+||
+;
 
+1
+2
+3
+0
+
+/*Me pica la cabeza !!
+;
+:
+_
+{
+}
+[
+]
+(
+)
 hola :D
 
 luquitas te amo
 
-*/
+
 
 // hola
 
@@ -24,3 +46,4 @@ else
 09.09e1
 09E1
 09.E1
+*/

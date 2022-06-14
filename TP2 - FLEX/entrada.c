@@ -13,9 +13,13 @@ sizeof
 "Hola Mundo"
 1
 2
+5
 3
 0
-0xF
+010
+077
+0123
+0x1F
 main
 _
 __

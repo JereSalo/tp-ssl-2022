@@ -5,14 +5,24 @@
 (
 ;
 ||
+/
 ;
-
+sizeof
+'a'
+'L'
+"Hola Mundo"
 1
 2
 3
 0
-
-/*Me pica la cabeza !!
+0xF
+main
+_
+__
+__Hola__
+PasasDeUva
+// Hi!
+/* Me pica la cabeza !!
 ;
 :
 _

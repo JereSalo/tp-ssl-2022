@@ -11,6 +11,8 @@
 Entero *listaDecimales = NULL;
 Entero *listaOctales = NULL;
 Entero *listaHexadecimales = NULL;
+Real *listaReales = NULL;
+Caracter *listaCaracteres = NULL;
 
 %}
 
@@ -31,9 +33,9 @@ PUNTUADORES_OPERADORES      =|==|!=|\+=|<=|>=|>|<|\+|\-|\*|\/|%|\,|;|\.|:|sizeof
 %%
 
 {DIGITO_DECIMAL}                listaDecimales = agregarEntero(listaDecimales, atoi(yytext)); sumarDecimales(atoi(yytext));
-{DIGITO_OCTAL}                  listaOctales = agregarEntero(listaOctales, ConversorDecimal(yytext, strlen(yytext), 8));
-{DIGITO_HEXADECIMAL}            listaHexadecimales = agregarEntero(listaHexadecimales, ConversorDecimal(yytext, strlen(yytext), 16));
-{CONST_REALES}                  {printf("Encontre una constante real \n");}
+{DIGITO_OCTAL}                  listaOctales = agregarEntero(listaOctales, strtol(yytext, NULL, 8));
+{DIGITO_HEXADECIMAL}            listaHexadecimales = agregarEntero(listaHexadecimales, strtol(yytext, NULL, 16));
+{CONST_REALES}                  listaReales = agregarReales(listaReales, atof(yytext));
 '.'                             {printf("Encontre un caracter \n");}
 \"(.)*\"                        {printf("Encontre un cadena de caracteres !!! \n");}
 {RESERVADA_DATO}                {printf ("Encontre una palabra reservada del tipo dato \n");}
@@ -53,7 +55,7 @@ int main(){
     yyout = fopen("salida.txt", "w");
     yylex();
 
-    imprimirReporte(listaDecimales, listaOctales, listaHexadecimales);
+    imprimirReporte(listaDecimales, listaOctales, listaHexadecimales, listaReales);
     getch();
 return 0;
 }

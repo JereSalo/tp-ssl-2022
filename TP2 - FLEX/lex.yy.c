@@ -535,10 +535,12 @@ char *yytext;
 Entero *listaDecimales = NULL;
 Entero *listaOctales = NULL;
 Entero *listaHexadecimales = NULL;
+Real *listaReales = NULL;
+Caracter *listaCaracteres = NULL;
 
 /*Alias */
 /* Armar todas las Expresiones Regulares necesarias */
-#line 542 "lex.yy.c"
+#line 544 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -689,10 +691,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 31 "testeando.l"
+#line 33 "testeando.l"
 
 
-#line 696 "lex.yy.c"
+#line 698 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -777,75 +779,75 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 33 "testeando.l"
+#line 35 "testeando.l"
 listaDecimales = agregarEntero(listaDecimales, atoi(yytext)); sumarDecimales(atoi(yytext));
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 34 "testeando.l"
-listaOctales = agregarEntero(listaOctales, ConversorDecimal(yytext, strlen(yytext), 8));
+#line 36 "testeando.l"
+listaOctales = agregarEntero(listaOctales, strtol(yytext, NULL, 8));
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 35 "testeando.l"
-listaHexadecimales = agregarEntero(listaHexadecimales, ConversorDecimal(yytext, strlen(yytext), 16));
+#line 37 "testeando.l"
+listaHexadecimales = agregarEntero(listaHexadecimales, strtol(yytext, NULL, 16));
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 36 "testeando.l"
-{printf("Encontre una constante real \n");}
+#line 38 "testeando.l"
+listaReales = agregarReales(listaReales, atof(yytext));
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 37 "testeando.l"
+#line 39 "testeando.l"
 {printf("Encontre un caracter \n");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 38 "testeando.l"
+#line 40 "testeando.l"
 {printf("Encontre un cadena de caracteres !!! \n");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 39 "testeando.l"
+#line 41 "testeando.l"
 {printf ("Encontre una palabra reservada del tipo dato \n");}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 40 "testeando.l"
+#line 42 "testeando.l"
 {printf ("Encontre una palabra reservada de control \n");}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 41 "testeando.l"
+#line 43 "testeando.l"
 {printf ("Encontre una palabra reservada otra \n");}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 42 "testeando.l"
+#line 44 "testeando.l"
 {printf("Encontre un identificador \n");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 43 "testeando.l"
+#line 45 "testeando.l"
 {printf("Encontre puntuador/operador\n");}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 44 "testeando.l"
+#line 46 "testeando.l"
 {printf ("Comentario de una sola linea \n");}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 45 "testeando.l"
+#line 47 "testeando.l"
 {printf("Comentario de multiples lineas \n");}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 47 "testeando.l"
+#line 49 "testeando.l"
 ECHO;
 	YY_BREAK
-#line 849 "lex.yy.c"
+#line 851 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1731,7 +1733,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 47 "testeando.l"
+#line 49 "testeando.l"
 
 
 /* Código C */
@@ -1741,7 +1743,7 @@ int main(){
     yyout = fopen("salida.txt", "w");
     yylex();
 
-    imprimirReporte(listaDecimales, listaOctales, listaHexadecimales);
+    imprimirReporte(listaDecimales, listaOctales, listaHexadecimales, listaReales);
     getch();
 return 0;
 }

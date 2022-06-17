@@ -2,18 +2,31 @@
 ,
 +
 -
+SSL
 (
 ;
 ||
+"Hola Mundo"
 /
 ;
 sizeof
 'a'
 'L'
+int
+'B'
+main
+'F'
 "Hola Mundo"
+char
 1
 2
+'a'
 5
+main
+0x1F
+0xF
+0xf
+0Xf
 3
 0
 010
@@ -22,46 +35,17 @@ sizeof
 0x1F
 0.15
 40.3
+40.30
 50.80
 25.5
+40.3
 main
 _
 __
 __Hola__
-PasasDeUva
+"PasasDeUva"
 // Hi!
+
 /* Me pica la cabeza !!
-;
-:
-_
-{
-}
-[
-]
-(
-)
-hola :D
-
-luquitas te amo
-
-
-
-// hola
-
-hola
-chau
-jorge
-int
-char
-typedef
-auto
-else
-"auto"
-'a'
-"hola jorge"
-"a"
-""
-09.09e1
-09E1
-09.E1
-*/
+":'("*/
+SSL

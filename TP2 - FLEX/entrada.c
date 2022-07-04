@@ -23,6 +23,8 @@ char
 'a'
 5
 main
+paraguas
+anaconda
 0x1F
 0xF
 0xf
@@ -48,4 +50,8 @@ __Hola__
 
 /* Me pica la cabeza !!
 ":'("*/
+/*
+Saracatunga
+*/
 SSL
+$

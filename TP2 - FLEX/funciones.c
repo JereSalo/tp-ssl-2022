@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,6 +37,10 @@ typedef struct NodoCaracter{ // Crear el Nodo para Caracteres
     struct NodoCaracter *sig;
 }Caracter;
 
+
+// free(nodo);
+
+// 
 
 /* Funciones */
 
@@ -243,6 +248,7 @@ void imprimirReporte (ConContador *listaIdentificadores, ConValor *listaLiterale
 
     printf ("-> Identificadores halladas: \n\n");
     while (listaIdentificadores != NULL){
+        // la lista tiene que estar ordenada antes de esto
         printf ("\t- %s aparece %d veces\n", listaIdentificadores -> elemento, listaIdentificadores -> contador);
         listaIdentificadores = listaIdentificadores -> sig;
     }
@@ -305,3 +311,63 @@ void imprimirReporte (ConContador *listaIdentificadores, ConValor *listaLiterale
         listaNoReconocidos = listaNoReconocidos -> sig;
     }
 }
+
+
+
+void insertar(ConContador *lista, char *dato)
+{
+    ConContador *n = NULL;
+    ConContador *r, *ant;
+    n = (ConContador *) malloc(sizeof(ConContador));
+    n -> elemento = dato;
+    r=lista;
+    
+    while(r!=NULL && strcmp(r->elemento,dato) == -1) // capaz es 1
+    {
+        ant=r;
+        r=r->sig;
+    }
+    n->sig=r;
+    if(r!=lista)
+        ant->sig=n;
+    else
+        lista=n;
+}
+
+void ordenar1(ConContador *lista)
+{
+    ConContador *p;
+    ConContador *listaOrd = NULL;
+    while(lista!=NULL)
+    {
+        p=lista;
+        lista=lista->sig;
+        insertar(listaOrd,p->elemento);
+        free (p);
+    }
+    lista=listaOrd;
+    
+}
+
+
+
+
+// Ordenar lista alfabeticamente
+
+
+
+// strcmp(String1,String2) ->
+// Devuelve 1 si String2 es menor que String1
+// 0 si son iguales
+// -1 si String1 es menor que String2
+
+/*
+
+listaIdentificadores usa nodo ConContador
+typedef struct NodoConValor{ // Crear el Nodo para elementos con valor
+    char *elemento;
+    int valor;
+    struct NodoConValor *sig;
+}ConValor;
+
+*/

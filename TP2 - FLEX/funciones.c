@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,10 +37,6 @@ typedef struct NodoCaracter{ // Crear el Nodo para Caracteres
 }Caracter;
 
 
-// free(nodo);
-
-// 
-
 /* Funciones */
 
 ConValor *agregarListaConValor(ConValor *Lista, char *elemento, int valor){
@@ -63,12 +58,17 @@ ConValor *agregarListaConValor(ConValor *Lista, char *elemento, int valor){
     nuevoElemento -> valor = valor;
     nuevoElemento -> sig = NULL;
     
-    if (Lista == NULL){
+    if (Lista == NULL || valor < Lista -> valor){
+        nuevoElemento -> sig = Lista;
         Lista = nuevoElemento; // Para agregar el PRIMER ELEMENTO a la lista
     } else {
         aux = Lista; // Para agregar el RESTO DE ELEMENTOS a la lista
-        while (aux -> sig != NULL){
+        // Buscamos la posicion donde insertamos el elemento
+        while (aux -> sig != NULL && aux -> sig -> valor < valor){
             aux = aux -> sig;
+        }
+        if (aux -> sig != NULL){
+            nuevoElemento -> sig = aux -> sig;
         }
         aux -> sig = nuevoElemento;
     }
@@ -96,12 +96,17 @@ ConContador *agregarListaContador(ConContador *Lista, char *valor){
     nuevoElemento -> contador = 1;
     nuevoElemento -> sig = NULL;
     
-    if (Lista == NULL){
+    if (Lista == NULL || strcmp(Lista -> elemento, valor) == 1){
+        nuevoElemento -> sig = Lista;
         Lista = nuevoElemento; // Para agregar el PRIMER ELEMENTO a la lista
     } else {
         aux = Lista; // Para agregar el RESTO DE ELEMENTOS a la lista
-        while (aux -> sig != NULL){
+        // Buscamos la posicion donde insertamos el elemento
+        while (aux -> sig != NULL && strcmp(aux -> sig -> elemento, valor) == -1){
             aux = aux -> sig;
+        }
+        if (aux -> sig != NULL){
+            nuevoElemento -> sig = aux -> sig;
         }
         aux -> sig = nuevoElemento;
     }
@@ -312,62 +317,7 @@ void imprimirReporte (ConContador *listaIdentificadores, ConValor *listaLiterale
     }
 }
 
-
-
-void insertar(ConContador *lista, char *dato)
-{
-    ConContador *n = NULL;
-    ConContador *r, *ant;
-    n = (ConContador *) malloc(sizeof(ConContador));
-    n -> elemento = dato;
-    r=lista;
-    
-    while(r!=NULL && strcmp(r->elemento,dato) == -1) // capaz es 1
-    {
-        ant=r;
-        r=r->sig;
-    }
-    n->sig=r;
-    if(r!=lista)
-        ant->sig=n;
-    else
-        lista=n;
-}
-
-void ordenar1(ConContador *lista)
-{
-    ConContador *p;
-    ConContador *listaOrd = NULL;
-    while(lista!=NULL)
-    {
-        p=lista;
-        lista=lista->sig;
-        insertar(listaOrd,p->elemento);
-        free (p);
-    }
-    lista=listaOrd;
-    
-}
-
-
-
-
-// Ordenar lista alfabeticamente
-
-
-
 // strcmp(String1,String2) ->
 // Devuelve 1 si String2 es menor que String1
 // 0 si son iguales
 // -1 si String1 es menor que String2
-
-/*
-
-listaIdentificadores usa nodo ConContador
-typedef struct NodoConValor{ // Crear el Nodo para elementos con valor
-    char *elemento;
-    int valor;
-    struct NodoConValor *sig;
-}ConValor;
-
-*/

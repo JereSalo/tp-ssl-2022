@@ -1728,8 +1728,6 @@ int main(){
     yyout = fopen("salida.txt", "w");
     yylex();
 
-    
-    ordenar1(listaIdentificadores);
     imprimirReporte(listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
     getch();
     return 0;

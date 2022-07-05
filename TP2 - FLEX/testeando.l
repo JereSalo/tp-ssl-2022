@@ -68,8 +68,6 @@ int main(){
     yyout = fopen("salida.txt", "w");
     yylex();
 
-    
-    ordenar1(listaIdentificadores);
     imprimirReporte(listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
     getch();
     return 0;
@@ -77,13 +75,7 @@ int main(){
 
 /*
 OBSERVACIONES:
-    - Hay que ordenar el listado de los Identificadores.
-
-Ordenarlos alfabeticamente
-
-    - Hay que ordenar el listado de los literales cadenas.
-
-Ordenarlos por longitud ascendente. (Si hay igual longitud no importa el orden)
 
     - Hay que cambiar en caracteres no reconocidos el '88888' por la posicion de linea donde se encuentra.
+    
 */

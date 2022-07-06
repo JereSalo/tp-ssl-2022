@@ -30,6 +30,7 @@ Agregar
 0xF
 0xf
 "Que onda"
+// Hola Mundo
 0Xf
 3
 0
@@ -55,9 +56,16 @@ __Hola__
 
 /* Me pica la cabeza !!
 ":'("*/
+17
 /*
 Agregar
 Saracatunga
 */
+20
 SSL
+/*
+Esto se puso
+picante
+*/
+07
 $

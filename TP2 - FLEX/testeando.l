@@ -8,6 +8,7 @@
 #include "funciones.c"
 
 char *aux;
+int numLinea = 0;
 
 // Crear las listas
 ConContador *listaIdentificadores = NULL;
@@ -24,7 +25,7 @@ ConValor *listaNoReconocidos = NULL;
 
 %}
 
-/*Alias */
+/* Alias */
 
 DIGITO_DECIMAL                  [1-9][0-9]*
 DIGITO_OCTAL                    0[0-7]*
@@ -38,7 +39,7 @@ RESERVADA_OTRA                  auto|enum|register|typedef|extern|sizeof|union|g
 IDENTIFICADORES                 [_a-zA-Z][_a-zA-Z0-9]*
 PUNTUADORES_OPERADORES          =|==|!=|\+=|<=|>=|>|<|\+|\-|\*|\/|%|\,|;|\.|:|sizeof|\+\+|!|&|&&|(\|\|)|\(|\)|\{|\}|\[|\]
 COMENTARIO_UNA_LINEA            \/\/(.)*
-COMENTARIO_VARIAS_LINEA         \/\*(.|(\n))+\*\/
+COMENTARIO_VARIAS_LINEA         \/\*[^\*\/]*\*\/
 
 /* Armar todas las Expresiones Regulares necesarias */
 
@@ -57,7 +58,8 @@ COMENTARIO_VARIAS_LINEA         \/\*(.|(\n))+\*\/
 {PUNTUADORES_OPERADORES}            {aux = strdup(yytext); listaOperadoresPuntuacion = agregarListaContador(listaOperadoresPuntuacion, aux);}
 {COMENTARIO_UNA_LINEA}              {aux = strdup(yytext); listaComentarios = agregarListaTipos(listaComentarios, aux, "una linea");}
 {COMENTARIO_VARIAS_LINEA}           {aux = strdup(yytext); listaComentarios = agregarListaTipos(listaComentarios, aux, "varias lineas");}
-.                                   {aux = strdup(yytext); listaNoReconocidos = agregarListaConValor(listaNoReconocidos, aux, 88888);}
+\n                                  {++ numLinea;}
+.                                   {aux = strdup(yytext); listaNoReconocidos = agregarListaConValor(listaNoReconocidos, aux, numLinea);}
 
 %%
 
@@ -76,6 +78,6 @@ int main(){
 /*
 OBSERVACIONES:
 
-    - Hay que cambiar en caracteres no reconocidos el '88888' por la posicion de linea donde se encuentra.
+    - Hay que cambiar en caracteres no reconocidos la posicion de linea donde se encuentra.
     
 */

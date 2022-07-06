@@ -312,7 +312,7 @@ void imprimirReporte (ConContador *listaIdentificadores, ConValor *listaLiterale
     }
     printf ("\n-----------------------------------------\n-> Caracteres no reconocidos halladas: \n\n");
     while (listaNoReconocidos != NULL){
-        printf ("\t- %s tiene longitud %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
+        printf ("\t- %s ubicado el la linea %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
         listaNoReconocidos = listaNoReconocidos -> sig;
     }
 }

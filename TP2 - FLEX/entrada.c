@@ -14,6 +14,7 @@ sizeof
 'L'
 int
 'B'
+$
 main
 'F'
 "Hola Mundo"
@@ -37,19 +38,32 @@ Agregar
 Zombie
 010
 077
+17
 0123
 0x1F
+sizeof
 0.15
+09.2363468E1
 40.3
+"\n"
+"\""
+"Hola Mundo "
+"\'"
+"\algo"
+"\"Buenas"
+"'B'"
 zombie
 40.30
 50.80
+09.09e1
 25.5
 Agregar
+09E1
 40.3
 main
 _
 __
+400.e-3
 __Hola__
 "Pasas De Uva"
 // Hi!
@@ -68,4 +82,5 @@ Esto se puso
 picante
 */
 07
+// Prueba
 $

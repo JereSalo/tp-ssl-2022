@@ -1,5 +1,29 @@
-%option noyywrap
+/* Explicación Breve del Programa:
 
+Objetivo: Utilizar Flex/Lex para generar un codigo C que implemente un analizador lexico.
+Dicho programa C permitira reconocer de un 'archivo.c' de entrada (En nuestro caso llamado 'entrada.c')
+todas las categorias lexicas de C y además de comentarios:
+- Constantes Enteras Decimal
+- Constantes Enteras Octal, Hexadecimal (Con su valor en decimal)
+- Constantes Real (Indicando Mantisa y Parte Entera)
+- Constantes Caracter
+- Literales Cadenas (Con su Longitud)
+- Palabras Reservadas
+- Identificadores (Con cant. de apariciones)
+- Caracteres de Puntuacion/operadores de C (Con cant. de apariciones)
+- Comentarios de Una y Multiples Lineas
+- Cadenas y/o caracteres no reconocidos (Indicando el nº de Linea)
+
+(Al finalizar, debe dar como salida en pantalla un reporte)
+
+
+/* =====================    O P C I O N E S     ===================== */
+
+%option noyywrap
+/* yylineno: Utilizado para obtener el numero de linea */
+%option yylineno
+
+/* =====================    D E F I N I C I O N E S     ===================== */
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,9 +32,8 @@
 #include "funciones.c"
 
 char *aux;
-int numLinea = 0;
 
-// Crear las listas
+// Para crear las listas necesarias
 ConContador *listaIdentificadores = NULL;
 ConValor *listaLiteralesCadena = NULL;
 ConTipo *listaReservadas = NULL;
@@ -25,7 +48,7 @@ ConValor *listaNoReconocidos = NULL;
 
 %}
 
-/* Alias */
+/* =====================    A L I A S      ===================== */
 
 DIGITO_DECIMAL                  [1-9][0-9]*
 DIGITO_OCTAL                    0[0-7]*
@@ -41,7 +64,7 @@ PUNTUADORES_OPERADORES          =|==|!=|\+=|<=|>=|>|<|\+|\-|\*|\/|%|\,|;|\.|:|si
 COMENTARIO_UNA_LINEA            \/\/(.)*
 COMENTARIO_VARIAS_LINEA         \/\*[^\*\/]*\*\/
 
-/* Armar todas las Expresiones Regulares necesarias */
+/* =====================    R E G L A S    ===================== */
 
 %%
 
@@ -58,12 +81,13 @@ COMENTARIO_VARIAS_LINEA         \/\*[^\*\/]*\*\/
 {PUNTUADORES_OPERADORES}            {aux = strdup(yytext); listaOperadoresPuntuacion = agregarListaContador(listaOperadoresPuntuacion, aux);}
 {COMENTARIO_UNA_LINEA}              {aux = strdup(yytext); listaComentarios = agregarListaTipos(listaComentarios, aux, "una linea");}
 {COMENTARIO_VARIAS_LINEA}           {aux = strdup(yytext); listaComentarios = agregarListaTipos(listaComentarios, aux, "varias lineas");}
-\n                                  {++ numLinea;}
-.                                   {aux = strdup(yytext); listaNoReconocidos = agregarListaConValor(listaNoReconocidos, aux, numLinea);}
+\n
+\t
+.                                   {aux = strdup(yytext); listaNoReconocidos = agregarListaConValor(listaNoReconocidos, aux, yylineno);}
 
 %%
 
-/* Código C */
+/* =====================    C O D I G O    C   ===================== */
 
 int main(){
     yyin = fopen("entrada.c", "r");
@@ -74,10 +98,3 @@ int main(){
     getch();
     return 0;
 }
-
-/*
-OBSERVACIONES:
-
-    - Hay que cambiar en caracteres no reconocidos la posicion de linea donde se encuentra.
-    
-*/

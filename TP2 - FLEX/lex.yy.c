@@ -1806,11 +1806,17 @@ int main()
 /* =====================    C O D I G O    C   ===================== */
 
 int main (){
-    yyin = fopen("Entrada.c", "r");
-    yyout = fopen("Salida.txt", "w");
+    yyin = fopen("entrada.c", "r");
+    yyout = fopen("salida.txt", "w");
+
+    
+    
     yylex();
 
     imprimirReporte(listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
+
+    fclose(yyin);
+    fclose(yyout);
     getch();
     return 0;
 }

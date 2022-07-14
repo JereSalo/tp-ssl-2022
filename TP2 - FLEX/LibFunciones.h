@@ -65,7 +65,7 @@ void agregarListaConValor (ConValor ** Lista, char * elemento, int valor){
 }
 
 void agregarListaContador (ConContador ** Lista, char * valor){
-    // Para omprobar si en la Lista ya existe el elemento a ingresar
+    // Para comprobar si en la Lista ya existe el elemento a ingresar
     ConContador * aux = NULL;
     for (aux = * Lista; aux != NULL; aux = aux -> sig){
         //strcmp: Para compruebar si dos Strings son iguales 
@@ -174,97 +174,171 @@ void agregarCaracter(Caracter ** Lista, char valor){
 
 int sumarDecimales (Entero *Lista){
     Entero *aux = Lista;
-    int contador = 0;
+    int acumulador = 0;
 
     while (aux != NULL){
-        contador += aux -> valor;
+        acumulador += aux -> valor;
         aux = aux -> sig;
     }
 
-return contador;
+return acumulador;
 }
+
+
 
 void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLiteralesCadena, ConTipo * listaReservadas, Entero * listaDecimales, Entero * listaOctales, Entero * listaHexadecimales, Real * listaReales, Caracter * listaCaracteres, ConContador * listaOperadoresPuntuacion, ConTipo * listaComentarios, ConValor * listaNoReconocidos){
     printf (" ---------------------------------------------------------------------------------------\n");
     printf (" ===================================  R E P O R T E  ===================================\n");
     printf (" ---------------------------------------------------------------------------------------\n");
 
+    FILE* informe = fopen("informe.txt","w");
+
     if (listaIdentificadores != NULL){
         printf (" -> Identificadores halladas: \n\n");
-        for (; listaIdentificadores != NULL; listaIdentificadores = listaIdentificadores -> sig){
+        
+        fprintf(informe, " -> Identificadores halladas: \n\n");
+
+        while(listaIdentificadores != NULL){
             printf ("\t- %s aparece %d veces\n", listaIdentificadores -> elemento, listaIdentificadores -> contador);
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf (informe,"\t- %s aparece %d veces\n", listaIdentificadores -> elemento, listaIdentificadores -> contador);
+            listaIdentificadores = listaIdentificadores -> sig;
+        }
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     } 
     if (listaLiteralesCadena != NULL){
-        printf ("\n -> Literales cadenas halladas: \n\n");
-        for (; listaLiteralesCadena != NULL; listaLiteralesCadena = listaLiteralesCadena -> sig){
+        printf ("\n -> Literales cadenas halladas: \n\n");  
+        fprintf(informe, "\n -> Literales cadenas halladas: \n\n");
+        while(listaLiteralesCadena != NULL){
             printf ("\t- %s tiene longitud %d\n", listaLiteralesCadena -> elemento, listaLiteralesCadena -> valor);
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf(informe,"\t- %s tiene longitud %d\n", listaLiteralesCadena -> elemento, listaLiteralesCadena -> valor);
+            listaLiteralesCadena = listaLiteralesCadena -> sig;
+        }
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaReservadas != NULL){
         printf ("\n -> Palabras Reservadas halladas: \n\n");
-        for (; listaReservadas != NULL; listaReservadas = listaReservadas -> sig){
+        fprintf(informe, "\n -> Palabras Reservadas halladas: \n\n");
+        while(listaReservadas != NULL){
             printf ("\t- %s (Palabra reservada de tipo %s)\n", listaReservadas -> elemento, listaReservadas -> tipo);
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf (informe,"\t- %s (Palabra reservada de tipo %s)\n", listaReservadas -> elemento, listaReservadas -> tipo);
+            listaReservadas = listaReservadas -> sig;
+        }
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaOctales != NULL){
         printf ("\n -> Constantes enteras octal halladas:\n\n");
-        for (; listaOctales != NULL; listaOctales = listaOctales -> sig){
-            if (listaOctales -> valor != 0) printf ("\t- 0"); if (listaOctales -> valor == 0) printf ("\t- ");
+        fprintf(informe,"\n -> Constantes enteras octal halladas:\n\n");
+        while(listaOctales != NULL){
+            if (listaOctales -> valor != 0) {
+                printf ("\t- 0"); 
+                fprintf(informe, "\t- 0"); 
+            }
+            if (listaOctales -> valor == 0) {
+                printf ("\t- "); 
+                fprintf(informe, "\t- ");
+            }
+            
             printf ("%o Constante de valor decimal: %d\n", listaOctales -> valor, listaOctales -> valor);
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf (informe,"%o Constante de valor decimal: %d\n", listaOctales -> valor, listaOctales -> valor);
+            listaOctales = listaOctales -> sig;
+        }
+        
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaDecimales != NULL){
         printf ("\n -> Constantes enteras decimal halladas:\n\n");
+        fprintf(informe, "\n -> Constantes enteras decimal halladas:\n\n");
         int contadorDecimales = sumarDecimales (listaDecimales);
-        for (; listaDecimales != NULL; listaDecimales = listaDecimales -> sig){
+        while(listaDecimales != NULL){
             printf ("\t- Constante decimal de valor: %d\n", listaDecimales -> valor);
+            fprintf (informe,"\t- Constante decimal de valor: %d\n", listaDecimales -> valor);
+            listaDecimales = listaDecimales -> sig;
         }
         printf("\n\tTotal sumado: %d\n", contadorDecimales);
+        fprintf(informe, "\n\tTotal sumado: %d\n", contadorDecimales);
+
         printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaHexadecimales != NULL){
         printf ("\n -> Constantes enteras hexadecimal halladas:\n\n");
-        for (; listaHexadecimales != NULL; listaHexadecimales = listaHexadecimales -> sig){
+        fprintf (informe,"\n -> Constantes enteras hexadecimal halladas:\n\n");
+        while(listaHexadecimales != NULL){
             printf ("\t- 0x%x Constante de valor decimal: %d\n", listaHexadecimales -> valor, listaHexadecimales -> valor);
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf (informe,"\t- 0x%x Constante de valor decimal: %d\n", listaHexadecimales -> valor, listaHexadecimales -> valor);
+            listaHexadecimales = listaHexadecimales -> sig;
+        }
+        
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaReales != NULL){
         printf("\n -> Constantes real halladas:\n\n");
-        for (; listaReales != NULL; listaReales = listaReales -> sig){
+        fprintf(informe,"\n -> Constantes real halladas:\n\n");
+        while(listaReales != NULL){
             double parteEntera;
             // modf: Separa parte entera y la parte decimal de un numero tipo "double"
             printf ("\t- %f\t Parte entera: %f. Parte decimal: %f\n", listaReales -> valor, parteEntera, modf(listaReales -> valor, &parteEntera));
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf (informe, "\t- %f\t Parte entera: %f. Parte decimal: %f\n", listaReales -> valor, parteEntera, modf(listaReales -> valor, &parteEntera));
+            
+            listaReales = listaReales -> sig;
+        }
+        
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaCaracteres != NULL){
         printf ("\n -> Constantes caracter halladas:\n\n");
+        fprintf(informe,"\n -> Constantes caracter halladas:\n\n");
         int contador = 0;
-        for (; listaCaracteres != NULL; listaCaracteres = listaCaracteres -> sig){
+        
+        while(listaCaracteres != NULL){
             printf ("\t- %d) '%c'\n", ++contador, listaCaracteres -> caracter);
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf (informe, "\t- %d) '%c'\n", ++contador, listaCaracteres -> caracter);
+            listaCaracteres = listaCaracteres -> sig;
+        }
+
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
+    
     }
     if (listaOperadoresPuntuacion != NULL){
         printf ("\n -> Operadores/caracteres de puntuacion hallados: \n\n");
-        for (; listaOperadoresPuntuacion != NULL; listaOperadoresPuntuacion = listaOperadoresPuntuacion -> sig){
+        fprintf(informe,"\n -> Operadores/caracteres de puntuacion hallados: \n\n");
+
+        while(listaOperadoresPuntuacion != NULL){
             printf ("\t- %s aparece %d veces\n", listaOperadoresPuntuacion -> elemento, listaOperadoresPuntuacion -> contador);
-        } printf ("\n---------------------------------------------------------------------------------------");
+            fprintf (informe,"\t- %s aparece %d veces\n", listaOperadoresPuntuacion -> elemento, listaOperadoresPuntuacion -> contador);
+            listaOperadoresPuntuacion = listaOperadoresPuntuacion -> sig;
+        }
+
+        printf ("\n---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaComentarios != NULL){
         printf ("\n -> Comentarios hallados: \n\n");
-        for (; listaComentarios != NULL; listaComentarios = listaComentarios -> sig){
+        fprintf(informe,"\n -> Comentarios hallados: \n\n");
+        while(listaComentarios != NULL){
             printf ("\n- Comentario de %s:\n%s\n\n", listaComentarios -> tipo, listaComentarios -> elemento);
-        } printf ("---------------------------------------------------------------------------------------");
+            fprintf(informe,"\n- Comentario de %s:\n%s\n\n", listaComentarios -> tipo, listaComentarios -> elemento);
+            listaComentarios = listaComentarios -> sig;
+            
+        }
+        printf ("---------------------------------------------------------------------------------------");
+        fprintf (informe,"\n---------------------------------------------------------------------------------------");
     }
     if (listaNoReconocidos != NULL){
         printf ("\n -> Caracteres no reconocidos halladas: \n\n");
-        for (; listaNoReconocidos != NULL; listaNoReconocidos = listaNoReconocidos -> sig){
-            printf ("\t- %s ubicado el la linea %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
+        fprintf (informe,"\n -> Caracteres no reconocidos halladas: \n\n");
+        while(listaNoReconocidos != NULL){
+            printf ("\t- %s ubicado en la linea %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
+            fprintf (informe, "\t- %s ubicado en la linea %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
+
+            listaNoReconocidos = listaNoReconocidos -> sig;
         }
     }
 }
-
-// strcmp(String1,String2) ->
-// Devuelve 1 si String2 es menor que String1
-// 0 si son iguales
-// -1 si String1 es menor que String2

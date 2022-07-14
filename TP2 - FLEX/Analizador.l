@@ -54,14 +54,14 @@ DIGITO_DECIMAL                  [1-9][0-9]*
 DIGITO_OCTAL                    0[0-7]*
 DIGITO_HEXADECIMAL              0[xX][0-9A-Fa-f]+
 CONST_REALES                    [0-9]*\.[0-9]+([eE][\+\-]?[0-9]+)?|[0-9]+\.([eE][\+\-]?[0-9]+)?|[0-9]([eE][\+\-]?[0-9]+)?
-CONST_CARACTER                  '(.)'
-LITERAL_CADENA                  \"(.)*\"
+CONST_CARACTER                  '.'
+LITERAL_CADENA                  \".*\"
 RESERVADA_DATO                  int|double|float|char|long|short|unsigned|signed|const|static|struct
 RESERVADA_CONTROL               else|switch|break|for|void|continue|while|if|do|case|return|default
 RESERVADA_OTRA                  auto|enum|register|typedef|extern|sizeof|union|goto|volatile|_Packed
 IDENTIFICADORES                 [_a-zA-Z][_a-zA-Z0-9]*
 PUNTUADORES_OPERADORES          =|==|!=|\+=|<=|>=|>|<|\+|\-|\*|\/|%|\,|;|\.|:|sizeof|\+\+|!|&|&&|(\|\|)|\(|\)|\{|\}|\[|\]
-COMENTARIO_UNA_LINEA            \/\/(.)*
+COMENTARIO_UNA_LINEA            \/\/.*
 COMENTARIO_VARIAS_LINEA         \/\*[^\*\/]*\*\/
 
 /* =====================    R E G L A S    ===================== */
@@ -91,11 +91,17 @@ COMENTARIO_VARIAS_LINEA         \/\*[^\*\/]*\*\/
 /* =====================    C O D I G O    C   ===================== */
 
 int main (){
-    yyin = fopen("Entrada.c", "r");
-    yyout = fopen("Salida.txt", "w");
+    yyin = fopen("entrada.c", "r");
+    yyout = fopen("salida.txt", "w");
+
+    
+    
     yylex();
 
     imprimirReporte(listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
+
+    fclose(yyin);
+    fclose(yyout);
     getch();
     return 0;
 }

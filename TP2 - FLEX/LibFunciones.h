@@ -81,6 +81,35 @@ void agregarListaContador (ConContador ** Lista, char * valor){
     nuevoElemento -> contador = 1;
     nuevoElemento -> sig = NULL;
     
+    aux = * Lista;
+    if (aux == NULL){
+        // Solamente para agregar el PRIMER ELEMENTO a la lista
+        * Lista = nuevoElemento;
+    } else {
+        // Para agregar el RESTO DE ELEMENTOS a la lista
+        while (aux -> sig != NULL) aux = aux -> sig;
+        aux -> sig = nuevoElemento;
+    }
+}
+
+// Esta función es para el caso particular de los identificadores.
+void agregarListaContadorAlfabeticamente (ConContador ** Lista, char * valor){
+    // Para comprobar si en la Lista ya existe el elemento a ingresar
+    ConContador * aux = NULL;
+    for (aux = * Lista; aux != NULL; aux = aux -> sig){
+        //strcmp: Para compruebar si dos Strings son iguales 
+        if (strcmp (aux -> elemento, valor) == 0){
+            aux -> contador ++;
+            return; // Hubo coincidencia
+        }
+    }
+    // Para crear el Nuevo Nodo e insertar sus valores
+    ConContador * nuevoElemento = NULL;
+    nuevoElemento = (ConContador *) malloc (sizeof (ConContador)); // Para reservar memoria suficiente
+    nuevoElemento -> elemento = strdup (valor);
+    nuevoElemento -> contador = 1;
+    nuevoElemento -> sig = NULL;
+    
     // Insertar el Nodo creado a la lista de forma ordenada (Ordenadas alfabeticamente)
     aux = * Lista;
     if (aux == NULL || strcmp (aux -> elemento, valor) == 1){

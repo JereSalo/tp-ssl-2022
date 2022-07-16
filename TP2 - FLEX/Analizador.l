@@ -77,7 +77,7 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 {RESERVADA_DATO}                       agregarListaTipos(&listaReservadas, yytext, "Dato");
 {RESERVADA_CONTROL}                    agregarListaTipos(&listaReservadas, yytext, "Control");
 {RESERVADA_OTRA}                       agregarListaTipos(&listaReservadas, yytext, "Otras");
-{IDENTIFICADOR}                        agregarListaContador(&listaIdentificadores, yytext);
+{IDENTIFICADOR}                        agregarListaContadorAlfabeticamente(&listaIdentificadores, yytext);
 {PUNTUADOR_OPERADOR}                   agregarListaContador(&listaOperadoresPuntuacion, yytext);
 {COMENTARIO_UNA_LINEA}                 agregarListaTipos(&listaComentarios, yytext, "una linea");
 {COMENTARIO_VARIAS_LINEAS}             agregarListaTipos(&listaComentarios, yytext, "varias lineas");

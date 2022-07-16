@@ -874,7 +874,7 @@ agregarListaTipos(&listaReservadas, yytext, "Otras");
 case 10:
 YY_RULE_SETUP
 #line 80 "analizador.l"
-agregarListaContador(&listaIdentificadores, yytext);
+agregarListaContadorAlfabeticamente(&listaIdentificadores, yytext);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP

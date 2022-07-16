@@ -92,14 +92,14 @@
 ------------------------------------------------------------------------
  -> Operadores/caracteres de puntuacion hallados: 
 
-	- ( Aparece 1 vez
-	- + Aparece 1 vez
-	- , Aparece 1 vez
-	- - Aparece 1 vez
+	- , Aparece 2 veces
 	- . Aparece 1 vez
-	- / Aparece 1 vez
+	- + Aparece 1 vez
+	- - Aparece 1 vez
+	- ( Aparece 1 vez
 	- ; Aparece 2 veces
 	- || Aparece 1 vez
+	- / Aparece 1 vez
 
 ------------------------------------------------------------------------
  -> Comentarios hallados: 
@@ -139,5 +139,5 @@ picante
 ------------------------------------------------------------------------
  -> Caracteres no reconocidos hallados: 
 
-	- $ Ubicado en la linea 17
-	- $ Ubicado en la linea 87
+	- $ Ubicado en la linea 18
+	- $ Ubicado en la linea 88

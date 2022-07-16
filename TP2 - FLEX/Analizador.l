@@ -50,41 +50,41 @@ Real * listaReales = NULL;
 
 /* =====================    A L I A S      ===================== */
 
-DIGITO_DECIMAL                  [1-9][0-9]*
-DIGITO_OCTAL                    0[0-7]*
-DIGITO_HEXADECIMAL              0[xX][0-9A-Fa-f]+
-CONST_REALES                    [0-9]*\.[0-9]+([eE][\+\-]?[0-9]+)?|[0-9]+\.([eE][\+\-]?[0-9]+)?|[0-9]([eE][\+\-]?[0-9]+)?
-CONST_CARACTER                  '.'
+CONSTANTE_DECIMAL               [1-9][0-9]*
+CONSTANTE_OCTAL                 0[0-7]*
+CONSTANTE_HEXADECIMAL           0[xX][0-9A-Fa-f]+
+CONSTANTE_REAL                  [0-9]*\.[0-9]+([eE][\+\-]?[0-9]+)?|[0-9]+\.([eE][\+\-]?[0-9]+)?|[0-9]([eE][\+\-]?[0-9]+)?
+CONSTANTE_CARACTER              '.'
 LITERAL_CADENA                  \".*\"
 RESERVADA_DATO                  int|double|float|char|long|short|unsigned|signed|const|static|struct
 RESERVADA_CONTROL               else|switch|break|for|void|continue|while|if|do|case|return|default
 RESERVADA_OTRA                  auto|enum|register|typedef|extern|sizeof|union|goto|volatile|_Packed
-IDENTIFICADORES                 [_a-zA-Z][_a-zA-Z0-9]*
-PUNTUADORES_OPERADORES          =|==|!=|\+=|<=|>=|>|<|\+|\-|\*|\/|%|\,|;|\.|:|sizeof|\+\+|!|&|&&|(\|\|)|\(|\)|\{|\}|\[|\]
+IDENTIFICADOR                   [_a-zA-Z][_a-zA-Z0-9]*
+PUNTUADOR_OPERADOR              =|==|!=|\+=|<=|>=|>|<|\+|\-|\*|\/|%|\,|;|\.|:|sizeof|\+\+|!|&|&&|(\|\|)|\(|\)|\{|\}|\[|\]
 COMENTARIO_UNA_LINEA            \/\/.*
-COMENTARIO_VARIAS_LINEA         \/\*[^\*\/]*\*\/
+COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 
 /* =====================    R E G L A S    ===================== */
 
 %%
 
-{DIGITO_OCTAL}                      agregarEntero(&listaOctales, strtol(yytext, NULL, 8));
-{DIGITO_DECIMAL}                    agregarEntero(&listaDecimales, atoi(yytext));
-{DIGITO_HEXADECIMAL}                agregarEntero(&listaHexadecimales, strtol(yytext, NULL, 16));
-{CONST_REALES}                      agregarReales(&listaReales, atof(yytext));
-{CONST_CARACTER}                    agregarCaracter(&listaCaracteres, yytext[1]);
-{LITERAL_CADENA}                    agregarListaConValor(&listaLiteralesCadena, yytext, strlen (yytext) - 2);
-{RESERVADA_DATO}                    agregarListaTipos(&listaReservadas, yytext, "Dato");
-{RESERVADA_CONTROL}                 agregarListaTipos(&listaReservadas, yytext, "Control");
-{RESERVADA_OTRA}                    agregarListaTipos(&listaReservadas, yytext, "Otras");
-{IDENTIFICADORES}                   agregarListaContador(&listaIdentificadores, yytext);
-{PUNTUADORES_OPERADORES}            agregarListaContador(&listaOperadoresPuntuacion, yytext);
-{COMENTARIO_UNA_LINEA}              agregarListaTipos(&listaComentarios, yytext, "una linea");
-{COMENTARIO_VARIAS_LINEA}           agregarListaTipos(&listaComentarios, yytext, "varias lineas");
+{CONSTANTE_OCTAL}                      agregarEntero(&listaOctales, strtol(yytext, NULL, 8));
+{CONSTANTE_DECIMAL}                    agregarEntero(&listaDecimales, atoi(yytext));
+{CONSTANTE_HEXADECIMAL}                agregarEntero(&listaHexadecimales, strtol(yytext, NULL, 16));
+{CONSTANTE_REAL}                       agregarReales(&listaReales, atof(yytext));
+{CONSTANTE_CARACTER}                   agregarCaracter(&listaCaracteres, yytext[1]);
+{LITERAL_CADENA}                       agregarListaConValor(&listaLiteralesCadena, yytext, strlen (yytext) - 2);
+{RESERVADA_DATO}                       agregarListaTipos(&listaReservadas, yytext, "Dato");
+{RESERVADA_CONTROL}                    agregarListaTipos(&listaReservadas, yytext, "Control");
+{RESERVADA_OTRA}                       agregarListaTipos(&listaReservadas, yytext, "Otras");
+{IDENTIFICADOR}                        agregarListaContador(&listaIdentificadores, yytext);
+{PUNTUADOR_OPERADOR}                   agregarListaContador(&listaOperadoresPuntuacion, yytext);
+{COMENTARIO_UNA_LINEA}                 agregarListaTipos(&listaComentarios, yytext, "una linea");
+{COMENTARIO_VARIAS_LINEAS}             agregarListaTipos(&listaComentarios, yytext, "varias lineas");
 \n
 \t
 " "
-.                                   agregarListaConValor(&listaNoReconocidos, yytext, yylineno);
+.                                      agregarListaConValor(&listaNoReconocidos, yytext, yylineno);
 
 %%
 

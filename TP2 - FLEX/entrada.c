@@ -17,7 +17,7 @@ int
 $
 main
 'F'
-"Hola Mundo"
+"Chau Mundo"
 char
 1
 2
@@ -47,7 +47,8 @@ sizeof
 40.3
 "\n"
 "\""
-"Hola Mundo "
+"Hola Mundo"
+"Hola Mundoooooo"
 "\'"
 "\algo"
 "\"Buenas"

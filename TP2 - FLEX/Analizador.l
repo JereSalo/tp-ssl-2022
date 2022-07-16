@@ -31,7 +31,7 @@ todas las categorias lexicas de C y además de comentarios:
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
-#include "LibFunciones.h"
+#include "libFunciones.h"
 
 // Para crear las listas necesarias
 Caracter * listaCaracteres = NULL;
@@ -94,14 +94,15 @@ int main (){
     yyin = fopen("entrada.c", "r");
     yyout = fopen("salida.txt", "w");
 
-    
-    
     yylex();
 
-    imprimirReporte(listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
+    FILE* archInforme = fopen("informe.txt","w");
+
+    imprimirReporte(archInforme,listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
 
     fclose(yyin);
     fclose(yyout);
+    fclose(archInforme);
     getch();
     return 0;
 }

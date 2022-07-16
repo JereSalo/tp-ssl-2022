@@ -533,7 +533,7 @@ goto find_rule; \
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "Analizador.l"
+#line 1 "analizador.l"
 #define INITIAL 0
 /* Explicación Breve del Programa:
 
@@ -557,27 +557,27 @@ todas las categorias lexicas de C y además de comentarios:
 /* =====================    O P C I O N E S     ===================== */
 /* yylineno: Utilizado para obtener el numero de linea */
 /* =====================    D E F I N I C I O N E S     ===================== */
-#line 28 "Analizador.l"
+#line 28 "analizador.l"
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
-#include "LibFunciones.h"
+#include "libFunciones.h"
 
 // Para crear las listas necesarias
+Caracter * listaCaracteres = NULL;
 ConContador * listaIdentificadores = NULL;
-ConValor * listaLiteralesCadena = NULL;
+ConContador * listaOperadoresPuntuacion = NULL;
 ConTipo * listaReservadas = NULL;
+ConTipo * listaComentarios = NULL;
+ConValor * listaLiteralesCadena = NULL;
+ConValor * listaNoReconocidos = NULL;
 Entero * listaOctales = NULL;
 Entero * listaDecimales = NULL;
 Entero * listaHexadecimales = NULL;
 Real * listaReales = NULL;
-Caracter * listaCaracteres = NULL;
-ConContador * listaOperadoresPuntuacion = NULL;
-ConTipo * listaComentarios = NULL;
-ConValor * listaNoReconocidos = NULL;
 
 /* =====================    A L I A S      ===================== */
 /* =====================    R E G L A S    ===================== */
@@ -732,7 +732,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 69 "Analizador.l"
+#line 69 "analizador.l"
 
 
 #line 739 "lex.yy.c"
@@ -828,92 +828,92 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 71 "Analizador.l"
+#line 71 "analizador.l"
 agregarEntero(&listaOctales, strtol(yytext, NULL, 8));
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 72 "Analizador.l"
+#line 72 "analizador.l"
 agregarEntero(&listaDecimales, atoi(yytext));
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 73 "Analizador.l"
+#line 73 "analizador.l"
 agregarEntero(&listaHexadecimales, strtol(yytext, NULL, 16));
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 74 "Analizador.l"
+#line 74 "analizador.l"
 agregarReales(&listaReales, atof(yytext));
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 75 "Analizador.l"
+#line 75 "analizador.l"
 agregarCaracter(&listaCaracteres, yytext[1]);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 76 "Analizador.l"
+#line 76 "analizador.l"
 agregarListaConValor(&listaLiteralesCadena, yytext, strlen (yytext) - 2);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 77 "Analizador.l"
+#line 77 "analizador.l"
 agregarListaTipos(&listaReservadas, yytext, "Dato");
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 78 "Analizador.l"
+#line 78 "analizador.l"
 agregarListaTipos(&listaReservadas, yytext, "Control");
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 79 "Analizador.l"
+#line 79 "analizador.l"
 agregarListaTipos(&listaReservadas, yytext, "Otras");
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 80 "Analizador.l"
+#line 80 "analizador.l"
 agregarListaContador(&listaIdentificadores, yytext);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 81 "Analizador.l"
+#line 81 "analizador.l"
 agregarListaContador(&listaOperadoresPuntuacion, yytext);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 82 "Analizador.l"
+#line 82 "analizador.l"
 agregarListaTipos(&listaComentarios, yytext, "una linea");
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 83 "Analizador.l"
+#line 83 "analizador.l"
 agregarListaTipos(&listaComentarios, yytext, "varias lineas");
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 84 "Analizador.l"
+#line 84 "analizador.l"
 
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 85 "Analizador.l"
+#line 85 "analizador.l"
 
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 86 "Analizador.l"
+#line 86 "analizador.l"
 
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 87 "Analizador.l"
+#line 87 "analizador.l"
 agregarListaConValor(&listaNoReconocidos, yytext, yylineno);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 89 "Analizador.l"
+#line 89 "analizador.l"
 ECHO;
 	YY_BREAK
 #line 920 "lex.yy.c"
@@ -1800,7 +1800,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 89 "Analizador.l"
+#line 89 "analizador.l"
 
 
 /* =====================    C O D I G O    C   ===================== */
@@ -1809,14 +1809,15 @@ int main (){
     yyin = fopen("entrada.c", "r");
     yyout = fopen("salida.txt", "w");
 
-    
-    
     yylex();
 
-    imprimirReporte(listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
+    FILE* archInforme = fopen("informe.txt","w");
+
+    imprimirReporte(archInforme,listaIdentificadores, listaLiteralesCadena, listaReservadas, listaDecimales, listaOctales, listaHexadecimales, listaReales, listaCaracteres, listaOperadoresPuntuacion, listaComentarios, listaNoReconocidos);
 
     fclose(yyin);
     fclose(yyout);
+    fclose(archInforme);
     getch();
     return 0;
 }

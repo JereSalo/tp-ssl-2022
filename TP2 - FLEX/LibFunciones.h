@@ -1,18 +1,18 @@
 /* =====================    N O D O S   ===================== */
 
-typedef struct NodoConValor{ // Crear el Nodo para elementos con valor
+typedef struct NodoConValor{ // Crear el Nodo para elementos con valor (Literales cadenas y no reconocidos)
     char * elemento;
     int valor;
     struct NodoConValor * sig;
 }ConValor;
 
-typedef struct NodoConContador{ // Crear el Nodo para elementos con contador
+typedef struct NodoConContador{ // Crear el Nodo para elementos con contador (Identificadores y operadores/puntuación)
     char * elemento;
     int contador;
     struct NodoConContador * sig;
 }ConContador;
 
-typedef struct NodoConTipo{ // Crear el Nodo para elementos con tipo
+typedef struct NodoConTipo{ // Crear el Nodo para elementos con tipo (Reservados y comentarios)
     char * elemento;
     char * tipo;
     struct NodoConTipo * sig;

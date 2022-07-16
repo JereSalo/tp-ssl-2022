@@ -199,8 +199,8 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         fprintf(informe, " -> Identificadores halladas: \n\n");
 
         while(listaIdentificadores != NULL){
-            printf ("\t- %s aparece %d veces\n", listaIdentificadores -> elemento, listaIdentificadores -> contador);
-            fprintf (informe,"\t- %s aparece %d veces\n", listaIdentificadores -> elemento, listaIdentificadores -> contador);
+            printf ("\t- %s: Aparece %d veces\n", listaIdentificadores -> elemento, listaIdentificadores -> contador);
+            fprintf (informe,"\t- %s: Aparece %d veces\n", listaIdentificadores -> elemento, listaIdentificadores -> contador);
             listaIdentificadores = listaIdentificadores -> sig;
         }
         printf ("\n---------------------------------------------------------------------------------------");
@@ -210,8 +210,8 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         printf ("\n -> Literales cadenas halladas: \n\n");  
         fprintf(informe, "\n -> Literales cadenas halladas: \n\n");
         while(listaLiteralesCadena != NULL){
-            printf ("\t- %s tiene longitud %d\n", listaLiteralesCadena -> elemento, listaLiteralesCadena -> valor);
-            fprintf(informe,"\t- %s tiene longitud %d\n", listaLiteralesCadena -> elemento, listaLiteralesCadena -> valor);
+            printf ("\t- %s: Tiene longitud %d\n", listaLiteralesCadena -> elemento, listaLiteralesCadena -> valor);
+            fprintf(informe,"\t- %s: Tiene longitud %d\n", listaLiteralesCadena -> elemento, listaLiteralesCadena -> valor);
             listaLiteralesCadena = listaLiteralesCadena -> sig;
         }
         printf ("\n---------------------------------------------------------------------------------------");
@@ -221,8 +221,8 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         printf ("\n -> Palabras Reservadas halladas: \n\n");
         fprintf(informe, "\n -> Palabras Reservadas halladas: \n\n");
         while(listaReservadas != NULL){
-            printf ("\t- %s (Palabra reservada de tipo %s)\n", listaReservadas -> elemento, listaReservadas -> tipo);
-            fprintf (informe,"\t- %s (Palabra reservada de tipo %s)\n", listaReservadas -> elemento, listaReservadas -> tipo);
+            printf ("\t- %s: Palabra reservada de tipo %s\n", listaReservadas -> elemento, listaReservadas -> tipo);
+            fprintf (informe,"\t- %s: Palabra reservada de tipo %s\n", listaReservadas -> elemento, listaReservadas -> tipo);
             listaReservadas = listaReservadas -> sig;
         }
         printf ("\n---------------------------------------------------------------------------------------");
@@ -241,8 +241,8 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
                 fprintf(informe, "\t- ");
             }
             
-            printf ("%o Constante de valor decimal: %d\n", listaOctales -> valor, listaOctales -> valor);
-            fprintf (informe,"%o Constante de valor decimal: %d\n", listaOctales -> valor, listaOctales -> valor);
+            printf ("%o --> Constante de valor decimal: %d\n", listaOctales -> valor, listaOctales -> valor);
+            fprintf (informe,"%o --> Constante de valor decimal: %d\n", listaOctales -> valor, listaOctales -> valor);
             listaOctales = listaOctales -> sig;
         }
         
@@ -268,8 +268,8 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         printf ("\n -> Constantes enteras hexadecimal halladas:\n\n");
         fprintf (informe,"\n -> Constantes enteras hexadecimal halladas:\n\n");
         while(listaHexadecimales != NULL){
-            printf ("\t- 0x%x Constante de valor decimal: %d\n", listaHexadecimales -> valor, listaHexadecimales -> valor);
-            fprintf (informe,"\t- 0x%x Constante de valor decimal: %d\n", listaHexadecimales -> valor, listaHexadecimales -> valor);
+            printf ("\t- 0x%x --> Constante de valor decimal: %d\n", listaHexadecimales -> valor, listaHexadecimales -> valor);
+            fprintf (informe,"\t- 0x%x --> Constante de valor decimal: %d\n", listaHexadecimales -> valor, listaHexadecimales -> valor);
             listaHexadecimales = listaHexadecimales -> sig;
         }
         
@@ -282,8 +282,8 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         while(listaReales != NULL){
             double parteEntera;
             // modf: Separa parte entera y la parte decimal de un numero tipo "double"
-            printf ("\t- %f\t Parte entera: %f. Parte decimal: %f\n", listaReales -> valor, parteEntera, modf(listaReales -> valor, &parteEntera));
-            fprintf (informe, "\t- %f\t Parte entera: %f. Parte decimal: %f\n", listaReales -> valor, parteEntera, modf(listaReales -> valor, &parteEntera));
+            printf ("\t- %f\t Parte entera: %f.\t Parte decimal: %f\n", listaReales -> valor, parteEntera, modf(listaReales -> valor, &parteEntera));
+            fprintf (informe, "\t- %f\t Parte entera: %f.\t Parte decimal: %f\n", listaReales -> valor, parteEntera, modf(listaReales -> valor, &parteEntera));
             
             listaReales = listaReales -> sig;
         }
@@ -298,7 +298,7 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         
         while(listaCaracteres != NULL){
             printf ("\t- %d) '%c'\n", ++contador, listaCaracteres -> caracter);
-            fprintf (informe, "\t- %d) '%c'\n", ++contador, listaCaracteres -> caracter);
+            fprintf (informe, "\t- %d) '%c'\n", listaCaracteres -> caracter);
             listaCaracteres = listaCaracteres -> sig;
         }
 
@@ -311,8 +311,8 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         fprintf(informe,"\n -> Operadores/caracteres de puntuacion hallados: \n\n");
 
         while(listaOperadoresPuntuacion != NULL){
-            printf ("\t- %s aparece %d veces\n", listaOperadoresPuntuacion -> elemento, listaOperadoresPuntuacion -> contador);
-            fprintf (informe,"\t- %s aparece %d veces\n", listaOperadoresPuntuacion -> elemento, listaOperadoresPuntuacion -> contador);
+            printf ("\t- %s Aparece %d veces\n", listaOperadoresPuntuacion -> elemento, listaOperadoresPuntuacion -> contador);
+            fprintf (informe,"\t- %s Aparece %d veces\n", listaOperadoresPuntuacion -> elemento, listaOperadoresPuntuacion -> contador);
             listaOperadoresPuntuacion = listaOperadoresPuntuacion -> sig;
         }
 
@@ -336,7 +336,7 @@ void imprimirReporte (ConContador * listaIdentificadores, ConValor * listaLitera
         fprintf (informe,"\n -> Caracteres no reconocidos halladas: \n\n");
         while(listaNoReconocidos != NULL){
             printf ("\t- %s ubicado en la linea %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
-            fprintf (informe, "\t- %s ubicado en la linea %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
+            fprintf (informe, "\t- %s Ubicado en la linea %d\n", listaNoReconocidos -> elemento, listaNoReconocidos -> valor);
 
             listaNoReconocidos = listaNoReconocidos -> sig;
         }

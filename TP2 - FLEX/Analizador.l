@@ -34,17 +34,17 @@ todas las categorias lexicas de C y además de comentarios:
 #include "LibFunciones.h"
 
 // Para crear las listas necesarias
+Caracter * listaCaracteres = NULL;
 ConContador * listaIdentificadores = NULL;
-ConValor * listaLiteralesCadena = NULL;
+ConContador * listaOperadoresPuntuacion = NULL;
 ConTipo * listaReservadas = NULL;
+ConTipo * listaComentarios = NULL;
+ConValor * listaLiteralesCadena = NULL;
+ConValor * listaNoReconocidos = NULL;
 Entero * listaOctales = NULL;
 Entero * listaDecimales = NULL;
 Entero * listaHexadecimales = NULL;
 Real * listaReales = NULL;
-Caracter * listaCaracteres = NULL;
-ConContador * listaOperadoresPuntuacion = NULL;
-ConTipo * listaComentarios = NULL;
-ConValor * listaNoReconocidos = NULL;
 
 %}
 

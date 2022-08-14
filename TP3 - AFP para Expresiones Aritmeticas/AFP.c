@@ -56,7 +56,7 @@ int main(){
         // Pedir la expresión aritmética por pantalla
         char expresion[] = "$";
         printf ("Ingrese una expresion aritmetica: ");
-        gets (expresion);
+        gets (expresion); 
 
         push('$'); // Cargamos la memoria de la pila
         cargarTablaMovimientos(); // Cargamos la Tabla de Movimientos
@@ -246,11 +246,16 @@ Tipo de Datos y sus valores numéricos:
     5 - Otro tipo de datos
 
 Tipo de Cima y sus valores numéricos:
-    1 - '$'
-    2 - 'R'
+    0 - '$'
+    1 - 'R'
 */
 
+// Primer campo hace referencia al estado en el que se está.
+// segundo campo es tipo de dato ingresado.
+// Tercer campo es estado de pila.
+
 void cargarTablaMovimientos (){
+    // (q0,$)
     TablaMovimientos[0][0][0] = 3;  // '0'
     TablaMovimientos[0][1][0] = 1;  // [1 - 9]
     TablaMovimientos[0][2][0] = 3;  // {+, -, *, /}
@@ -258,6 +263,7 @@ void cargarTablaMovimientos (){
     TablaMovimientos[0][4][0] = 3;  // ')'
     TablaMovimientos[0][5][0] = 3;  // N/A
 
+    // (q1,$)
     TablaMovimientos[1][0][0] = 1;
     TablaMovimientos[1][1][0] = 1;
     TablaMovimientos[1][2][0] = 0;
@@ -265,13 +271,23 @@ void cargarTablaMovimientos (){
     TablaMovimientos[1][4][0] = 3;
     TablaMovimientos[1][5][0] = 3;
 
+    // (q2,$)
+    TablaMovimientos[2][0][0] = 3;
+    TablaMovimientos[2][1][0] = 3;
+    TablaMovimientos[2][2][0] = 0;
+    TablaMovimientos[2][3][0] = 3;
+    TablaMovimientos[2][4][0] = 3;
+    TablaMovimientos[2][5][0] = 3;
+    
+    // (q0,R)
     TablaMovimientos[0][0][1] = 3;
     TablaMovimientos[0][1][1] = 1;
     TablaMovimientos[0][2][1] = 3;
     TablaMovimientos[0][3][1] = 0;
     TablaMovimientos[0][4][1] = 3;
     TablaMovimientos[0][5][1] = 3;
-
+    
+    //(q1,R)
     TablaMovimientos[1][0][1] = 1;
     TablaMovimientos[1][1][1] = 1;
     TablaMovimientos[1][2][1] = 0;
@@ -279,19 +295,13 @@ void cargarTablaMovimientos (){
     TablaMovimientos[1][4][1] = 2;
     TablaMovimientos[1][5][1] = 3;
 
+    // (q2,R)
     TablaMovimientos[2][0][1] = 3;
     TablaMovimientos[2][1][1] = 3;
     TablaMovimientos[2][2][1] = 0;
     TablaMovimientos[2][3][1] = 3;
     TablaMovimientos[2][4][1] = 2;
     TablaMovimientos[2][5][1] = 3;
-
-    TablaMovimientos[2][0][0] = 3;
-    TablaMovimientos[2][1][0] = 3;
-    TablaMovimientos[2][2][0] = 0;
-    TablaMovimientos[2][3][0] = 3;
-    TablaMovimientos[2][4][0] = 3;
-    TablaMovimientos[2][5][0] = 3;
 
     for (int i = 0; i < grupoDeCaracteres; i++) TablaMovimientos[3][i][0] = 3;
     for (int j = 0; j < grupoDeCaracteres; j++) TablaMovimientos[3][j][1] = 3;

@@ -82,7 +82,7 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 {COMENTARIO_UNA_LINEA}                 agregarListaTipos(&listaComentarios, yytext, "una linea");
 {COMENTARIO_VARIAS_LINEAS}             agregarListaTipos(&listaComentarios, yytext, "varias lineas");
 \n
-\t
+\t 
 " "
 .                                      agregarListaConValor(&listaNoReconocidos, yytext, yylineno);
 

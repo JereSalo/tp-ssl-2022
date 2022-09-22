@@ -4,16 +4,17 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
-#include <stdio.h>
 #include <ctype.h>
 int yylex();
 int yyerror (char *s);
 int yywrap(){
-return(1);
+        return(1);
 }
 %}
 
-
+%token <entero> CONSTANTE_OCTAL CONSTANTE_DECIMAL CONSTANTE_HEXADECIMAL
+%token <real> CONSTANTE_REAL 
+%token CONSTANTE_CARACTER
 %token INT
 %token DOUBLE
 %token FLOAT
@@ -46,7 +47,20 @@ return(1);
 %token UNION
 %token GOTO
 %token VOLATILE
-
+%token IGUALIGUAL "=="
+%token DIFERENTE "!="
+%token MASIGUAL "+="
+%token MENOSIGUAL "-="
+%token MENORIGUAL "<="
+%token MAYORIGUAL ">="
+%token MASMAS "++"
+%token AND "&&"
+%token OR "||"
+%token FLECHA "->"
+%token LITERAL_CADENA
+%token COMENTARIO_UNA_LINEA
+%token COMENTARIO_VARIAS_LINEAS
+%token IDENTIFICADOR
 
 %union{
     char* cadena;
@@ -56,23 +70,28 @@ return(1);
 
 %% /* A continuacion las reglas gramaticales y las acciones */
 
-input:    /* vacio */
-        | input line
+
+num:          CONSTANTE_OCTAL               {printf("Octal\n");}
+            | CONSTANTE_DECIMAL             {printf("Decimal\n");}
+            | CONSTANTE_HEXADECIMAL         {printf("Hexadecimal\n");}
+            | CONSTANTE_REAL                {printf("Real\n");}
 ;
 
-line:     '\n'
-        | exp '\n'  { printf ("\t %d\n", $1); }
-;
 
-exp:      NUM             { $$ = $1;         }
-        | exp exp '+'     { $$ = $1 + $2;    }
-        | exp exp '-'     { $$ = $1 - $2;    }
-        | exp exp '*'     { $$ = $1 * $2;    }
-        | exp exp '/'     { $$ = $1 / $2;    }
-        | exp exp '^'     { $$ = pow ($1, $2); }
+expPrimaria:    IDENTIFICADOR |
+                constante |
+                LITERAL_CADENA
+                
 
-;
+constante:      num | 
+                CONSTANTE_CARACTER
+
+
+
+
 %%
+
+
 
 int yyerror (char *s)  /* Llamada por yyparse ante un error */
 {
@@ -86,8 +105,7 @@ int main ()
         yydebug = 1;
 #endif
 
+
   printf("Ingrese una expresion aritmetica en notacion polaca inversa para resolver:\n");
   yyparse();
 }
-
-

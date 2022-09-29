@@ -5,7 +5,7 @@
 %option yylineno
 /* =====================    D E F I N I C I O N E S     ===================== */
 %{
-#include "parser.h"
+#include "parser.tab.h"
 
 
 %}
@@ -43,41 +43,41 @@ CONSTANTE_DE_UN_CARACTER        ,|\?|:|\(|\)|\[|\]|=|\{|\}|;|\*|&|\+|\-|~|!|<|>
 
 "&" {return '&';}
 
-int {return INT;}
-double {return DOUBLE;}
-float {return FLOAT;}
-char {return CHAR;}
-long {return LONG;}
-short {return SHORT;}
-unsigned {return UNSIGNED;}
-signed {return SIGNED;}
-const {return CONST;}
-static {return STATIC;}
-struct {return STRUCT;}
+"int" {return INT;}
+"double" {return DOUBLE;}
+"float" {return FLOAT;}
+"char" {return CHAR;}
+"long" {return LONG;}
+"short" {return SHORT;}
+"unsigned" {return UNSIGNED;}
+"signed" {return SIGNED;}
+"const" {return CONST;}
+"static" {return STATIC;}
+"struct" {return STRUCT;}
 
 
-else {return ELSE;}
-switch {return SWITCH;}
-break {return BREAK;}
-for {return FOR;}
-void {return VOID;}
-continue {return CONTINUE;}
-while {return WHILE;}
-if {return IF;}
-do {return DO;}
-case {return CASE;}
-return {return RETURN;}
-default {return DEFAULT;}
+"else" {return ELSE;}
+"switch" {return SWITCH;}
+"break" {return BREAK;}
+"for" {return FOR;}
+"void" {return VOID;}
+"continue" {return CONTINUE;}
+"while" {return WHILE;}
+"if" {return IF;}
+"do" {return DO;}
+"case" {return CASE;}
+"return" {return RETURN;}
+"default" {return DEFAULT;}
 
-auto {return AUTO;}
-enum {return ENUM;}
-register {return REGISTER;}
-typedef {return TYPEDEF;}
-extern {return EXTERN;}
-sizeof {return SIZEOF;}
-union {return UNION;}
-goto {return GOTO;}
-volatile {return VOLATILE;}
+"auto" {return AUTO;}
+"enum" {return ENUM;}
+"register" {return REGISTER;}
+"typedef" {return TYPEDEF;}
+"extern" {return EXTERN;}
+"sizeof" {return SIZEOF;}
+"union" {return UNION;}
+"goto" {return GOTO;}
+"volatile" {return VOLATILE;}
 
 
 "==" {return IGUALIGUAL;}

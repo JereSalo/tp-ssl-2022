@@ -1,11 +1,9 @@
 %{
-#include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <conio.h>
 #include <string.h>
-#include <ctype.h>
 int yylex();
+FILE* yyin;
 int yyerror (char *s);
 int yywrap(){
         return(1);
@@ -13,7 +11,7 @@ int yywrap(){
 %}
 
 %token <entero> CONSTANTE_OCTAL CONSTANTE_DECIMAL CONSTANTE_HEXADECIMAL
-%token <real> CONSTANTE_REAL 
+%token <real> CONSTANTE_REAL
 %token CONSTANTE_CARACTER
 %token INT
 %token DOUBLE
@@ -71,8 +69,8 @@ int yywrap(){
     float real;
 }
 
-%% /* A continuacion se encuentran las expresiones */
-expresion:                expAsignacion
+%%
+expresion:                expAsignacion {printf("hola");}
 ;
 
 expAsignacion:            expCondicional
@@ -125,7 +123,6 @@ expUnaria:                expSufijo
                         | MASMAS expUnaria
                         | MENOSMENOS expUnaria
                         | operUnario expUnaria
-                        | SIZEOF '(' nombreTipo ')'
                         | SIZEOF expUnaria
 ;
 
@@ -161,16 +158,13 @@ constante:                constanteEntera
                         | CONSTANTE_REAL
 ;
 
-constanteEntera:          CONSTANTE_OCTAL                                                   
+constanteEntera:          CONSTANTE_OCTAL {printf("hola");}                                          
                         | CONSTANTE_DECIMAL                                                 
                         | CONSTANTE_HEXADECIMAL
 ;
 
-%%
-
-%% /* A continuacion se encuentran las declaraciones */
-declaracion:              espDeclaracion listaDeclaradores
-                        | espDeclaracion
+declaracion:              espDeclaracion listaDeclaradores {printf("hola");}
+                        | espDeclaracion {printf("hola");}
 ;
 
 espDeclaracion:           espClaseAlmacenamiento espDeclaracion
@@ -185,7 +179,7 @@ listaDeclaradores:       declarador
 ;
                         
 declarador:             decla
-                        |decla '=' inicializador
+                        |decla '=' inicializador 
 ;
 
 inicializador:          expAsignacion
@@ -232,10 +226,10 @@ structUnion:              STRUCT
 ;
 
 listaDeclaStruct:         declaracionStruct 
-                          | listaDeclaStruct declacionStruct
+                          | listaDeclaStruct declaracionStruct
 ;
 
-declacionStruct:          listaCalificadores declaradoresStruct ';'
+declaracionStruct:          listaCalificadores declaradoresStruct ';'
 ;
 
 listaCalificadores:       espTipo listaCalificadores
@@ -289,8 +283,15 @@ declaParametro:                 espDeclaracion decla
                                 |espDeclaracion
 ;
 
+/*
+declaracionFuncion:             nombreTipo IDENTIFICADOR'('listaParametros')' ';' 
+                                | nombreTipo IDENTIFICADOR'('listaParametros')' sentenciaCompuesta 
+;
+*/
+
 listaIdentificadores:            IDENTIFICADOR
                                 | listaIdentificadores ',' IDENTIFICADOR
+;
                                 
 espEnum:                        ENUM IDENTIFICADOR '{' listaEnumeradores '}'
                                 |ENUM '{' listaEnumeradores '}'
@@ -335,10 +336,6 @@ declaradorAbstractoDirecto:          '(' declaradorAbstracto ')'
 
 
 
-
-
-
-
 int yyerror (char *s)  /* Llamada por yyparse ante un error */
 {
   printf ("%s\n", s);
@@ -347,11 +344,8 @@ int yyerror (char *s)  /* Llamada por yyparse ante un error */
 int main ()
 {
 
-#ifdef BISON_DEBUG
-        yydebug = 1;
-#endif
-
-
-  printf("Ingrese una expresion aritmetica en notacion polaca inversa para resolver:\n");
+  yyin = fopen("entrada.c","r");
   yyparse();
+  printf("Inicio:\n");
+  fclose(yyin);
 }

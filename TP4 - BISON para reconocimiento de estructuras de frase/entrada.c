@@ -1,32 +1,3 @@
-a = 3;
-b += 2;
-c -= 1;
-d *= 0;
-e /= 3;
-1 || 4;
-2 && 0;
-a == b;
-3 == 2;
-a != b;
-3 != 2;
-a < b;
-a > b;
-a < 3;
-b > 3;
-2 > 1;
-a + b;
-2 + 2;
-4 - 2;
-10 * 5;
-10 / 2;
-a / 3;
-10 % 2;
-(10 + 2) * 4;
-4 * (10 + 2);
-a = b;
-2 <= 5;
-z >= 5;
-a + 4;
 return;
 break;
 continue;
@@ -70,7 +41,7 @@ int a;
 int b = 10;
 int c = 10, d;
 int Suma();
-void Mostrar(char, int);
+void Mostrar(char);
 int Suma(){
     int c = 10;
     return c;
@@ -84,3 +55,20 @@ void Mostrar2(char a, int b){
 int Suma() {
     printf("???");
 }
+signed int a;
+unsigned int a;
+signed a;
+unsigned b;
+typedef struct entrada{
+    int a;
+    char b, c;
+}myStruct;
+union entrada{
+    int a;
+    double a;
+};
+typedef int myInt;
+enum a{
+    Hola,
+    Chau
+};

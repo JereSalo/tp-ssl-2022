@@ -62,7 +62,7 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 "||"                                    {return OR;}
 "->"                                    {return FLECHA;}
 
-"\n"                                    {return '\n';}
+"\n"
 "\t"
 " "
 
@@ -114,5 +114,7 @@ volatile                                {return VOLATILE;}
 {LITERAL_CADENA}                        {return LITERAL_CADENA;}
 {COMENTARIO_UNA_LINEA}                  {return COMENTARIO_UNA_LINEA;}
 {COMENTARIO_VARIAS_LINEAS}              {return COMENTARIO_VARIAS_LINEAS;}
+
+.                                       {printf("Error lexico");}
 
 %%

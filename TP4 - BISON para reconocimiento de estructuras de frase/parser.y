@@ -51,50 +51,52 @@ int yywrap(){
 %%
 
 input:                    /* vacio */
-                        | input line
+                        | input line                                            {printf("====================\n");}
 ;
 
-line:                     '\n'                                        {printf("\n");}
-                        | sentencia
-                        | declaracion
-                        | prototipo
-                        | funciones
+line:                     sentencia
+                        | declaracion                                           {printf("[DECLARACION]\n");}
+                        | prototipo ';'                                         {printf("[PROTOTIPO]\n");}
+                        | funciones                                             {printf("[FUNCION]\n");}
                         | noC
 ;
 
-prototipo:                VOID IDENTIFICADOR '(' tiposParametros ')' ';'          {printf(" Prototipo ");}
-                        | VOID IDENTIFICADOR '(' ')' ';'                          {printf(" Prototipo ");}
-                        | tipoDeDato IDENTIFICADOR '(' tiposParametros ')' ';'    {printf(" Prototipo ");}
-                        | tipoDeDato IDENTIFICADOR '(' ')' ';'                    {printf(" Prototipo ");}
+noC:                      COMENTARIO_UNA_LINEA                                  {printf("[COMENTARIO]\n");}
+                        | COMENTARIO_VARIAS_LINEAS                              {printf("[COMENTARIO]\n");}
 ;
 
-tiposParametros:          tipoDeDato
-                        | tipoDeDato ',' tiposParametros
+/*============================== FUNCIONES ==================================*/
+
+prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'
+                        | VOID IDENTIFICADOR '(' ')'
+                        | tipoDeDato IDENTIFICADOR '(' parametrosPrototipo ')'
+                        | tipoDeDato IDENTIFICADOR '(' ')'
 ;
 
-funciones:                VOID IDENTIFICADOR '(' ')' sentencia                              {printf(" Funciones ");}
-                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentencia            {printf(" Funciones ");}
-                        | tipoDeDato IDENTIFICADOR '(' ')' sentencia                        {printf(" Funciones ");}
-                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentencia      {printf(" Funciones ");}
+parametrosPrototipo:      tipoDeDato                                            {printf("[DECLARACION]\n");}
+                        | tipoDeDato ',' parametrosPrototipo                    {printf("[DECLARACION]\n");}
 ;
 
-parametrosFuncion:        tipoDeDato IDENTIFICADOR
-                        | tipoDeDato IDENTIFICADOR ',' parametrosFuncion
+funciones:                VOID IDENTIFICADOR '(' ')' sentencia
+                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentencia
+                        | tipoDeDato IDENTIFICADOR '(' ')' sentencia
+                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentencia      
 ;
 
-noC:                      COMENTARIO_UNA_LINEA                        {printf(" COMENTARIO UNA LINEA ");}
-                        | COMENTARIO_VARIAS_LINEAS                    {printf(" COMENTARIO VARIAS LINEAS ");}
+parametrosFuncion:        tipoDeDato IDENTIFICADOR                              {printf("[DECLARACION]\n");}
+                        | tipoDeDato IDENTIFICADOR ',' parametrosFuncion        {printf("[DECLARACION]\n");}
 ;
+
 
 /*==============================================SENTENCIAS===========================================*/
 /* conflictos: 1 desplazamiento/reducción (En sentElse)*/
 
-sentencia:                sentExpresion                               {printf("\t [SENT. EXPRESION] ");}
-                        | sentCompuesta                               {printf("\t [SENT. COMPUESTA]");}
-                        | sentSeleccion                               {printf("\t [SENT. SELECCION] ");}
-                        | sentIteracion                               {printf("\t [SENT. ITERACION]");}
-                        | sentEtiquetado                              {printf("\t [SENT. ETIQUETADO]");}
-                        | sentSalto                                   {printf("\t [SENT. SALTO] ");}
+sentencia:                sentExpresion
+                        | sentCompuesta                                         {printf("[SENT. COMPUESTA]\n");}
+                        | sentSeleccion                                         {printf("[SENT. SELECCION]\n");}
+                        | sentIteracion                                         {printf("[SENT. ITERACION]\n");}
+                        | sentEtiquetado                                        {printf("[SENT. ETIQUETADO]\n");}
+                        | sentSalto                                             {printf("[SENT. SALTO]\n");}
 ;
 
 sentExpresion:            expresion ';'
@@ -109,16 +111,16 @@ listaSentencias:          line
 ;
 
 sentSeleccion:            IF '(' expresion ')' sentencia sentElse
-                        | SWITCH '(' expresion ')' sentencia          {printf(" Switch ");}
+                        | SWITCH '(' expresion ')' sentencia                    {printf("Switch ");}
 ;
 
-sentElse:                 /* vacio */                                 {printf(" If sin Else ");}
-                        | ELSE sentencia                              {printf(" If con Else ");}
+sentElse:                 /* vacio */                                           {printf("If sin Else ");}
+                        | ELSE sentencia                                        {printf("If con Else ");}
 ;
 
-sentIteracion:            WHILE '(' expresion ')' sentencia           {printf(" While ");}
-                        | DO line WHILE '(' expresion ')' ';'         {printf(" DoWhile ");}
-                        | FOR '(' cuerpoFor ')' sentencia             {printf(" For ");}
+sentIteracion:            WHILE '(' expresion ')' sentencia                     {printf("While ");}
+                        | DO line WHILE '(' expresion ')' ';'                   {printf("DoWhile ");}
+                        | FOR '(' cuerpoFor ')' sentencia                       {printf("For ");}
 ;
 
 cuerpoFor:                declaracionFor ';' expresion ';' expresion
@@ -130,8 +132,8 @@ cuerpoFor:                declaracionFor ';' expresion ';' expresion
                         | ';' ';'
 ;
 
-declaracionFor:           tipoDeDato variasVariables                  {printf(" DeclaracionFor ")}
-                        | variasVariables                             {printf(" DeclaracionFor ")}
+declaracionFor:           tipoDeDato variasVariables                            {printf("[DECLARACION]\n");}
+                        | variasVariables
 ;
 
 sentEtiquetado:           CASE constante ':' sentencia
@@ -139,29 +141,31 @@ sentEtiquetado:           CASE constante ':' sentencia
 	                      | IDENTIFICADOR ':' sentencia
 ;
 
-sentSalto:                BREAK ';'                                   {printf(" Break ");}
-                        | CONTINUE ';'                                {printf(" Continue ");}
-                        | RETURN expresion ';'                        {printf(" Return con Expresion ");}
-                        | RETURN ';'                                  {printf(" Return sin Expresion ");}
-                        | GOTO ';'                                    {printf(" Goto ");}
+sentSalto:                BREAK ';'
+                        | CONTINUE ';'
+                        | RETURN expresion ';'
+                        | RETURN ';'
+                        | GOTO ';'
 ;
 
 /*=========================================DECLARACIONES===============================================*/
-/* No hay conflictos */
+/* conflictos: 9 desplazamiento/reducción */
 
-declaracion:              tipoDeDato variasVariables ';'              {printf(" Declaracion ")}
+declaracion:              espDeclaracion variasVariables
+                        | espDeclaracion
+;
+
+espDeclaracion:           espAlmacenamiento tipoDeDato IDENTIFICADOR ';'
+                        | espAlmacenamiento calificadorTipo tipoDeDato IDENTIFICADOR ';'
+                        | espAlmacenamiento espStructUnion IDENTIFICADOR ';'
+                        | espAlmacenamiento espEnum IDENTIFICADOR ';'
+                        | calificadorTipo declaraciones ';'
+                        | calificadorTipo ';'
+                        | declaraciones ';'
 ;
 
 variasVariables:          inicializacion
                         | variasVariables inicializacion
-;
-
-tipoDeDato:               CHAR
-	                      | DOUBLE
-	                      | FLOAT
-	                      | INT
-	                      | LONG
-	                      | SHORT
 ;
 
 inicializacion:           IDENTIFICADOR ',' inicializacion
@@ -170,14 +174,67 @@ inicializacion:           IDENTIFICADOR ',' inicializacion
 		                    | IDENTIFICADOR
 ;
 
+espAlmacenamiento:        TYPEDEF
+                        | STATIC
+                        | AUTO
+                        | REGISTER
+                        | EXTERN
+;
+
+declaraciones:            tipoDeDato variasVariables
+                        | SIGNED tipoDeDato variasVariables                     {printf("Signed ");}
+                        | SIGNED variasVariables                                {printf("Signed ");}
+                        | UNSIGNED tipoDeDato variasVariables                   {printf("Unsigned ");}
+                        | UNSIGNED variasVariables                              {printf("Unsigned ");}
+                        | espStructUnion
+                        | espEnum
+;
+
+tipoDeDato:               CHAR                                                  {printf("Char ");}
+	                      | DOUBLE                                                {printf("Double ");}
+	                      | FLOAT                                                 {printf("Float ");}
+	                      | INT                                                   {printf("Int ");}
+	                      | LONG                                                  {printf("Long ");}
+	                      | SHORT                                                 {printf("Short ");}
+;
+
+calificadorTipo:          CONST                                                 {printf("Const ");}
+                        | VOLATILE                                              {printf("Volatile ");}
+;
+
+espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {printf("Struct ");}
+                        | STRUCT '{' declaracionesStruct '}'                    {printf("Struct ");}
+                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {printf("Union ");}
+                        | UNION '{' declaracionesStruct '}'                     {printf("Union ");}
+;
+
+declaracionesStruct:      tipoDeDato variasVariablesStruct ';'
+                        | tipoDeDato variasVariablesStruct ';' declaracionesStruct
+;
+
+variasVariablesStruct:    inicializacionStruct
+                        | variasVariablesStruct inicializacionStruct
+;
+
+inicializacionStruct:     IDENTIFICADOR ',' inicializacionStruct
+		                    | IDENTIFICADOR
+;
+
+espEnum:                  ENUM IDENTIFICADOR '{' listaIdentificadores '}'       {printf("Enum ");}
+;
+
+listaIdentificadores:     IDENTIFICADOR ',' listaIdentificadores
+                        | IDENTIFICADOR
+;
+
 /*=============================================EXPRESIONES=============================================*/
 /* No hay conflictos */
 
-expresion:                expAsignacion
+expresion:                expAsignacion                                         {printf("[SENT. EXPRESION]");}
 ;
 
 expAsignacion:            expCondicional
-                        | expUnaria operAsig expAsignacion            {printf(" Asignacion ");}
+                        | expUnaria operAsig expAsignacion
 ;
 
 operAsig:                 '='
@@ -192,39 +249,39 @@ expCondicional:           expOr
 ;
 
 expOr:                    expAnd
-                        | expAnd OR expOr                             {printf(" Or ");}
+                        | expAnd OR expOr
 ;
 
 expAnd:                   expIgualdad
-                        | expIgualdad AND expAnd                      {printf(" And ");}
+                        | expIgualdad AND expAnd
 ;
 
 expIgualdad:              expRelacional
-                        | expRelacional IGUALIGUAL expIgualdad        {printf(" Igualdad ");}
-                        | expRelacional DIFERENTE expIgualdad         {printf(" Desigualdad ");}
+                        | expRelacional IGUALIGUAL expIgualdad
+                        | expRelacional DIFERENTE expIgualdad
 ;
 
 expRelacional:            expAditiva
-                        | expAditiva '<' expRelacional                {printf(" Menor ");}
-                        | expAditiva '>' expRelacional                {printf(" Mayor ");}
-                        | expAditiva MAYORIGUAL expRelacional         {printf(" MayorIgual ");}
-                        | expAditiva MENORIGUAL expRelacional         {printf(" MenorIgual ");}
+                        | expAditiva '<' expRelacional
+                        | expAditiva '>' expRelacional
+                        | expAditiva MAYORIGUAL expRelacional
+                        | expAditiva MENORIGUAL expRelacional
 ;
 
 expAditiva:               expMultiplicativa
-                        | expMultiplicativa '+' expAditiva            {printf(" Suma ");}
-                        | expMultiplicativa '-' expAditiva            {printf(" Resta ");}
+                        | expMultiplicativa '+' expAditiva
+                        | expMultiplicativa '-' expAditiva
 ;
 
 expMultiplicativa:        expUnaria
-                        | expUnaria '*' expUnaria                     {printf(" Multiplicacion ");}
-                        | expUnaria '/' expUnaria                     {printf(" Division ");}
-                        | expUnaria '%' expUnaria                     {printf(" Resto ");}
+                        | expUnaria '*' expUnaria
+                        | expUnaria '/' expUnaria
+                        | expUnaria '%' expUnaria
 ;
 
 expUnaria:                expSufijo
-                        | MASMAS expUnaria                            {printf(" Aumento ");}
-                        | MENOSMENOS expUnaria                        {printf(" Reduccion ");}
+                        | MASMAS expUnaria
+                        | MENOSMENOS expUnaria
                         | operUnario expUnaria
                         | SIZEOF expUnaria
 ;
@@ -242,28 +299,28 @@ expSufijo:                expPrimaria
                         | expSufijo '(' ')'
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
-                        | expSufijo MASMAS                            {printf(" Aumento ");}
-                        | expSufijo MENOSMENOS                        {printf(" Reduccion ");}
+                        | expSufijo MASMAS
+                        | expSufijo MENOSMENOS
 ;
 
 listaArgumentos:          expAsignacion
                         | expAsignacion ',' listaArgumentos
 ;
 
-expPrimaria:              IDENTIFICADOR                               {printf(" IDENTIFICADOR ");}
+expPrimaria:              IDENTIFICADOR
                         | constante
-                        | LITERAL_CADENA                              {printf(" LITERALCADENA ");}
+                        | LITERAL_CADENA
                         | '(' expresion ')'
 ;
 
 constante:                constanteEntera
-                        | CONSTANTE_CARACTER                          {printf(" CARACTER ");}
-                        | CONSTANTE_REAL                              {printf(" REAL ");}
+                        | CONSTANTE_CARACTER
+                        | CONSTANTE_REAL
 ;
 
-constanteEntera:          CONSTANTE_OCTAL                             {printf(" OCTAL ");}
-                        | CONSTANTE_DECIMAL                           {printf(" DECIMAL ");}
-                        | CONSTANTE_HEXADECIMAL                       {printf(" HEXADECIMAL ");}
+constanteEntera:          CONSTANTE_OCTAL
+                        | CONSTANTE_DECIMAL
+                        | CONSTANTE_HEXADECIMAL
 ;
 
 %%

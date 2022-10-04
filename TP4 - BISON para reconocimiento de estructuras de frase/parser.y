@@ -169,10 +169,10 @@ variasVariables:          inicializacion
                         | variasVariables inicializacion
 ;
 
-inicializacion:           IDENTIFICADOR ',' inicializacion                         {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
-		                    | IDENTIFICADOR '=' expresion ',' inicializacion          {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
-		                    | IDENTIFICADOR '=' expresion                             {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
-                        | IDENTIFICADOR                                            {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
+inicializacion:           IDENTIFICADOR ',' {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);} inicializacion
+		                    | IDENTIFICADOR '=' expresion ',' {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);} inicializacion
+		                    | IDENTIFICADOR '=' expresion {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
+                        | IDENTIFICADOR {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
 ;
 
 espAlmacenamiento:        TYPEDEF
@@ -182,21 +182,21 @@ espAlmacenamiento:        TYPEDEF
                         | EXTERN
 ;
 
-declaraciones:            tipoDeDato variasVariables                            {strcpy(tipo,$<cadena>1);}
+declaraciones:            tipoDeDato variasVariables
                         | SIGNED tipoDeDato variasVariables
-                        | SIGNED variasVariables                                {strcpy(tipo,$<cadena>1);}
+                        | SIGNED variasVariables
                         | UNSIGNED tipoDeDato variasVariables
-                        | UNSIGNED variasVariables                              {strcpy(tipo,$<cadena>1);}
+                        | UNSIGNED variasVariables
                         | espStructUnion
                         | espEnum
 ;
 
-tipoDeDato:               CHAR                                                  
-	                      | DOUBLE                                                
-	                      | FLOAT                                                 
-	                      | INT                                                   
-	                      | LONG                                                  
-	                      | SHORT                                                 
+tipoDeDato:               CHAR                                                  {strcpy(tipo,$<cadena>1);}
+	                      | DOUBLE                                                {strcpy(tipo,$<cadena>1);}
+	                      | FLOAT                                                 {strcpy(tipo,$<cadena>1);}
+	                      | INT                                                   {strcpy(tipo,$<cadena>1);}
+	                      | LONG                                                  {strcpy(tipo,$<cadena>1);}
+	                      | SHORT                                                 {strcpy(tipo,$<cadena>1);}
 ;
 
 calificadorTipo:          CONST                                                 {printf("Const ");}

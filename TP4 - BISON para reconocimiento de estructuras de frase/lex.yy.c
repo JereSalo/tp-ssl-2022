@@ -988,7 +988,7 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 66 "lexico.l"
-
+{yylval.entero = yylineno;return NRO_LINEA;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP

@@ -4,9 +4,12 @@
 #include <conio.h>
 #include <string.h>
 #include <ctype.h>
+#include "biblioteca.h"
 #define YYDEBUG 1
 
 FILE* yyin;
+detalleSentencia *ListaSentencias = NULL;
+int nroLineaAnterior=1;
 
 int yylex();
 int yyerror (char *s);
@@ -18,6 +21,7 @@ int yywrap(){
 char tipo [20];
 
 %}
+
 
 %token CONSTANTE_OCTAL CONSTANTE_DECIMAL CONSTANTE_HEXADECIMAL
 %token CONSTANTE_REAL 
@@ -38,14 +42,16 @@ char tipo [20];
 %token IF ELSE SWITCH CASE DEFAULT
 %token VOID
 %token CHAR DOUBLE FLOAT INT LONG SHORT SIGNED UNSIGNED
-%token <cadena> IDENTIFICADOR
+%token IDENTIFICADOR
 %token LITERAL_CADENA
 %token COMENTARIO_UNA_LINEA COMENTARIO_VARIAS_LINEAS
+%token NRO_LINEA
 
 %start input
 
 %union{
     char* cadena;
+    int entero;
 }
 
 
@@ -60,6 +66,11 @@ line:                     sentencia
                         | prototipo ';'                                         {printf("[PROTOTIPO]\n");}
                         | funciones                                             {printf("[FUNCION]\n");}
                         | noC
+                        | nroLinea
+                        | error '\n'                                            { yyerrok;                  }
+;
+
+nroLinea: NRO_LINEA  {nroLineaAnterior=$<entero>1};
 ;
 
 noC:                      COMENTARIO_UNA_LINEA                                  {printf("[COMENTARIO]\n");}
@@ -92,12 +103,12 @@ parametrosFuncion:        tipoDeDato IDENTIFICADOR                              
 /*==============================================SENTENCIAS===========================================*/
 /* conflictos: 1 desplazamiento/reducción (En sentElse)*/
 
-sentencia:                sentExpresion
-                        | sentCompuesta                                         {printf("[SENT. COMPUESTA]\n");}
-                        | sentSeleccion                                         {printf("[SENT. SELECCION]\n");}
-                        | sentIteracion                                         {printf("[SENT. ITERACION]\n");}
-                        | sentEtiquetado                                        {printf("[SENT. ETIQUETADO]\n");}
-                        | sentSalto                                             {printf("[SENT. SALTO]\n");}
+sentencia:                sentExpresion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia de Expresion",nroLineaAnterior);}
+                        | sentCompuesta                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Compuesta",nroLineaAnterior);}
+                        | sentSeleccion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Seleccion",nroLineaAnterior);}
+                        | sentIteracion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Iteracion",nroLineaAnterior);}
+                        | sentEtiquetado                                        {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Etiquetado",nroLineaAnterior);}
+                        | sentSalto                                             {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Salto",nroLineaAnterior);}
 ;
 
 sentExpresion:            expresion ';'
@@ -111,11 +122,11 @@ listaSentencias:          line
                         | listaSentencias line
 ;
 
-sentSeleccion:            IF '(' expresion ')' sentencia sentElse
+sentSeleccion:            IF '(' expresion ')' sentencia sentElse                        
                         | SWITCH '(' expresion ')' sentencia                    {printf("Switch ");}
 ;
 
-sentElse:                 /* vacio */                                           {printf("If sin Else ");}
+sentElse:                 /* vacio */  {printf("If sin Else ");}                                         
                         | ELSE sentencia                                        {printf("If con Else ");}
 ;
 
@@ -231,7 +242,7 @@ listaIdentificadores:     IDENTIFICADOR ',' listaIdentificadores
 /*=============================================EXPRESIONES=============================================*/
 /* No hay conflictos */
 
-expresion:                expAsignacion                                         {printf("[SENT. EXPRESION]");}
+expresion:                expAsignacion                                         //{printf("[SENT. EXPRESION]");}
 ;
 
 expAsignacion:            expCondicional
@@ -342,8 +353,14 @@ int main (){
   yyin = fopen("entrada.c","r");
   yyparse();
 
-  getch();
   fclose(yyin);
+
+  recorrerListaSentencias(ListaSentencias);
+
+  getch();
+  
+
+
 
 return 0;
 }

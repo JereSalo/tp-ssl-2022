@@ -63,7 +63,7 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 "||"                                    {return OR;}
 "->"                                    {return FLECHA;}
 
-"\n"
+"\n"                                    {yylval.entero = yylineno;return NRO_LINEA;}
 "\t"
 " "
 

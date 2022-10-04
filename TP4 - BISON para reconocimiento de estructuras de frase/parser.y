@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
+#include <ctype.h>
 #define YYDEBUG 1
 
 FILE* yyin;
@@ -13,6 +14,8 @@ int yyerror (char *s);
 int yywrap(){
   return(1);
 }
+
+char tipo [20];
 
 %}
 
@@ -35,7 +38,7 @@ int yywrap(){
 %token IF ELSE SWITCH CASE DEFAULT
 %token VOID
 %token CHAR DOUBLE FLOAT INT LONG SHORT SIGNED UNSIGNED
-%token IDENTIFICADOR
+%token <cadena> IDENTIFICADOR
 %token LITERAL_CADENA
 %token COMENTARIO_UNA_LINEA COMENTARIO_VARIAS_LINEAS
 
@@ -43,8 +46,6 @@ int yywrap(){
 
 %union{
     char* cadena;
-    int entero;
-    float real;
 }
 
 
@@ -168,10 +169,10 @@ variasVariables:          inicializacion
                         | variasVariables inicializacion
 ;
 
-inicializacion:           IDENTIFICADOR ',' inicializacion
-		                    | IDENTIFICADOR '=' expresion ',' inicializacion
-		                    | IDENTIFICADOR '=' expresion
-		                    | IDENTIFICADOR
+inicializacion:           IDENTIFICADOR ',' inicializacion                         {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
+		                    | IDENTIFICADOR '=' expresion ',' inicializacion          {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
+		                    | IDENTIFICADOR '=' expresion                             {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
+                        | IDENTIFICADOR                                            {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
 ;
 
 espAlmacenamiento:        TYPEDEF
@@ -181,21 +182,21 @@ espAlmacenamiento:        TYPEDEF
                         | EXTERN
 ;
 
-declaraciones:            tipoDeDato variasVariables
-                        | SIGNED tipoDeDato variasVariables                     {printf("Signed ");}
-                        | SIGNED variasVariables                                {printf("Signed ");}
-                        | UNSIGNED tipoDeDato variasVariables                   {printf("Unsigned ");}
-                        | UNSIGNED variasVariables                              {printf("Unsigned ");}
+declaraciones:            tipoDeDato variasVariables                            {strcpy(tipo,$<cadena>1);}
+                        | SIGNED tipoDeDato variasVariables
+                        | SIGNED variasVariables                                {strcpy(tipo,$<cadena>1);}
+                        | UNSIGNED tipoDeDato variasVariables
+                        | UNSIGNED variasVariables                              {strcpy(tipo,$<cadena>1);}
                         | espStructUnion
                         | espEnum
 ;
 
-tipoDeDato:               CHAR                                                  {printf("Char ");}
-	                      | DOUBLE                                                {printf("Double ");}
-	                      | FLOAT                                                 {printf("Float ");}
-	                      | INT                                                   {printf("Int ");}
-	                      | LONG                                                  {printf("Long ");}
-	                      | SHORT                                                 {printf("Short ");}
+tipoDeDato:               CHAR                                                  
+	                      | DOUBLE                                                
+	                      | FLOAT                                                 
+	                      | INT                                                   
+	                      | LONG                                                  
+	                      | SHORT                                                 
 ;
 
 calificadorTipo:          CONST                                                 {printf("Const ");}

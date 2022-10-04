@@ -8,6 +8,7 @@
 %{
 
 #include "parser.tab.h"
+#include <string.h>
 
 %}
 
@@ -67,17 +68,17 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 " "
 
 
-int                                     {return INT;}
-double                                  {return DOUBLE;}
-float                                   {return FLOAT;}
-char                                    {return CHAR;}
-long                                    {return LONG;}
-short                                   {return SHORT;}
-unsigned                                {return UNSIGNED;}
-signed                                  {return SIGNED;}
-const                                   {return CONST;}
-static                                  {return STATIC;}
-struct                                  {return STRUCT;}
+int                                     {yylval.cadena = strdup(yytext);return INT;}
+double                                  {yylval.cadena = strdup(yytext);return DOUBLE;}
+float                                   {yylval.cadena = strdup(yytext);return FLOAT;}
+char                                    {yylval.cadena = strdup(yytext);return CHAR;}
+long                                    {yylval.cadena = strdup(yytext);return LONG;}
+short                                   {yylval.cadena = strdup(yytext);return SHORT;}
+unsigned                                {yylval.cadena = strdup(yytext);return UNSIGNED;}
+signed                                  {yylval.cadena = strdup(yytext);return SIGNED;}
+const                                   {yylval.cadena = strdup(yytext);return CONST;}
+static                                  {yylval.cadena = strdup(yytext);return STATIC;}
+struct                                  {yylval.cadena = strdup(yytext);return STRUCT;}
 
 
 else                                    {return ELSE;}
@@ -110,7 +111,7 @@ volatile                                {return VOLATILE;}
 {CONSTANTE_HEXADECIMAL}                 {return CONSTANTE_HEXADECIMAL;}
 {CONSTANTE_REAL}                        {return CONSTANTE_REAL;}
 {CONSTANTE_CARACTER}                    {return CONSTANTE_CARACTER;}
-{IDENTIFICADOR}                         {yylval.cadena=yytext; return IDENTIFICADOR;}
+{IDENTIFICADOR}                         {yylval.cadena = strdup(yytext); return IDENTIFICADOR;}
 {LITERAL_CADENA}                        {return LITERAL_CADENA;}
 {COMENTARIO_UNA_LINEA}                  {return COMENTARIO_UNA_LINEA;}
 {COMENTARIO_VARIAS_LINEAS}              {return COMENTARIO_VARIAS_LINEAS;}

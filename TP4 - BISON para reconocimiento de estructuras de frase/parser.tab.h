@@ -103,16 +103,14 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 44 "parser.y"
+#line 47 "parser.y"
 
     char* cadena;
-    int entero;
-    float real;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 116 "parser.tab.h"
+#line 114 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

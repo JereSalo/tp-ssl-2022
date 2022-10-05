@@ -988,7 +988,7 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 66 "lexico.l"
-{yylval.entero = yylineno;return NRO_LINEA;}
+
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
@@ -1003,57 +1003,57 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 71 "lexico.l"
-{yylval.cadena = strdup(yytext);return INT;}
+{yylval.cadena = strdup(yytext); return INT;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 72 "lexico.l"
-{yylval.cadena = strdup(yytext);return DOUBLE;}
+{yylval.cadena = strdup(yytext); return DOUBLE;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 73 "lexico.l"
-{yylval.cadena = strdup(yytext);return FLOAT;}
+{yylval.cadena = strdup(yytext); return FLOAT;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 74 "lexico.l"
-{yylval.cadena = strdup(yytext);return CHAR;}
+{yylval.cadena = strdup(yytext); return CHAR;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 75 "lexico.l"
-{yylval.cadena = strdup(yytext);return LONG;}
+{yylval.cadena = strdup(yytext); return LONG;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 76 "lexico.l"
-{yylval.cadena = strdup(yytext);return SHORT;}
+{yylval.cadena = strdup(yytext); return SHORT;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 77 "lexico.l"
-{yylval.cadena = strdup(yytext);return UNSIGNED;}
+{yylval.cadena = strdup(yytext); return UNSIGNED;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 78 "lexico.l"
-{yylval.cadena = strdup(yytext);return SIGNED;}
+{yylval.cadena = strdup(yytext); return SIGNED;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 79 "lexico.l"
-{yylval.cadena = strdup(yytext);return CONST;}
+{yylval.cadena = strdup(yytext); return CONST;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 80 "lexico.l"
-{yylval.cadena = strdup(yytext);return STATIC;}
+{yylval.cadena = strdup(yytext); return STATIC;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 81 "lexico.l"
-{yylval.cadena = strdup(yytext);return STRUCT;}
+{yylval.cadena = strdup(yytext); return STRUCT;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
@@ -1123,7 +1123,7 @@ YY_RULE_SETUP
 case 62:
 YY_RULE_SETUP
 #line 99 "lexico.l"
-{return ENUM;}
+{yylval.cadena = strdup(yytext); return ENUM;}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
@@ -1148,7 +1148,7 @@ YY_RULE_SETUP
 case 67:
 YY_RULE_SETUP
 #line 104 "lexico.l"
-{return UNION;}
+{yylval.cadena = strdup(yytext); return UNION;}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
@@ -1158,7 +1158,7 @@ YY_RULE_SETUP
 case 69:
 YY_RULE_SETUP
 #line 106 "lexico.l"
-{return VOLATILE;}
+{yylval.cadena = strdup(yytext);return VOLATILE;}
 	YY_BREAK
 case 70:
 YY_RULE_SETUP

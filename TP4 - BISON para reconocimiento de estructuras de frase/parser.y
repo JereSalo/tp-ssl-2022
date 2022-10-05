@@ -9,6 +9,8 @@
 
 FILE* yyin;
 detalleSentencia *ListaSentencias = NULL;
+detalleDeclaraciones *ListaDeclaraciones = NULL;
+
 int nroLineaAnterior=1;
 
 int yylex();
@@ -67,7 +69,7 @@ line:                     sentencia
                         | funciones                                             {printf("[FUNCION]\n");}
                         | noC
                         | nroLinea
-                        | error '\n'                                            { yyerrok;                  }
+                        | error ';'                                             {yyerrok;}
 ;
 
 nroLinea: NRO_LINEA  {nroLineaAnterior=$<entero>1};
@@ -85,8 +87,8 @@ prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'
                         | tipoDeDato IDENTIFICADOR '(' ')'
 ;
 
-parametrosPrototipo:      tipoDeDato                                            {printf("[DECLARACION]\n");}
-                        | tipoDeDato ',' parametrosPrototipo                    {printf("[DECLARACION]\n");}
+parametrosPrototipo:      tipoDeDato
+                        | tipoDeDato ',' parametrosPrototipo
 ;
 
 funciones:                VOID IDENTIFICADOR '(' ')' sentencia
@@ -95,8 +97,8 @@ funciones:                VOID IDENTIFICADOR '(' ')' sentencia
                         | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentencia      
 ;
 
-parametrosFuncion:        tipoDeDato IDENTIFICADOR                              {printf("[DECLARACION]\n");}
-                        | tipoDeDato IDENTIFICADOR ',' parametrosFuncion        {printf("[DECLARACION]\n");}
+parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, tipo);}
+                        | tipoDeDato IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, tipo);} parametrosFuncion
 ;
 
 
@@ -123,16 +125,16 @@ listaSentencias:          line
 ;
 
 sentSeleccion:            IF '(' expresion ')' sentencia sentElse                        
-                        | SWITCH '(' expresion ')' sentencia                    {printf("Switch ");}
+                        | SWITCH '(' expresion ')' sentencia                    //{printf("Switch ");}
 ;
 
 sentElse:                 /* vacio */  {printf("If sin Else ");}                                         
-                        | ELSE sentencia                                        {printf("If con Else ");}
+                        | ELSE sentencia                                        //{printf("If con Else ");}
 ;
 
-sentIteracion:            WHILE '(' expresion ')' sentencia                     {printf("While ");}
-                        | DO line WHILE '(' expresion ')' ';'                   {printf("DoWhile ");}
-                        | FOR '(' cuerpoFor ')' sentencia                       {printf("For ");}
+sentIteracion:            WHILE '(' expresion ')' sentencia                     //{printf("While ");}
+                        | DO line WHILE '(' expresion ')' ';'                   //{printf("DoWhile ");}
+                        | FOR '(' cuerpoFor ')' sentencia                       //{printf("For ");}
 ;
 
 cuerpoFor:                declaracionFor ';' expresion ';' expresion
@@ -144,7 +146,7 @@ cuerpoFor:                declaracionFor ';' expresion ';' expresion
                         | ';' ';'
 ;
 
-declaracionFor:           tipoDeDato variasVariables                            {printf("[DECLARACION]\n");}
+declaracionFor:           tipoDeDato variasVariables
                         | variasVariables
 ;
 
@@ -161,18 +163,16 @@ sentSalto:                BREAK ';'
 ;
 
 /*=========================================DECLARACIONES===============================================*/
-/* conflictos: 9 desplazamiento/reducción */
+/* conflictos: 1 desplazamiento/reducción */
 
-declaracion:              espDeclaracion variasVariables
-                        | espDeclaracion
+declaracion:              espDeclaracion
 ;
 
-espDeclaracion:           espAlmacenamiento tipoDeDato IDENTIFICADOR ';'
-                        | espAlmacenamiento calificadorTipo tipoDeDato IDENTIFICADOR ';'
+espDeclaracion:           espAlmacenamiento tipoDeDato IDENTIFICADOR ';' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>3, tipo);}
+                        | espAlmacenamiento calificadorTipo tipoDeDato IDENTIFICADOR ';' {strcat($<cadena>2, " "); strcat($<cadena>2, tipo); strcpy(tipo, $<cadena>2); ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>4, tipo);}
                         | espAlmacenamiento espStructUnion IDENTIFICADOR ';'
                         | espAlmacenamiento espEnum IDENTIFICADOR ';'
-                        | calificadorTipo declaraciones ';'
-                        | calificadorTipo ';'
+                        | calificadorTipo declaraciones ';' {strcat($<cadena>1, " "); strcat($<cadena>1, tipo); strcpy(tipo, $<cadena>1);}
                         | declaraciones ';'
 ;
 
@@ -180,10 +180,10 @@ variasVariables:          inicializacion
                         | variasVariables inicializacion
 ;
 
-inicializacion:           IDENTIFICADOR ',' {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);} inicializacion
-		                    | IDENTIFICADOR '=' expresion ',' {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);} inicializacion
-		                    | IDENTIFICADOR '=' expresion {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
-                        | IDENTIFICADOR {printf("Se declara el identificador %s de tipo %s \n", $<cadena>1, tipo);}
+inicializacion:           IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);} inicializacion
+		                    | IDENTIFICADOR '=' expresion ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);} inicializacion
+		                    | IDENTIFICADOR '=' expresion {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);}
+                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);}
 ;
 
 espAlmacenamiento:        TYPEDEF
@@ -194,30 +194,30 @@ espAlmacenamiento:        TYPEDEF
 ;
 
 declaraciones:            tipoDeDato variasVariables
-                        | SIGNED tipoDeDato variasVariables
-                        | SIGNED variasVariables
-                        | UNSIGNED tipoDeDato variasVariables
-                        | UNSIGNED variasVariables
+                        | SIGNED tipoDeDato variasVariables                     {strcat($<cadena>1, " "); strcat($<cadena>1, tipo); strcpy(tipo, $<cadena>1);}
+                        | SIGNED variasVariables                                {strcpy(tipo, $<cadena>1);}
+                        | UNSIGNED tipoDeDato variasVariables                   {strcat($<cadena>1, " "); strcat($<cadena>1, tipo); strcpy(tipo, $<cadena>1);}
+                        | UNSIGNED variasVariables                              {strcpy(tipo, $<cadena>1);}
                         | espStructUnion
                         | espEnum
 ;
 
-tipoDeDato:               CHAR                                                  {strcpy(tipo,$<cadena>1);}
-	                      | DOUBLE                                                {strcpy(tipo,$<cadena>1);}
-	                      | FLOAT                                                 {strcpy(tipo,$<cadena>1);}
-	                      | INT                                                   {strcpy(tipo,$<cadena>1);}
-	                      | LONG                                                  {strcpy(tipo,$<cadena>1);}
-	                      | SHORT                                                 {strcpy(tipo,$<cadena>1);}
+tipoDeDato:               CHAR                                                  {strcpy(tipo, $<cadena>1);}
+	                      | DOUBLE                                                {strcpy(tipo, $<cadena>1);}
+	                      | FLOAT                                                 {strcpy(tipo, $<cadena>1);}
+	                      | INT                                                   {strcpy(tipo, $<cadena>1);}
+	                      | LONG                                                  {strcpy(tipo, $<cadena>1);}
+	                      | SHORT                                                 {strcpy(tipo, $<cadena>1);}
 ;
 
-calificadorTipo:          CONST                                                 {printf("Const ");}
-                        | VOLATILE                                              {printf("Volatile ");}
+calificadorTipo:          CONST                                                 {strcpy(tipo, $<cadena>1);}
+                        | VOLATILE                                              {strcpy(tipo, $<cadena>1);}
 ;
 
-espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {printf("Struct ");}
-                        | STRUCT '{' declaracionesStruct '}'                    {printf("Struct ");}
-                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {printf("Union ");}
-                        | UNION '{' declaracionesStruct '}'                     {printf("Union ");}
+espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, $<cadena>1);}
+                        | STRUCT '{' declaracionesStruct '}'
+                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, $<cadena>1);}
+                        | UNION '{' declaracionesStruct '}'
 ;
 
 declaracionesStruct:      tipoDeDato variasVariablesStruct ';'
@@ -228,15 +228,15 @@ variasVariablesStruct:    inicializacionStruct
                         | variasVariablesStruct inicializacionStruct
 ;
 
-inicializacionStruct:     IDENTIFICADOR ',' inicializacionStruct
-		                    | IDENTIFICADOR
+inicializacionStruct:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);} inicializacionStruct
+		                    | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);}
 ;
 
-espEnum:                  ENUM IDENTIFICADOR '{' listaIdentificadores '}'       {printf("Enum ");}
+espEnum:                  ENUM IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, $<cadena>1);} '{' listaIdentificadores '}'       
 ;
 
-listaIdentificadores:     IDENTIFICADOR ',' listaIdentificadores
-                        | IDENTIFICADOR
+listaIdentificadores:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, "int");} listaIdentificadores
+                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, "int");}
 ;
 
 /*=============================================EXPRESIONES=============================================*/
@@ -356,14 +356,9 @@ int main (){
   fclose(yyin);
 
   recorrerListaSentencias(ListaSentencias);
+  recorrerListaDeclaracionesVariables(ListaDeclaraciones);
 
   getch();
-  
-
-
 
 return 0;
 }
-
-
-/* Notas: Terminar declaraciones y ver conflicto en sentElse */

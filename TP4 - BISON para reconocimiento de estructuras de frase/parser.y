@@ -12,6 +12,7 @@ detalleSentencia *ListaSentencias = NULL;
 detalleDeclaraciones *ListaDeclaraciones = NULL;
 
 int nroLineaAnterior=1;
+char tipo[20];
 
 int yylex();
 int yyerror (char *s);
@@ -19,8 +20,6 @@ int yyerror (char *s);
 int yywrap(){
   return(1);
 }
-
-char tipo [20];
 
 %}
 
@@ -47,32 +46,29 @@ char tipo [20];
 %token IDENTIFICADOR
 %token LITERAL_CADENA
 %token COMENTARIO_UNA_LINEA COMENTARIO_VARIAS_LINEAS
-%token NRO_LINEA
 
 %start input
 
 %union{
+  struct {
     char* cadena;
     int entero;
+  } myStruct;
 }
 
 
 %%
 
 input:                    /* vacio */
-                        | input line                                            {printf("====================\n");}
+                        | input line                                            {nroLineaAnterior = $<myStruct.entero>2}
 ;
 
 line:                     sentencia
-                        | declaracion                                           {printf("[DECLARACION]\n");}
+                        | declaracion
                         | prototipo ';'                                         {printf("[PROTOTIPO]\n");}
                         | funciones                                             {printf("[FUNCION]\n");}
                         | noC
-                        | nroLinea
-                        | error ';'                                             {yyerrok;}
-;
-
-nroLinea: NRO_LINEA  {nroLineaAnterior=$<entero>1};
+                        | error ';'                                             {printf("\tEn linea %d", $<myStruct.entero>1);}
 ;
 
 noC:                      COMENTARIO_UNA_LINEA                                  {printf("[COMENTARIO]\n");}
@@ -97,27 +93,27 @@ funciones:                VOID IDENTIFICADOR '(' ')' sentencia
                         | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentencia      
 ;
 
-parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, tipo);}
-                        | tipoDeDato IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, tipo);} parametrosFuncion
+parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);}
+                        | tipoDeDato IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);} parametrosFuncion
 ;
 
 
 /*==============================================SENTENCIAS===========================================*/
 /* conflictos: 1 desplazamiento/reducción (En sentElse)*/
 
-sentencia:                sentExpresion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia de Expresion",nroLineaAnterior);}
-                        | sentCompuesta                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Compuesta",nroLineaAnterior);}
-                        | sentSeleccion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Seleccion",nroLineaAnterior);}
-                        | sentIteracion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Iteracion",nroLineaAnterior);}
-                        | sentEtiquetado                                        {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Etiquetado",nroLineaAnterior);}
-                        | sentSalto                                             {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Salto",nroLineaAnterior);}
+sentencia:                sentExpresion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia de Expresion",$<myStruct.entero>1);}
+                        | sentCompuesta                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Inicio sentencia Compuesta",$<myStruct.entero>1);}
+                        | sentSeleccion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Seleccion",$<myStruct.entero>1);}
+                        | sentIteracion                                         {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Iteracion",$<myStruct.entero>1);}
+                        | sentEtiquetado                                        {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Etiquetado",$<myStruct.entero>1);}
+                        | sentSalto                                             {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Salto",$<myStruct.entero>1);}
 ;
 
 sentExpresion:            expresion ';'
 ;
 
-sentCompuesta:            '{' listaSentencias '}'
-                        | '{' '}'
+sentCompuesta:            '{' listaSentencias '}'                               {ListaSentencias=agregarListaSentencias(ListaSentencias,"Fin sentencia Compuesta",$<myStruct.entero>3);}
+                        | '{' '}'                                               {ListaSentencias=agregarListaSentencias(ListaSentencias,"Fin sentencia Compuesta",$<myStruct.entero>2);}
 ;
 
 listaSentencias:          line
@@ -128,7 +124,7 @@ sentSeleccion:            IF '(' expresion ')' sentencia sentElse
                         | SWITCH '(' expresion ')' sentencia                    //{printf("Switch ");}
 ;
 
-sentElse:                 /* vacio */  {printf("If sin Else ");}                                         
+sentElse:                 /* vacio */                                           //{printf("If sin Else ");}                                         
                         | ELSE sentencia                                        //{printf("If con Else ");}
 ;
 
@@ -163,16 +159,16 @@ sentSalto:                BREAK ';'
 ;
 
 /*=========================================DECLARACIONES===============================================*/
-/* conflictos: 1 desplazamiento/reducción */
+/* No hay conflictos */
 
-declaracion:              espDeclaracion
-;
-
-espDeclaracion:           espAlmacenamiento tipoDeDato IDENTIFICADOR ';' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>3, tipo);}
-                        | espAlmacenamiento calificadorTipo tipoDeDato IDENTIFICADOR ';' {strcat($<cadena>2, " "); strcat($<cadena>2, tipo); strcpy(tipo, $<cadena>2); ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>4, tipo);}
+declaracion:              espAlmacenamiento tipoDeDato IDENTIFICADOR ';'
+                        | espAlmacenamiento calificadorTipo tipoDeDato IDENTIFICADOR ';'
                         | espAlmacenamiento espStructUnion IDENTIFICADOR ';'
                         | espAlmacenamiento espEnum IDENTIFICADOR ';'
-                        | calificadorTipo declaraciones ';' {strcat($<cadena>1, " "); strcat($<cadena>1, tipo); strcpy(tipo, $<cadena>1);}
+                        | espDeclaracion
+;
+
+espDeclaracion:           calificadorTipo tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);} variasVariables ';'
                         | declaraciones ';'
 ;
 
@@ -180,10 +176,10 @@ variasVariables:          inicializacion
                         | variasVariables inicializacion
 ;
 
-inicializacion:           IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);} inicializacion
-		                    | IDENTIFICADOR '=' expresion ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);} inicializacion
-		                    | IDENTIFICADOR '=' expresion {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);}
-                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);}
+inicializacion:           IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);} inicializacion
+		                    | IDENTIFICADOR '=' expresion ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);} inicializacion
+		                    | IDENTIFICADOR '=' expresion {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);}
+                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);}
 ;
 
 espAlmacenamiento:        TYPEDEF
@@ -194,29 +190,29 @@ espAlmacenamiento:        TYPEDEF
 ;
 
 declaraciones:            tipoDeDato variasVariables
-                        | SIGNED tipoDeDato variasVariables                     {strcat($<cadena>1, " "); strcat($<cadena>1, tipo); strcpy(tipo, $<cadena>1);}
-                        | SIGNED variasVariables                                {strcpy(tipo, $<cadena>1);}
-                        | UNSIGNED tipoDeDato variasVariables                   {strcat($<cadena>1, " "); strcat($<cadena>1, tipo); strcpy(tipo, $<cadena>1);}
-                        | UNSIGNED variasVariables                              {strcpy(tipo, $<cadena>1);}
+                        | SIGNED tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);} variasVariables
+                        | SIGNED {strcpy(tipo, $<myStruct.cadena>1);} variasVariables
+                        | UNSIGNED tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);} variasVariables
+                        | UNSIGNED {strcpy(tipo, $<myStruct.cadena>1);} variasVariables
                         | espStructUnion
                         | espEnum
 ;
 
-tipoDeDato:               CHAR                                                  {strcpy(tipo, $<cadena>1);}
-	                      | DOUBLE                                                {strcpy(tipo, $<cadena>1);}
-	                      | FLOAT                                                 {strcpy(tipo, $<cadena>1);}
-	                      | INT                                                   {strcpy(tipo, $<cadena>1);}
-	                      | LONG                                                  {strcpy(tipo, $<cadena>1);}
-	                      | SHORT                                                 {strcpy(tipo, $<cadena>1);}
+tipoDeDato:               CHAR                                                  {strcpy(tipo, $<myStruct.cadena>1);}
+	                      | DOUBLE                                                {strcpy(tipo, $<myStruct.cadena>1);}
+	                      | FLOAT                                                 {strcpy(tipo, $<myStruct.cadena>1);}
+	                      | INT                                                   {strcpy(tipo, $<myStruct.cadena>1);}
+	                      | LONG                                                  {strcpy(tipo, $<myStruct.cadena>1);}
+	                      | SHORT                                                 {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
-calificadorTipo:          CONST                                                 {strcpy(tipo, $<cadena>1);}
-                        | VOLATILE                                              {strcpy(tipo, $<cadena>1);}
+calificadorTipo:          CONST                                                 {strcpy(tipo, $<myStruct.cadena>1);}
+                        | VOLATILE                                              {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
-espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, $<cadena>1);}
+espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, $<myStruct.cadena>1);}
                         | STRUCT '{' declaracionesStruct '}'
-                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, $<cadena>1);}
+                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, $<myStruct.cadena>1);}
                         | UNION '{' declaracionesStruct '}'
 ;
 
@@ -228,21 +224,21 @@ variasVariablesStruct:    inicializacionStruct
                         | variasVariablesStruct inicializacionStruct
 ;
 
-inicializacionStruct:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);} inicializacionStruct
-		                    | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, tipo);}
+inicializacionStruct:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);} inicializacionStruct
+		                    | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);}
 ;
 
-espEnum:                  ENUM IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>2, $<cadena>1);} '{' listaIdentificadores '}'       
+espEnum:                  ENUM IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, $<myStruct.cadena>1);} '{' listaIdentificadores '}'       
 ;
 
-listaIdentificadores:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, "int");} listaIdentificadores
-                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<cadena>1, "int");}
+listaIdentificadores:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, "int");} listaIdentificadores
+                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, "int");}
 ;
 
 /*=============================================EXPRESIONES=============================================*/
 /* No hay conflictos */
 
-expresion:                expAsignacion                                         //{printf("[SENT. EXPRESION]");}
+expresion:                expAsignacion
 ;
 
 expAsignacion:            expCondicional

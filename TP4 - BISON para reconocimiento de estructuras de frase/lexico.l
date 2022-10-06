@@ -27,8 +27,8 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 /* =====================    R E G L A S    ===================== */
 
 %%
-"{"                                     {return '{';}
-"}"                                     {return '}';}
+"{"                                     {yylval.myStruct.entero = yylineno; return '{';}
+"}"                                     {yylval.myStruct.entero = yylineno; return '}';}
 "="                                     {return '=';}
 "<"                                     {return '<';}
 ">"                                     {return '>';}
@@ -37,8 +37,8 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 "*"                                     {return '*';}
 "/"                                     {return '/';}
 "%"                                     {return '%';}
-";"                                     {return ';';}
-":"                                     {return ':';}
+";"                                     {yylval.myStruct.entero = yylineno; return ';';}
+":"                                     {yylval.myStruct.entero = yylineno; return ':';}
 "("                                     {return '(';}
 ")"                                     {return ')';}
 ","                                     {return ',';}
@@ -63,59 +63,59 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 "||"                                    {return OR;}
 "->"                                    {return FLECHA;}
 
-"\n"
+"\n"                                    {yylval.myStruct.entero = yylineno;}
 "\t"
 " "
 
 
-int                                     {yylval.cadena = strdup(yytext); return INT;}
-double                                  {yylval.cadena = strdup(yytext); return DOUBLE;}
-float                                   {yylval.cadena = strdup(yytext); return FLOAT;}
-char                                    {yylval.cadena = strdup(yytext); return CHAR;}
-long                                    {yylval.cadena = strdup(yytext); return LONG;}
-short                                   {yylval.cadena = strdup(yytext); return SHORT;}
-unsigned                                {yylval.cadena = strdup(yytext); return UNSIGNED;}
-signed                                  {yylval.cadena = strdup(yytext); return SIGNED;}
-const                                   {yylval.cadena = strdup(yytext); return CONST;}
-static                                  {yylval.cadena = strdup(yytext); return STATIC;}
-struct                                  {yylval.cadena = strdup(yytext); return STRUCT;}
+int                                     {yylval.myStruct.cadena = strdup(yytext); return INT;}
+double                                  {yylval.myStruct.cadena = strdup(yytext); return DOUBLE;}
+float                                   {yylval.myStruct.cadena = strdup(yytext); return FLOAT;}
+char                                    {yylval.myStruct.cadena = strdup(yytext); return CHAR;}
+long                                    {yylval.myStruct.cadena = strdup(yytext); return LONG;}
+short                                   {yylval.myStruct.cadena = strdup(yytext); return SHORT;}
+unsigned                                {yylval.myStruct.cadena = strdup(yytext); return UNSIGNED;}
+signed                                  {yylval.myStruct.cadena = strdup(yytext); return SIGNED;}
+const                                   {yylval.myStruct.cadena = strdup(yytext); return CONST;}
+static                                  {yylval.myStruct.cadena = strdup(yytext); return STATIC;}
+struct                                  {yylval.myStruct.cadena = strdup(yytext); return STRUCT;}
+void                                    {yylval.myStruct.cadena = strdup(yytext); return VOID;}
+volatile                                {yylval.myStruct.cadena = strdup(yytext);return VOLATILE;}
+union                                   {yylval.myStruct.cadena = strdup(yytext); return UNION;}
+enum                                    {yylval.myStruct.cadena = strdup(yytext); return ENUM;}
 
 
-else                                    {return ELSE;}
-switch                                  {return SWITCH;}
-break                                   {return BREAK;}
-for                                     {return FOR;}
-void                                    {return VOID;}
-continue                                {return CONTINUE;}
-while                                   {return WHILE;}
-if                                      {return IF;}
-do                                      {return DO;}
-case                                    {return CASE;}
-return                                  {return RETURN;}
-default                                 {return DEFAULT;}
+else                                    {yylval.myStruct.entero = yylineno; return ELSE;}
+switch                                  {yylval.myStruct.entero = yylineno; return SWITCH;}
+break                                   {yylval.myStruct.entero = yylineno; return BREAK;}
+for                                     {yylval.myStruct.entero = yylineno; return FOR;}
+continue                                {yylval.myStruct.entero = yylineno; return CONTINUE;}
+while                                   {yylval.myStruct.entero = yylineno; return WHILE;}
+if                                      {yylval.myStruct.entero = yylineno; return IF;}
+do                                      {yylval.myStruct.entero = yylineno; return DO;}
+case                                    {yylval.myStruct.entero = yylineno; return CASE;}
+return                                  {yylval.myStruct.entero = yylineno; return RETURN;}
+default                                 {yylval.myStruct.entero = yylineno; return DEFAULT;}
+goto                                    {yylval.myStruct.entero = yylineno; return GOTO;}
 
 
 auto                                    {return AUTO;}
-enum                                    {yylval.cadena = strdup(yytext); return ENUM;}
 register                                {return REGISTER;}
 typedef                                 {return TYPEDEF;}
 extern                                  {return EXTERN;}
 sizeof                                  {return SIZEOF;}
-union                                   {yylval.cadena = strdup(yytext); return UNION;}
-goto                                    {return GOTO;}
-volatile                                {yylval.cadena = strdup(yytext);return VOLATILE;}
 
 
-{CONSTANTE_OCTAL}                       {return CONSTANTE_OCTAL;}
-{CONSTANTE_DECIMAL}                     {return CONSTANTE_DECIMAL;}
-{CONSTANTE_HEXADECIMAL}                 {return CONSTANTE_HEXADECIMAL;}
-{CONSTANTE_REAL}                        {return CONSTANTE_REAL;}
-{CONSTANTE_CARACTER}                    {return CONSTANTE_CARACTER;}
-{IDENTIFICADOR}                         {yylval.cadena = strdup(yytext); return IDENTIFICADOR;}
-{LITERAL_CADENA}                        {return LITERAL_CADENA;}
+{CONSTANTE_OCTAL}                       {yylval.myStruct.entero = yylineno; return CONSTANTE_OCTAL;}
+{CONSTANTE_DECIMAL}                     {yylval.myStruct.entero = yylineno; return CONSTANTE_DECIMAL;}
+{CONSTANTE_HEXADECIMAL}                 {yylval.myStruct.entero = yylineno; return CONSTANTE_HEXADECIMAL;}
+{CONSTANTE_REAL}                        {yylval.myStruct.entero = yylineno; return CONSTANTE_REAL;}
+{CONSTANTE_CARACTER}                    {yylval.myStruct.entero = yylineno; return CONSTANTE_CARACTER;}
+{IDENTIFICADOR}                         {yylval.myStruct.entero = yylineno; yylval.myStruct.cadena = strdup(yytext); return IDENTIFICADOR;}
+{LITERAL_CADENA}                        {yylval.myStruct.entero = yylineno; return LITERAL_CADENA;}
 {COMENTARIO_UNA_LINEA}                  {return COMENTARIO_UNA_LINEA;}
 {COMENTARIO_VARIAS_LINEAS}              {return COMENTARIO_VARIAS_LINEAS;}
 
-.                                       {printf("Error lexico");}
+.                                       {printf("Lexical error");}
 
 %%

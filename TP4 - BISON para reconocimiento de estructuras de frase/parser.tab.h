@@ -92,8 +92,7 @@
      IDENTIFICADOR = 308,
      LITERAL_CADENA = 309,
      COMENTARIO_UNA_LINEA = 310,
-     COMENTARIO_VARIAS_LINEAS = 311,
-     NRO_LINEA = 312
+     COMENTARIO_VARIAS_LINEAS = 311
    };
 #endif
 
@@ -104,15 +103,17 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 54 "parser.y"
+#line 52 "parser.y"
 
+  struct {
     char* cadena;
     int entero;
+  } myStruct;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 116 "parser.tab.h"
+#line 117 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

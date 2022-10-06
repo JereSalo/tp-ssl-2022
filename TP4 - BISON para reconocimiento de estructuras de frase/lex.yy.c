@@ -310,24 +310,24 @@ static yyconst short int yy_acclist[322] =
        80,   79,   80,    2,   79,   80,   23,   76,   32,   26,
        30,   24,   31,   25,   34,   73,   77,   27,   73,   70,
        71,   28,   22,   29,   75,   75,   75,   75,   75,   75,
-       75,   57,   75,   75,   75,   75,   75,   75,   75,   56,
+       75,   60,   75,   75,   75,   75,   75,   75,   75,   59,
        75,   75,   75,   75,   75,   75,   75,   75,   75,   75,
        75,   75,   33,   74,   77,   73,   72,   75,   75,   75,
-       75,   75,   75,   75,   75,   75,   75,   75,   52,   75,
+       75,   75,   75,   75,   75,   75,   75,   75,   56,   75,
 
        75,   38,   75,   75,   75,   75,   75,   75,   75,   75,
        75,   75,   75,   75,   75,   75,   75,   75,   73,   78,
-       73,   61,   75,   75,   58,   75,   41,   75,   75,   75,
-       75,   75,   49,   75,   62,   75,   75,   75,   68,   75,
+       73,   65,   75,   75,   61,   75,   41,   75,   75,   75,
+       75,   75,   53,   75,   52,   75,   75,   75,   64,   75,
        42,   75,   75,   75,   75,   75,   75,   75,   75,   75,
-       75,   75,   75,   53,   75,   75,   75,   51,   75,   46,
+       75,   75,   75,   49,   75,   75,   75,   55,   75,   46,
        75,   75,   75,   75,   75,   40,   75,   75,   75,   43,
-       75,   75,   75,   75,   75,   75,   75,   67,   75,   75,
-       75,   55,   75,   75,   75,   39,   75,   65,   75,   75,
-       59,   75,   45,   75,   66,   75,   47,   75,   48,   75,
+       75,   75,   75,   75,   75,   75,   75,   51,   75,   75,
+       75,   58,   75,   75,   75,   39,   75,   68,   75,   75,
+       62,   75,   45,   75,   69,   75,   47,   75,   48,   75,
 
-       50,   75,   75,   75,   75,   75,   60,   75,   75,   64,
-       75,   75,   75,   54,   75,   63,   75,   44,   75,   69,
+       54,   75,   75,   75,   75,   75,   63,   75,   75,   67,
+       75,   75,   75,   57,   75,   66,   75,   44,   75,   50,
        75
     } ;
 
@@ -818,12 +818,12 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 30 "lexico.l"
-{return '{';}
+{yylval.myStruct.entero = yylineno; return '{';}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 31 "lexico.l"
-{return '}';}
+{yylval.myStruct.entero = yylineno; return '}';}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -868,12 +868,12 @@ YY_RULE_SETUP
 case 11:
 YY_RULE_SETUP
 #line 40 "lexico.l"
-{return ';';}
+{yylval.myStruct.entero = yylineno; return ';';}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 41 "lexico.l"
-{return ':';}
+{yylval.myStruct.entero = yylineno; return ':';}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
@@ -988,7 +988,7 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 66 "lexico.l"
-
+{yylval.myStruct.entero = yylineno;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
@@ -1003,197 +1003,197 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 71 "lexico.l"
-{yylval.cadena = strdup(yytext); return INT;}
+{yylval.myStruct.cadena = strdup(yytext); return INT;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 72 "lexico.l"
-{yylval.cadena = strdup(yytext); return DOUBLE;}
+{yylval.myStruct.cadena = strdup(yytext); return DOUBLE;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 73 "lexico.l"
-{yylval.cadena = strdup(yytext); return FLOAT;}
+{yylval.myStruct.cadena = strdup(yytext); return FLOAT;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 74 "lexico.l"
-{yylval.cadena = strdup(yytext); return CHAR;}
+{yylval.myStruct.cadena = strdup(yytext); return CHAR;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 75 "lexico.l"
-{yylval.cadena = strdup(yytext); return LONG;}
+{yylval.myStruct.cadena = strdup(yytext); return LONG;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 76 "lexico.l"
-{yylval.cadena = strdup(yytext); return SHORT;}
+{yylval.myStruct.cadena = strdup(yytext); return SHORT;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 77 "lexico.l"
-{yylval.cadena = strdup(yytext); return UNSIGNED;}
+{yylval.myStruct.cadena = strdup(yytext); return UNSIGNED;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 78 "lexico.l"
-{yylval.cadena = strdup(yytext); return SIGNED;}
+{yylval.myStruct.cadena = strdup(yytext); return SIGNED;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 79 "lexico.l"
-{yylval.cadena = strdup(yytext); return CONST;}
+{yylval.myStruct.cadena = strdup(yytext); return CONST;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 80 "lexico.l"
-{yylval.cadena = strdup(yytext); return STATIC;}
+{yylval.myStruct.cadena = strdup(yytext); return STATIC;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 81 "lexico.l"
-{yylval.cadena = strdup(yytext); return STRUCT;}
+{yylval.myStruct.cadena = strdup(yytext); return STRUCT;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 84 "lexico.l"
-{return ELSE;}
+#line 82 "lexico.l"
+{yylval.myStruct.cadena = strdup(yytext); return VOID;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 85 "lexico.l"
-{return SWITCH;}
+#line 83 "lexico.l"
+{yylval.myStruct.cadena = strdup(yytext);return VOLATILE;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 86 "lexico.l"
-{return BREAK;}
+#line 84 "lexico.l"
+{yylval.myStruct.cadena = strdup(yytext); return UNION;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 87 "lexico.l"
-{return FOR;}
+#line 85 "lexico.l"
+{yylval.myStruct.cadena = strdup(yytext); return ENUM;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
 #line 88 "lexico.l"
-{return VOID;}
+{yylval.myStruct.entero = yylineno; return ELSE;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
 #line 89 "lexico.l"
-{return CONTINUE;}
+{yylval.myStruct.entero = yylineno; return SWITCH;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
 #line 90 "lexico.l"
-{return WHILE;}
+{yylval.myStruct.entero = yylineno; return BREAK;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
 #line 91 "lexico.l"
-{return IF;}
+{yylval.myStruct.entero = yylineno; return FOR;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
 #line 92 "lexico.l"
-{return DO;}
+{yylval.myStruct.entero = yylineno; return CONTINUE;}
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
 #line 93 "lexico.l"
-{return CASE;}
+{yylval.myStruct.entero = yylineno; return WHILE;}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
 #line 94 "lexico.l"
-{return RETURN;}
+{yylval.myStruct.entero = yylineno; return IF;}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
 #line 95 "lexico.l"
-{return DEFAULT;}
+{yylval.myStruct.entero = yylineno; return DO;}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 98 "lexico.l"
-{return AUTO;}
+#line 96 "lexico.l"
+{yylval.myStruct.entero = yylineno; return CASE;}
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 99 "lexico.l"
-{yylval.cadena = strdup(yytext); return ENUM;}
+#line 97 "lexico.l"
+{yylval.myStruct.entero = yylineno; return RETURN;}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 100 "lexico.l"
-{return REGISTER;}
+#line 98 "lexico.l"
+{yylval.myStruct.entero = yylineno; return DEFAULT;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 101 "lexico.l"
-{return TYPEDEF;}
+#line 99 "lexico.l"
+{yylval.myStruct.entero = yylineno; return GOTO;}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
 #line 102 "lexico.l"
-{return EXTERN;}
+{return AUTO;}
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
 #line 103 "lexico.l"
-{return SIZEOF;}
+{return REGISTER;}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 104 "lexico.l"
-{yylval.cadena = strdup(yytext); return UNION;}
+{return TYPEDEF;}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
 #line 105 "lexico.l"
-{return GOTO;}
+{return EXTERN;}
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
 #line 106 "lexico.l"
-{yylval.cadena = strdup(yytext);return VOLATILE;}
+{return SIZEOF;}
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
 #line 109 "lexico.l"
-{return CONSTANTE_OCTAL;}
+{yylval.myStruct.entero = yylineno; return CONSTANTE_OCTAL;}
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
 #line 110 "lexico.l"
-{return CONSTANTE_DECIMAL;}
+{yylval.myStruct.entero = yylineno; return CONSTANTE_DECIMAL;}
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
 #line 111 "lexico.l"
-{return CONSTANTE_HEXADECIMAL;}
+{yylval.myStruct.entero = yylineno; return CONSTANTE_HEXADECIMAL;}
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
 #line 112 "lexico.l"
-{return CONSTANTE_REAL;}
+{yylval.myStruct.entero = yylineno; return CONSTANTE_REAL;}
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
 #line 113 "lexico.l"
-{return CONSTANTE_CARACTER;}
+{yylval.myStruct.entero = yylineno; return CONSTANTE_CARACTER;}
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
 #line 114 "lexico.l"
-{yylval.cadena = strdup(yytext); return IDENTIFICADOR;}
+{yylval.myStruct.entero = yylineno; yylval.myStruct.cadena = strdup(yytext); return IDENTIFICADOR;}
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 115 "lexico.l"
-{return LITERAL_CADENA;}
+{yylval.myStruct.entero = yylineno; return LITERAL_CADENA;}
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
@@ -1208,7 +1208,7 @@ YY_RULE_SETUP
 case 79:
 YY_RULE_SETUP
 #line 119 "lexico.l"
-{printf("Error lexico");}
+{printf("Lexical error");}
 	YY_BREAK
 case 80:
 YY_RULE_SETUP

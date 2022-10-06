@@ -19,6 +19,12 @@ typedef struct nodoDeclaracionesEncontradas{ // Crear el Nodo para las declaraci
 
 /* =====================    F U N C I O N E S   ===================== */
 
+void juntarTipos (char tipo[20], char agregado[20]) {
+    strcat(agregado, " ");
+    strcat(agregado, tipo);
+    strcpy(tipo, agregado);
+}
+
 /* = S E N T E N C I A S = */
 detalleSentencia* agregarListaSentencias (detalleSentencia *ListaSentencias, char *tipoSentencia, int nroLinea){
     
@@ -29,19 +35,18 @@ detalleSentencia* agregarListaSentencias (detalleSentencia *ListaSentencias, cha
     nuevoNodo -> nroLinea = nroLinea;
     nuevoNodo -> sig = NULL;
 
-    /*Meto el nodo en la ListaSentencias*/
-
+    /* Meto el nodo en la ListaSentencias de forma ordenada por nroLinea */
     detalleSentencia *aux = ListaSentencias;
 
-    if (aux == NULL){
+    /* Para insertar el elemento en la primera posicion de la lista */
+    if (aux == NULL || nroLinea < aux -> nroLinea){
+        nuevoNodo -> sig = ListaSentencias;
         ListaSentencias = nuevoNodo;
     } else {
-        
-        /*Agrega las sentencias reconocidas al final de la lista*/
-        while (aux -> sig != NULL) aux = aux -> sig;
-
-        if (aux -> sig == NULL) aux -> sig = nuevoNodo;
-
+        // Para agregar el elementos en la posicion adecuada
+        while (aux -> sig != NULL && aux -> sig -> nroLinea < nroLinea) aux = aux -> sig;
+        if (aux -> sig != NULL) nuevoNodo -> sig = aux -> sig;
+        aux -> sig = nuevoNodo;
     }
 
     return ListaSentencias;

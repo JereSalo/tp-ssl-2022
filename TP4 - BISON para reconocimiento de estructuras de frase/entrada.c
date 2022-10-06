@@ -95,4 +95,4 @@ typedef struct typeStruct{
     int m;
 } myStruct;
 
-volatile char n;
+volatile unsigned char n;

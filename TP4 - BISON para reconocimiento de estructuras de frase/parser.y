@@ -169,6 +169,7 @@ declaracion:              espAlmacenamiento tipoDeDato IDENTIFICADOR ';'
 ;
 
 espDeclaracion:           calificadorTipo tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);} variasVariables ';'
+                        | calificadorTipo espSigno {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, $<myStruct.cadena>2); strcpy(tipo, $<myStruct.cadena>1);} variasVariables ';'
                         | declaraciones ';'
 ;
 
@@ -190,12 +191,15 @@ espAlmacenamiento:        TYPEDEF
 ;
 
 declaraciones:            tipoDeDato variasVariables
-                        | SIGNED tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);} variasVariables
-                        | SIGNED {strcpy(tipo, $<myStruct.cadena>1);} variasVariables
-                        | UNSIGNED tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);} variasVariables
-                        | UNSIGNED {strcpy(tipo, $<myStruct.cadena>1);} variasVariables
+                        | espSigno variasVariables
                         | espStructUnion
                         | espEnum
+;
+
+espSigno:                 SIGNED tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);}
+                        | SIGNED {strcpy(tipo, $<myStruct.cadena>1);}
+                        | UNSIGNED tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);}
+                        | UNSIGNED {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
 tipoDeDato:               CHAR                                                  {strcpy(tipo, $<myStruct.cadena>1);}

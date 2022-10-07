@@ -1802,39 +1802,11 @@ yyreduce:
     {nroLineaAnterior = (yyvsp[(2) - (2)].myStruct.entero);}
     break;
 
-  case 6:
-
-/* Line 1455 of yacc.c  */
-#line 69 "parser.y"
-    {printf("[PROTOTIPO]\n");;}
-    break;
-
-  case 7:
-
-/* Line 1455 of yacc.c  */
-#line 70 "parser.y"
-    {printf("[FUNCION]\n");;}
-    break;
-
   case 9:
 
 /* Line 1455 of yacc.c  */
 #line 72 "parser.y"
-    {printf("\tEn linea %d", (yyvsp[(1) - (2)].myStruct.entero));;}
-    break;
-
-  case 10:
-
-/* Line 1455 of yacc.c  */
-#line 75 "parser.y"
-    {printf("[COMENTARIO]\n");;}
-    break;
-
-  case 11:
-
-/* Line 1455 of yacc.c  */
-#line 76 "parser.y"
-    {printf("[COMENTARIO]\n");;}
+    {printf("\tError sintactico en linea %d\n", (yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 12:
@@ -2141,7 +2113,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2145 "parser.tab.c"
+#line 2117 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2358,7 +2330,7 @@ yyreturn:
 
 /* Llamada por yyparse ante un error */
 int yyerror (char *s) {
-  printf ("%s\n", s);
+  //printf ("%s\n", s);
 }
 
 

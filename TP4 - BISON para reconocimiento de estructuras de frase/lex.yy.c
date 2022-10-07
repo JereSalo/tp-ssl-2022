@@ -1208,7 +1208,7 @@ YY_RULE_SETUP
 case 79:
 YY_RULE_SETUP
 #line 119 "lexico.l"
-{printf("Lexical error");}
+{printf("Error lexico (%s) en linea %i\n", yytext, yylineno);}
 	YY_BREAK
 case 80:
 YY_RULE_SETUP

@@ -57,6 +57,8 @@ switch (num){
          printf("???");
  }
 
+$
+
  signed int a;
  unsigned int a;
  signed a;
@@ -75,8 +77,12 @@ switch (num){
      Chau
  };
 
+
+hola jere mere neere 32 & 5
+
+
  int Jelou() {
-     printf("watafak");
+    printf("watafak");
  }
  int a;
  int b = 4,c;
@@ -96,7 +102,8 @@ switch (num){
      int m;
  } myStruct;
 
- volatile unsigned char n;
+volatile unsigned char n;
+
 
 
 void suma (int,int);

@@ -66,14 +66,14 @@ input:                    /* vacio */
 
 line:                     sentencia
                         | declaracion
-                        | prototipo ';'                                         {printf("[PROTOTIPO]\n");}
-                        | funciones                                             {printf("[FUNCION]\n");}
+                        | prototipo ';'                                         //{printf("[PROTOTIPO]\n");}
+                        | funciones                                             //{printf("[FUNCION]\n");}
                         | noC
-                        | error ';'                                             {printf("\tEn linea %d", $<myStruct.entero>1);}
+                        | error ';'                                             {printf("Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;
 
-noC:                      COMENTARIO_UNA_LINEA                                  {printf("[COMENTARIO]\n");}
-                        | COMENTARIO_VARIAS_LINEAS                              {printf("[COMENTARIO]\n");}
+noC:                      COMENTARIO_UNA_LINEA                                  //{printf("[COMENTARIO]\n");}
+                        | COMENTARIO_VARIAS_LINEAS                              //{printf("[COMENTARIO]\n");}
 ;
 
 /*============================== FUNCIONES ==================================*/
@@ -340,7 +340,7 @@ constanteEntera:          CONSTANTE_OCTAL
 
 /* Llamada por yyparse ante un error */
 int yyerror (char *s) {
-  printf ("%s\n", s);
+  //printf ("%s\n", s);
 }
 
 

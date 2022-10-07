@@ -67,10 +67,12 @@ int recorrerListaSentencias(detalleSentencia *ListaSentencias){
 
         return 1;
     }else{
+        printf("\nSENTENCIAS\n\n");
 
         while(ListaSentencias!=NULL){
-
-            printf("\n Se encontro una %s en la linea %i",ListaSentencias->tipoSentencia,ListaSentencias->nroLinea);
+            
+            printf("Linea %i: %s\n",ListaSentencias->nroLinea,ListaSentencias->tipoSentencia);
+//            printf("\n Se encontro una %s en la linea %i",ListaSentencias->tipoSentencia,ListaSentencias->nroLinea);
 
             ListaSentencias = ListaSentencias->sig;
 
@@ -112,13 +114,14 @@ detalleDeclaraciones* agregarListaDeclaracionDeVariable (detalleDeclaraciones *L
 
 
 int recorrerListaDeclaracionesVariables(detalleDeclaraciones *ListaDeclaraciones){
-    printf("declaracion");
+    printf("\nDECLARACIONES\n\n");
+
     if(ListaDeclaraciones==NULL){
 
         printf("\n No se han declarado variables.");
         return 1;
     }else{
-        printf("\n Se declarararon los siguientes identificadores: \n");
+        printf("Se declarararon los siguientes identificadores: \n");
 
         while (ListaDeclaraciones!=NULL){
             printf("--Nombre: %s -> Tipo: %s \n", ListaDeclaraciones->identificador,ListaDeclaraciones->tipoDato);

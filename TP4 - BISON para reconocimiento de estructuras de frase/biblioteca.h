@@ -116,13 +116,12 @@ int recorrerListaDeclaracionesVariables(detalleDeclaraciones *ListaDeclaraciones
     if(ListaDeclaraciones==NULL){
 
         printf("\n No se han declarado variables.");
-        printf("HHOLAAAAAAA");
         return 1;
     }else{
         printf("\n Se declarararon los siguientes identificadores: \n");
 
         while (ListaDeclaraciones!=NULL){
-            printf("  -> %s de tipo %s \n", ListaDeclaraciones->identificador,ListaDeclaraciones->tipoDato);
+            printf("--Nombre: %s -> Tipo: %s \n", ListaDeclaraciones->identificador,ListaDeclaraciones->tipoDato);
             ListaDeclaraciones = ListaDeclaraciones->sig;
         }
     }
@@ -134,7 +133,6 @@ int recorrerListaDeclaracionesVariables(detalleDeclaraciones *ListaDeclaraciones
 /* = F U N C I O N E S    D E C L A R A D A S = */
 
 detalleFunciones* agregarListaFunciones (detalleFunciones *ListaFunciones, char *identificador, char *tipoDato){
-    printf("HOLA");
     /*Armo nuevo nodo con los datos ingresados por parámetro*/
     detalleFunciones *nuevoNodo = NULL;
     nuevoNodo = (detalleFunciones *) malloc(sizeof (detalleFunciones)); //Reservo memoria para el nodo
@@ -145,16 +143,13 @@ detalleFunciones* agregarListaFunciones (detalleFunciones *ListaFunciones, char 
     /*Meto el nodo en la ListaFunciones*/
 
     detalleFunciones *aux = ListaFunciones;
-    printf("hola");
     if (aux == NULL){
         ListaFunciones = nuevoNodo;
     } else {
-          printf("chau");
         /*Agrega las funciones reconocidas al final de la lista*/
         while (aux -> sig != NULL) aux = aux -> sig;
 
         if (aux -> sig == NULL) aux -> sig = nuevoNodo;
-      printf("segundoIf");
     }
     
     return ListaFunciones;
@@ -171,7 +166,7 @@ int recorrerListaFunciones(detalleFunciones *ListaFunciones){
         printf("\n Se declarararon las siguientes funciones: \n");
 
         while (ListaFunciones!=NULL){
-            printf("  -> %s de tipo %s \n", ListaFunciones->identificador,ListaFunciones->tipoDato);
+            printf("--Nombre: %s -> Tipo: %s \n", ListaFunciones->identificador,ListaFunciones->tipoDato);
             ListaFunciones = ListaFunciones->sig;
         }
     }

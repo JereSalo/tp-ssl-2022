@@ -356,7 +356,8 @@ int main (){
 
   fclose(yyin);
 
-
+  recorrerListaSentencias(ListaSentencias);
+  recorrerListaDeclaracionesVariables(ListaDeclaraciones);
   recorrerListaFunciones(ListaFunciones);
 
   getch();

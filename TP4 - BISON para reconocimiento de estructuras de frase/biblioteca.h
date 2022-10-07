@@ -16,6 +16,12 @@ typedef struct nodoDeclaracionesEncontradas{ // Crear el Nodo para las declaraci
     struct nodoDeclaracionesEncontradas * sig;
 }detalleDeclaraciones;
 
+typedef struct nodoFuncionesEncontradas{ // Crear el Nodo para las funciones encontradas
+    char * identificador;
+    char * tipoDato;
+    struct nodoFuncionesEncontradas * sig;
+}detalleFunciones;
+
 
 /* =====================    F U N C I O N E S   ===================== */
 
@@ -106,11 +112,11 @@ detalleDeclaraciones* agregarListaDeclaracionDeVariable (detalleDeclaraciones *L
 
 
 int recorrerListaDeclaracionesVariables(detalleDeclaraciones *ListaDeclaraciones){
-
+    printf("declaracion");
     if(ListaDeclaraciones==NULL){
 
         printf("\n No se han declarado variables.");
-
+        printf("HHOLAAAAAAA");
         return 1;
     }else{
         printf("\n Se declarararon los siguientes identificadores: \n");
@@ -118,6 +124,55 @@ int recorrerListaDeclaracionesVariables(detalleDeclaraciones *ListaDeclaraciones
         while (ListaDeclaraciones!=NULL){
             printf("  -> %s de tipo %s \n", ListaDeclaraciones->identificador,ListaDeclaraciones->tipoDato);
             ListaDeclaraciones = ListaDeclaraciones->sig;
+        }
+    }
+
+    return 0;
+
+}
+
+/* = F U N C I O N E S    D E C L A R A D A S = */
+
+detalleFunciones* agregarListaFunciones (detalleFunciones *ListaFunciones, char *identificador, char *tipoDato){
+    printf("HOLA");
+    /*Armo nuevo nodo con los datos ingresados por parámetro*/
+    detalleFunciones *nuevoNodo = NULL;
+    nuevoNodo = (detalleFunciones *) malloc(sizeof (detalleFunciones)); //Reservo memoria para el nodo
+    nuevoNodo -> tipoDato = strdup (tipoDato);
+    nuevoNodo -> identificador = strdup (identificador);
+    nuevoNodo -> sig = NULL;
+
+    /*Meto el nodo en la ListaFunciones*/
+
+    detalleFunciones *aux = ListaFunciones;
+    printf("hola");
+    if (aux == NULL){
+        ListaFunciones = nuevoNodo;
+    } else {
+          printf("chau");
+        /*Agrega las funciones reconocidas al final de la lista*/
+        while (aux -> sig != NULL) aux = aux -> sig;
+
+        if (aux -> sig == NULL) aux -> sig = nuevoNodo;
+      printf("segundoIf");
+    }
+    
+    return ListaFunciones;
+}
+
+int recorrerListaFunciones(detalleFunciones *ListaFunciones){
+
+    if(ListaFunciones==NULL){
+
+        printf("\n No se han declarado funciones.");
+
+        return 1;
+    }else{
+        printf("\n Se declarararon las siguientes funciones: \n");
+
+        while (ListaFunciones!=NULL){
+            printf("  -> %s de tipo %s \n", ListaFunciones->identificador,ListaFunciones->tipoDato);
+            ListaFunciones = ListaFunciones->sig;
         }
     }
 

@@ -10,6 +10,7 @@
 FILE* yyin;
 detalleSentencia *ListaSentencias = NULL;
 detalleDeclaraciones *ListaDeclaraciones = NULL;
+detalleFunciones *ListaFunciones = NULL;
 
 int nroLineaAnterior=1;
 char tipo[20];
@@ -77,20 +78,20 @@ noC:                      COMENTARIO_UNA_LINEA                                  
 
 /*============================== FUNCIONES ==================================*/
 
-prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'
-                        | VOID IDENTIFICADOR '(' ')'
-                        | tipoDeDato IDENTIFICADOR '(' parametrosPrototipo ')'
-                        | tipoDeDato IDENTIFICADOR '(' ')'
+prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void");}
+                        | VOID IDENTIFICADOR '(' ')'                            {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void");}
+                        | tipoDeDato IDENTIFICADOR '(' parametrosPrototipo ')'  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1);}
+                        | tipoDeDato IDENTIFICADOR '(' ')'                      {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1);}
 ;
 
 parametrosPrototipo:      tipoDeDato
                         | tipoDeDato ',' parametrosPrototipo
 ;
 
-funciones:                VOID IDENTIFICADOR '(' ')' sentencia
-                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentencia
-                        | tipoDeDato IDENTIFICADOR '(' ')' sentencia
-                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentencia      
+funciones:                VOID IDENTIFICADOR '(' ')' sentencia                          {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void");}
+                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentencia        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void");}
+                        | tipoDeDato IDENTIFICADOR '(' ')' sentencia                    {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1);}
+                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentencia  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1);}    
 ;
 
 parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);}
@@ -355,8 +356,8 @@ int main (){
 
   fclose(yyin);
 
-  recorrerListaSentencias(ListaSentencias);
-  recorrerListaDeclaracionesVariables(ListaDeclaraciones);
+
+  recorrerListaFunciones(ListaFunciones);
 
   getch();
 

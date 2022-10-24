@@ -33,13 +33,7 @@ typedef struct nodoFuncionesEncontradas{ // Crear el Nodo para las funciones enc
 
 /* =====================    F U N C I O N E S   ===================== */
 
-void juntarTipos (char tipo[20], char agregado[20]) {
-    strcat(agregado, " ");
-    strcat(agregado, tipo);
-    strcpy(tipo, agregado);
-}
-
-/* = S E N T E N C I A S = */
+/* =====================    S E N T E N C I A S ===================== */
 detalleSentencia* agregarListaSentencias (detalleSentencia *ListaSentencias, char *tipoSentencia, int nroLinea){
     
     /*Armo nuevo nodo con los datos ingresados por parámetro*/
@@ -91,22 +85,28 @@ int recorrerListaSentencias(detalleSentencia *ListaSentencias){
     return 0;
 }
 
-/* = V A R I A B L E S    D E C L A R A D A S = */
+/* =====================    V A R I A B L E S    D E C L A R A D A S ===================== */
 
-detalleDeclaraciones* agregarListaDeclaracionDeVariable (detalleDeclaraciones *ListaDeclaraciones, char * identificador, char * tipoDato){
+detalleDeclaraciones* agregarListaDeclaracionDeVariable (detalleDeclaraciones * ListaDeclaraciones, char * identificador, char * tipoDato){
+    // Comprobamos si hay doble declaración
+    detalleDeclaraciones * aux = NULL;
+    for(aux = ListaDeclaraciones; aux != NULL; aux = aux -> sig) {
+        // strcmp: Para comprobar si dos Strings son iguales
+        if (strcmp (aux -> identificador, identificador) == 0) {
+            printf("Error semantico: Doble declaracion del identificador %s\n", identificador);
+            return ListaDeclaraciones; // Hubo coincidencia
+        }
+    }
     
-    /*Armo nuevo nodo con los datos ingresados por parámetro*/
+    /* Armo nuevo nodo con los datos ingresados por parámetro*/
     detalleDeclaraciones *nuevoNodo = NULL;
     nuevoNodo = (detalleDeclaraciones *) malloc(sizeof (detalleDeclaraciones)); //Reservo memoria para el nodo
     nuevoNodo -> tipoDato = strdup (tipoDato);
     nuevoNodo -> identificador = strdup (identificador);
     nuevoNodo -> sig = NULL;
 
-    /*Meto el nodo en la ListaDeclaraciones*/
-
-    /*  chequear si ya estaba en la lista para lo de doble declaracion  */
-
-    detalleDeclaraciones *aux = ListaDeclaraciones;
+    /* Meto el nodo en la ListaDeclaraciones */
+    aux = ListaDeclaraciones;
 
     if (aux == NULL){
         ListaDeclaraciones = nuevoNodo;
@@ -143,7 +143,7 @@ int recorrerListaDeclaracionesVariables(detalleDeclaraciones *ListaDeclaraciones
 
 }
 
-/* = P A R A M E T R O S = */
+/* =====================    P A R A M E T R O S ===================== */
 detalleParametros* agregarListaParametros (detalleParametros *ListaParametros, char *identificador, char *tipoDato){
     /*Armo nuevo nodo con los datos ingresados por parámetro*/
     detalleParametros *nuevoNodo = NULL;
@@ -185,7 +185,7 @@ int recorrerListaParametros(detalleParametros *ListaParametros){
 
     return 0;
 }
-/* = F U N C I O N E S    D E C L A R A D A S = */
+/* =====================    F U N C I O N E S    D E C L A R A D A S    ===================== */
 
 detalleFunciones* agregarListaFunciones (detalleFunciones *ListaFunciones, char *identificador, char *tipoDato, detalleParametros *ListaParametros){
     /*Armo nuevo nodo con los datos ingresados por parámetro*/

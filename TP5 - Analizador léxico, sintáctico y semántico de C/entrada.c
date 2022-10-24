@@ -107,4 +107,4 @@ volatile unsigned char n;
 
 
 void suma (int,int);
-int resta (int,int);
+int resta (int,int);;

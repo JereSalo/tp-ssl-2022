@@ -90,10 +90,10 @@ parametrosPrototipo:      tipoDeDato
                         | tipoDeDato ',' parametrosPrototipo
 ;
 
-funciones:                VOID IDENTIFICADOR '(' ')' sentencia                          {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
-                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentencia        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
-                        | tipoDeDato IDENTIFICADOR '(' ')' sentencia                    {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}
-                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentencia  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}    
+funciones:                VOID IDENTIFICADOR '(' ')' sentCompuesta                          {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
+                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
+                        | tipoDeDato IDENTIFICADOR '(' ')' sentCompuesta                    {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}
+                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}    
 ;
 
 parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);}
@@ -113,6 +113,7 @@ sentencia:                sentExpresion                                         
 ;
 
 sentExpresion:            expresion ';'
+                        | ';'                                                   {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Vacia",$<myStruct.entero>1);}
 ;
 
 sentCompuesta:            '{' listaSentencias '}'                               {ListaSentencias=agregarListaSentencias(ListaSentencias,"Fin sentencia Compuesta",$<myStruct.entero>3);}

@@ -1891,14 +1891,14 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 101 "parser.y"
-    {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, (yyvsp[(2) - (2)].myStruct.cadena), tipo);ListaParametros=agregarListaParametros(ListaParametros, (yyvsp[(2) - (2)].myStruct.cadena), tipo);contadorParametros++;;}
+    {ListaParametros=agregarListaParametros(ListaParametros, (yyvsp[(2) - (2)].myStruct.cadena), tipo);contadorParametros++;;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
 #line 102 "parser.y"
-    {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, (yyvsp[(2) - (3)].myStruct.cadena), tipo);ListaParametros=agregarListaParametros(ListaParametros, (yyvsp[(2) - (3)].myStruct.cadena), tipo);contadorParametros++;;}
+    {ListaParametros=agregarListaParametros(ListaParametros, (yyvsp[(2) - (3)].myStruct.cadena), tipo);contadorParametros++;;}
     break;
 
   case 26:

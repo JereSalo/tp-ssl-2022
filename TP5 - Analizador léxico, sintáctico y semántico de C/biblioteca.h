@@ -206,9 +206,7 @@ int verificarParametros(detalleTipoParametros * ListaTipoParametros, detallePara
     for(aux = ListaTipoParametros, aux2 = ListaParametros; aux != NULL && aux2 != NULL; aux = aux -> sig, aux2 = aux2 -> sig) {
         if (strcmp (aux -> tipoDato, aux2 -> tipoDato) == 0 ) {
             continue;
-        }
-        else
-        {
+        } else {
             return 1;
         }
     }
@@ -220,19 +218,28 @@ int verificarFuncionConPrototipo (detalleFunciones *nuevoNodoFuncion, detallePro
     for(aux = ListaPrototipos; aux != NULL; aux = aux -> sig) {
         // strcmp: Para comprobar si dos identificadores son iguales
         if (strcmp (aux -> identificador, nuevoNodoFuncion -> identificador) == 0 ) {
-            // Para comprobar si los tipos son iguales
+            // Para comprobar si los tipos de funciones son iguales
             if (strcmp (aux -> tipoDato, nuevoNodoFuncion -> tipoDato) == 0) {
-                // Para comprobar que los parametros sean los mismos
+                // Para comprobar que tengan la misma cantidad de parametros
                 if(aux -> cantidadDeParametros == nuevoNodoFuncion -> cantidadDeParametros){
-                    verificarParametros(aux -> parametros, nuevoNodoFuncion -> parametros);
+                    // Para comprobar que tengan los mismos tipos de parametros
+                    if (verificarParametros(aux -> parametros, nuevoNodoFuncion -> parametros) == 0){
+                        return 0;
+                    } else {
+                        printf("Error semantico: Validacion de tipos en parametros en funcion %s\n", aux -> identificador);
+                        return 1;
+                    }
+                } else {
+                    printf("Error semantico: Cantidad de parametros incorrecta en funcion %s\n", aux -> identificador);
+                    return 1;
                 }
-                else return 1;
+            } else {
+                printf("Error semantico: Validacion de tipos en funcion %s\n", aux -> identificador);
+                return 1;
             }
-            else return 1;
         }
-        else return 1;
-    return 0;
     }
+    return 0;
 }
 
 
@@ -250,25 +257,18 @@ detalleFunciones* agregarListaFunciones (detalleFunciones *ListaFunciones, char 
     /*Meto el nodo en la ListaFunciones*/
     if(verificarFuncionConPrototipo (nuevoNodo, ListaPrototipos)==0){
         detalleFunciones *aux = ListaFunciones;
-    if (aux == NULL){
-        ListaFunciones = nuevoNodo;
-    } else {
-        /*Agrega las funciones reconocidas al final de la lista*/
-        while (aux -> sig != NULL) aux = aux -> sig;
+        if (aux == NULL){
+            ListaFunciones = nuevoNodo;
+        } else {
+            /*Agrega las funciones reconocidas al final de la lista*/
+            while (aux -> sig != NULL) aux = aux -> sig;
 
-        if (aux -> sig == NULL) aux -> sig = nuevoNodo;
-    }
-    
+            if (aux -> sig == NULL) aux -> sig = nuevoNodo;
+        }
     return ListaFunciones;
-    }
-    else
-    {
-        printf("Error semantico: Validacion de tipos en %s", identificador);
+    } else {
         return ListaFunciones;
     }
-    
-
-    
 }
 
 int recorrerListaFunciones(detalleFunciones *ListaFunciones){

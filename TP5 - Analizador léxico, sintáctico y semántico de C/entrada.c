@@ -1,7 +1,29 @@
+int correcto (int, int);
+void incorrectoTipo (int);
+int incorrectoCantParametros (int);
+int incorrectoParametros1 (char, int);
+int incorrectoParametros2 (int, char);
 
-int resta (float, int);
+int correcto (int a, int b){
+    return 0;
+}
 
-int resta (int a, int b){
-    a= 2;
-    return a;
+int incorrectoTipo (int a){
+    return 0;
+}
+
+int incorrectoCantParametros (int a, int b){
+    return 0;
+}
+
+int incorrectoParametros1 (int a, int b){
+    return 0;
+}
+
+int incorrectoParametros2 (int a, int b){
+    return 0;
+}
+
+int sinPrototipo (int a, int b){
+    return 0;
 }

@@ -98,8 +98,8 @@ funciones:                VOID IDENTIFICADOR '(' ')' sentCompuesta              
                         | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros, contadorParametros, ListaPrototipos);}    
 ;
 
-parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;}
-                        | tipoDeDato IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;} parametrosFuncion
+parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;}
+                        | tipoDeDato IDENTIFICADOR ',' {ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;} parametrosFuncion
 ;
 
 

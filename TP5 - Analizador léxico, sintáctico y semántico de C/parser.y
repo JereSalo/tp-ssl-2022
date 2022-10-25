@@ -12,9 +12,11 @@ detalleParametros *ListaParametros = NULL;
 detalleSentencia *ListaSentencias = NULL;
 detalleDeclaraciones *ListaDeclaraciones = NULL;
 detalleFunciones *ListaFunciones = NULL;
+detallePrototipos* ListaPrototipos = NULL;
+detalleTipoParametros * ListaTipoParametros = NULL;
 
-
-int nroLineaAnterior=1;
+int contadorParametros = 0;
+int nroLineaAnterior = 1;
 char tipo[20];
 
 int yylex();
@@ -68,8 +70,8 @@ input:                    /* vacio */
 
 line:                     sentencia
                         | declaracion
-                        | prototipo ';'                                         //{printf("[PROTOTIPO]\n");}
-                        | funciones                                             //{printf("[FUNCION]\n");}
+                        | prototipo ';'                                         {ListaTipoParametros = NULL;contadorParametros=0;}
+                        | funciones                                             {ListaParametros = NULL;contadorParametros=0;}
                         | noC
                         | error ';'                                             {printf("Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;
@@ -80,24 +82,24 @@ noC:                      COMENTARIO_UNA_LINEA                                  
 
 /*============================== FUNCIONES ==================================*/
 
-prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
-                        | VOID IDENTIFICADOR '(' ')'                            {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
-                        | tipoDeDato IDENTIFICADOR '(' parametrosPrototipo ')'  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}
-                        | tipoDeDato IDENTIFICADOR '(' ')'                      {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}
+prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'        {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,"void", ListaTipoParametros, contadorParametros)}
+                        | VOID IDENTIFICADOR '(' ')'                            {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,"void", ListaTipoParametros, contadorParametros);}
+                        | tipoDeDato IDENTIFICADOR '(' parametrosPrototipo ')'  {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaTipoParametros, contadorParametros);}
+                        | tipoDeDato IDENTIFICADOR '(' ')'                      {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaTipoParametros, contadorParametros);}
 ;
 
-parametrosPrototipo:      tipoDeDato
-                        | tipoDeDato ',' parametrosPrototipo
+parametrosPrototipo:      tipoDeDato {ListaTipoParametros=agregarTipoParametro(ListaTipoParametros, tipo);contadorParametros++;}
+                        | tipoDeDato {ListaTipoParametros=agregarTipoParametro(ListaTipoParametros, tipo);contadorParametros++;}',' parametrosPrototipo
 ;
 
-funciones:                VOID IDENTIFICADOR '(' ')' sentCompuesta                          {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
-                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros);ListaParametros = NULL;}
-                        | tipoDeDato IDENTIFICADOR '(' ')' sentCompuesta                    {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}
-                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros);ListaParametros = NULL;}    
+funciones:                VOID IDENTIFICADOR '(' ')' sentCompuesta                          {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros, contadorParametros, ListaPrototipos);}
+                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros, contadorParametros, ListaPrototipos);}
+                        | tipoDeDato IDENTIFICADOR '(' ')' sentCompuesta                    {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros, contadorParametros, ListaPrototipos);}
+                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros, contadorParametros, ListaPrototipos);}    
 ;
 
-parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);}
-                        | tipoDeDato IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);} parametrosFuncion
+parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;}
+                        | tipoDeDato IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, tipo);ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;} parametrosFuncion
 ;
 
 
@@ -362,6 +364,7 @@ int main (){
   recorrerListaSentencias(ListaSentencias);
   recorrerListaDeclaracionesVariables(ListaDeclaraciones);
   recorrerListaFunciones(ListaFunciones);
+  recorrerListaPrototipos(ListaPrototipos);
   
 
   getch();

@@ -1208,11 +1208,11 @@ YY_RULE_SETUP
 case 79:
 YY_RULE_SETUP
 #line 119 "lexico.l"
-{printf("Error lexico (%s) en linea %i\n", yytext, yylineno);}
+{printf("Error lexico: Caracter no valido %s en linea %d\n", yytext, yylineno);}
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 121 "lexico.l"
+#line 122 "lexico.l"
 ECHO;
 	YY_BREAK
 #line 1219 "lex.yy.c"
@@ -2099,4 +2099,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 121 "lexico.l"
+#line 122 "lexico.l"

@@ -10,10 +10,7 @@
 FILE* yyin;
 detalleParametros *ListaParametros = NULL;
 detalleSentencia *ListaSentencias = NULL;
-detalleDeclaraciones *ListaDeclaraciones = NULL;
-detalleFunciones *ListaFunciones = NULL;
-detallePrototipos* ListaPrototipos = NULL;
-detalleTipoParametros * ListaTipoParametros = NULL;
+detalleTablaDeSimbolos * TablaDeSimbolos = NULL;
 
 int contadorParametros = 0;
 int nroLineaAnterior = 1;
@@ -70,36 +67,36 @@ input:                    /* vacio */
 
 line:                     sentencia
                         | declaracion
-                        | prototipo ';'                                         {ListaTipoParametros = NULL;contadorParametros=0;}
+                        | prototipo ';'                                         {ListaParametros = NULL;contadorParametros=0;}
                         | funciones                                             {ListaParametros = NULL;contadorParametros=0;}
                         | noC
                         | error ';'                                             {printf("Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;
 
-noC:                      COMENTARIO_UNA_LINEA                                  //{printf("[COMENTARIO]\n");}
-                        | COMENTARIO_VARIAS_LINEAS                              //{printf("[COMENTARIO]\n");}
+noC:                      COMENTARIO_UNA_LINEA                                  
+                        | COMENTARIO_VARIAS_LINEAS                              
 ;
 
 /*============================== FUNCIONES ==================================*/
 
-prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'        {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,"void", ListaTipoParametros, contadorParametros)}
-                        | VOID IDENTIFICADOR '(' ')'                            {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,"void", ListaTipoParametros, contadorParametros);}
-                        | tipoDeDato IDENTIFICADOR '(' parametrosPrototipo ')'  {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaTipoParametros, contadorParametros);}
-                        | tipoDeDato IDENTIFICADOR '(' ')'                      {ListaPrototipos=agregarListaPrototipo(ListaPrototipos,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaTipoParametros, contadorParametros);}
+prototipo:                VOID IDENTIFICADOR '(' parametrosPrototipo ')'        {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, "void", 'F', ListaParametros, contadorParametros);}
+                        | VOID IDENTIFICADOR '(' ')'                            {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, "void", 'F', ListaParametros, contadorParametros);}
+                        | tipoDeDato IDENTIFICADOR '(' parametrosPrototipo ')'  {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'F', ListaParametros, contadorParametros);}
+                        | tipoDeDato IDENTIFICADOR '(' ')'                      {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'F', ListaParametros, contadorParametros);}
 ;
 
-parametrosPrototipo:      tipoDeDato {ListaTipoParametros=agregarTipoParametro(ListaTipoParametros, tipo);contadorParametros++;}
-                        | tipoDeDato {ListaTipoParametros=agregarTipoParametro(ListaTipoParametros, tipo);contadorParametros++;}',' parametrosPrototipo
+parametrosPrototipo:      tipoDeDato {ListaParametros=agregarListaParametros (ListaParametros, NULL, tipo);contadorParametros++;}
+                        | tipoDeDato ',' {ListaParametros=agregarListaParametros (ListaParametros, NULL, tipo);contadorParametros++;} parametrosPrototipo
 ;
 
-funciones:                VOID IDENTIFICADOR '(' ')' sentCompuesta                          {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros, contadorParametros, ListaPrototipos);}
-                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta        {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,"void", ListaParametros, contadorParametros, ListaPrototipos);}
-                        | tipoDeDato IDENTIFICADOR '(' ')' sentCompuesta                    {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros, contadorParametros, ListaPrototipos);}
-                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta  {ListaFunciones=agregarListaFunciones(ListaFunciones,$<myStruct.cadena>2,$<myStruct.cadena>1, ListaParametros, contadorParametros, ListaPrototipos);}    
+funciones:                VOID IDENTIFICADOR '(' ')' sentCompuesta                          {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, "void", 'F', ListaParametros, contadorParametros);}
+                        | VOID IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta        {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, "void", 'F', ListaParametros, contadorParametros);}
+                        | tipoDeDato IDENTIFICADOR '(' ')' sentCompuesta                    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'F', ListaParametros, contadorParametros);}
+                        | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta  {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'F', ListaParametros, contadorParametros);}    
 ;
 
-parametrosFuncion:        tipoDeDato IDENTIFICADOR {ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;}
-                        | tipoDeDato IDENTIFICADOR ',' {ListaParametros=agregarListaParametros(ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;} parametrosFuncion
+parametrosFuncion:        tipoDeDato IDENTIFICADOR {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, tipo, 'V', ListaParametros, 0);ListaParametros=agregarListaParametros (ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;}
+                        | tipoDeDato IDENTIFICADOR ',' {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, tipo, 'V', ListaParametros, 0);ListaParametros=agregarListaParametros (ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;} parametrosFuncion
 ;
 
 
@@ -127,16 +124,16 @@ listaSentencias:          line
 ;
 
 sentSeleccion:            IF '(' expresion ')' sentencia sentElse                        
-                        | SWITCH '(' expresion ')' sentencia                    //{printf("Switch ");}
+                        | SWITCH '(' expresion ')' sentencia                    
 ;
 
-sentElse:                 /* vacio */                                           //{printf("If sin Else ");}                                         
-                        | ELSE sentencia                                        //{printf("If con Else ");}
+sentElse:                 /* vacio */                                                                                   
+                        | ELSE sentencia                                        
 ;
 
-sentIteracion:            WHILE '(' expresion ')' sentencia                     //{printf("While ");}
-                        | DO line WHILE '(' expresion ')' ';'                   //{printf("DoWhile ");}
-                        | FOR '(' cuerpoFor ')' sentencia                       //{printf("For ");}
+sentIteracion:            WHILE '(' expresion ')' sentencia                     
+                        | DO line WHILE '(' expresion ')' ';'                   
+                        | FOR '(' cuerpoFor ')' sentencia                       
 ;
 
 cuerpoFor:                declaracionFor ';' expresion ';' expresion
@@ -183,10 +180,10 @@ variasVariables:          inicializacion
                         | variasVariables inicializacion
 ;
 
-inicializacion:           IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);} inicializacion
-		                    | IDENTIFICADOR '=' expresion ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);} inicializacion
-		                    | IDENTIFICADOR '=' expresion {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);}
-                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);}
+inicializacion:           IDENTIFICADOR ',' {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);} inicializacion
+		                    | IDENTIFICADOR '=' expresion ',' {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);} inicializacion
+		                    | IDENTIFICADOR '=' expresion {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);}
+                        | IDENTIFICADOR {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);}
 ;
 
 espAlmacenamiento:        TYPEDEF
@@ -220,9 +217,9 @@ calificadorTipo:          CONST                                                 
                         | VOLATILE                                              {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
-espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, $<myStruct.cadena>1);}
+espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros);}
                         | STRUCT '{' declaracionesStruct '}'
-                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, $<myStruct.cadena>1);}
+                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros);}
                         | UNION '{' declaracionesStruct '}'
 ;
 
@@ -234,15 +231,15 @@ variasVariablesStruct:    inicializacionStruct
                         | variasVariablesStruct inicializacionStruct
 ;
 
-inicializacionStruct:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);} inicializacionStruct
-		                    | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, tipo);}
+inicializacionStruct:     IDENTIFICADOR ',' {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);} inicializacionStruct
+		                    | IDENTIFICADOR {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);}
 ;
 
-espEnum:                  ENUM IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>2, $<myStruct.cadena>1);} '{' listaIdentificadores '}'       
+espEnum:                  ENUM IDENTIFICADOR {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros);} '{' listaIdentificadores '}'       
 ;
 
-listaIdentificadores:     IDENTIFICADOR ',' {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, "int");} listaIdentificadores
-                        | IDENTIFICADOR {ListaDeclaraciones=agregarListaDeclaracionDeVariable(ListaDeclaraciones, $<myStruct.cadena>1, "int");}
+listaIdentificadores:     IDENTIFICADOR ',' {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, "int", 'V', ListaParametros, contadorParametros);} listaIdentificadores
+                        | IDENTIFICADOR {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, "int", 'V', ListaParametros, contadorParametros);}
 ;
 
 /*=============================================EXPRESIONES=============================================*/
@@ -362,11 +359,8 @@ int main (){
   fclose(yyin);
 
   recorrerListaSentencias(ListaSentencias);
-  recorrerListaDeclaracionesVariables(ListaDeclaraciones);
-  recorrerListaFunciones(ListaFunciones);
-  recorrerListaPrototipos(ListaPrototipos);
+  recorrerTablaDeSimbolos(TablaDeSimbolos);
   
-
   getch();
 
 return 0;

@@ -116,6 +116,17 @@ int buscarVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificado
     return 0; // No esta en Tabla
 }
 
+char * buscarTipoDatoVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador){
+    detalleTablaDeSimbolos * aux = NULL;
+
+    for(aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
+        // strcmp: Para comprobar si dos Strings son iguales
+        if (strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
+            return aux -> tipoDato; // Hubo coincidencia
+        }
+    }
+}
+
 
 /* =====================    S E N T E N C I A S     ===================== */
 
@@ -198,6 +209,47 @@ int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos 
     }
 
     return 0;
+}
+
+// control de llamado de funciones
+int verificarParametros(detalleParametros * ListaParametros, detalleParametros * ListaArgumentos) {
+    detalleParametros * aux = NULL;
+    detalleParametros * aux2 = NULL;
+    for(aux = ListaParametros, aux2 = ListaArgumentos; aux != NULL && aux2 != NULL; aux = aux -> sig, aux2 = aux2 -> sig) {
+        if (strcmp (aux -> tipoDato, aux2 -> tipoDato) == 0) {
+            continue;
+        } else {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int verificarExistenciaFuncion (char * identificador, detalleParametros * ListaArgumentos, detalleTablaDeSimbolos * TablaDeSimbolos, int cantidadDeParametros) {
+    detalleTablaDeSimbolos * aux = NULL;
+    for(aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
+        // strcmp: Para comprobar si dos identificadores son iguales
+        if (strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'F') {
+            // Para comprobar que tengan la misma cantidad de parametros
+            if(aux -> cantidadDeParametros == cantidadDeParametros){
+                // Para comprobar que tengan los mismos tipos de parametros
+                if (verificarParametros(aux -> parametros, ListaArgumentos) == 0){
+
+                        return 1;
+                } else {
+                    printf("Error semantico: Validacion de tipos en parametros en llamado a funcion %s\n", aux -> identificador);
+                    return 1;
+                }
+            } else {
+                printf("Error semantico: Cantidad de parametros incorrecta en llamado a funcion %s\n", aux -> identificador);
+                return 1;
+            }
+            
+        }
+        
+    }
+    printf("Error semantico: No existe la funcion %s\n", aux -> identificador);
+    return 1;
 }
 
 

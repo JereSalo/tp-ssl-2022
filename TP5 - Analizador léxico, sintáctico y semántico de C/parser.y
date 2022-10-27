@@ -9,12 +9,14 @@
 
 FILE* yyin;
 detalleParametros * ListaParametros = NULL;
+detalleParametros * ListaArgumentos = NULL;
 detalleSentencia * ListaSentencias = NULL;
 detalleTablaDeSimbolos * TablaDeSimbolos = NULL;
 
 int contadorParametros = 0;
 int nroLineaAnterior = 1;
 char tipo[20];
+char tipoArgumento[20];
 
 int yylex();
 int yyerror (char * s);
@@ -67,9 +69,9 @@ input:                    /* vacio */
 ;
 
 line:                     sentencia
-                        | declaracion
-                        | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0;}
-                        | funciones                                             {ListaParametros = NULL; contadorParametros=0;}
+                        | declaracion                                            {ListaArgumentos = NULL;contadorParametros=0;}
+                        | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;}
+                        | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;}
                         | noC
                         | error ';'                                             {printf(" Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;
@@ -311,27 +313,27 @@ operUnario:               '&'
 
 expSufijo:                expPrimaria
                         | expSufijo '[' expresion ']'
-                        | expSufijo '(' listaArgumentos ')'
-                        | expSufijo '(' ')'
+                        | expSufijo '(' listaArgumentos ')' {verificarExistenciaFuncion($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorParametros);}
+                        | expSufijo '(' ')' 
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
                         | expSufijo MASMAS  {if (!$<myStruct.esNumerico>1) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar un posincremento\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
                         | expSufijo MENOSMENOS  {if (!$<myStruct.esNumerico>1) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una posdecremento\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
 ;
 
-listaArgumentos:          expAsignacion
-                        | expAsignacion ',' listaArgumentos
+listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametros++;}
+                        | expAsignacion ',' {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametros++;} listaArgumentos
 ;
 
-expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1)}
+expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1); /* Bien hasta aca. Revisar -> */ if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1)) strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1)); else printf(" Error semantico: No esta declarada la variable \n");}
                         | constante
                         | LITERAL_CADENA
                         | '(' expresion ')'
 ;
 
-constante:                constanteEntera
-                        | CONSTANTE_CARACTER
-                        | CONSTANTE_REAL
+constante:                constanteEntera {strcpy(tipoArgumento, "int");}
+                        | CONSTANTE_CARACTER {strcpy(tipoArgumento, "char");}
+                        | CONSTANTE_REAL {strcpy(tipoArgumento, "float");}
 ;
 
 constanteEntera:          CONSTANTE_OCTAL

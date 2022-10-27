@@ -29,39 +29,39 @@ COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
 %%
 "{"                                     {yylval.myStruct.entero = yylineno; return '{';}
 "}"                                     {yylval.myStruct.entero = yylineno; return '}';}
-"="                                     {return '=';}
-"<"                                     {return '<';}
-">"                                     {return '>';}
-"+"                                     {return '+';}
-"-"                                     {return '-';}
-"*"                                     {return '*';}
-"/"                                     {return '/';}
-"%"                                     {return '%';}
+"="                                     {yylval.myStruct.entero = yylineno;return '=';}
+"<"                                     {yylval.myStruct.entero = yylineno;return '<';}
+">"                                     {yylval.myStruct.entero = yylineno;return '>';}
+"+"                                     {yylval.myStruct.entero = yylineno;return '+';}
+"-"                                     {yylval.myStruct.entero = yylineno;return '-';}
+"*"                                     {yylval.myStruct.entero = yylineno;return '*';}
+"/"                                     {yylval.myStruct.entero = yylineno;return '/';}
+"%"                                     {yylval.myStruct.entero = yylineno;return '%';}
 ";"                                     {yylval.myStruct.entero = yylineno; return ';';}
 ":"                                     {yylval.myStruct.entero = yylineno; return ':';}
-"("                                     {return '(';}
-")"                                     {return ')';}
-","                                     {return ',';}
-"."                                     {return '.';}
-"?"                                     {return '?';}
-"!"                                     {return '!';}
-"["                                     {return '[';}
-"]"                                     {return ']';}
-"&"                                     {return '&';}
+"("                                     {yylval.myStruct.entero = yylineno;return '(';}
+")"                                     {yylval.myStruct.entero = yylineno;return ')';}
+","                                     {yylval.myStruct.entero = yylineno;return ',';}
+"."                                     {yylval.myStruct.entero = yylineno;return '.';}
+"?"                                     {yylval.myStruct.entero = yylineno;return '?';}
+"!"                                     {yylval.myStruct.entero = yylineno;return '!';}
+"["                                     {yylval.myStruct.entero = yylineno;return '[';}
+"]"                                     {yylval.myStruct.entero = yylineno;return ']';}
+"&"                                     {yylval.myStruct.entero = yylineno;return '&';}
 
-"=="                                    {return IGUALIGUAL;}
-"!="                                    {return DIFERENTE;}
-"+="                                    {return MASIGUAL;}
-"-="                                    {return MENOSIGUAL;}
-"*="                                    {return PORIGUAL;}
-"/="                                    {return DIVISIONGUAL;}
-"<="                                    {return MENORIGUAL;}
-">="                                    {return MAYORIGUAL;}
-"++"                                    {return MASMAS;}
-"--"                                    {return MENOSMENOS;}
-"&&"                                    {return AND;}
-"||"                                    {return OR;}
-"->"                                    {return FLECHA;}
+"=="                                    {yylval.myStruct.entero = yylineno;return IGUALIGUAL;}
+"!="                                    {yylval.myStruct.entero = yylineno;return DIFERENTE;}
+"+="                                    {yylval.myStruct.entero = yylineno;return MASIGUAL;}
+"-="                                    {yylval.myStruct.entero = yylineno;return MENOSIGUAL;}
+"*="                                    {yylval.myStruct.entero = yylineno;return PORIGUAL;}
+"/="                                    {yylval.myStruct.entero = yylineno;return DIVISIONGUAL;}
+"<="                                    {yylval.myStruct.entero = yylineno;return MENORIGUAL;}
+">="                                    {yylval.myStruct.entero = yylineno;return MAYORIGUAL;}
+"++"                                    {yylval.myStruct.entero = yylineno;return MASMAS;}
+"--"                                    {yylval.myStruct.entero = yylineno;return MENOSMENOS;}
+"&&"                                    {yylval.myStruct.entero = yylineno;return AND;}
+"||"                                    {yylval.myStruct.entero = yylineno;return OR;}
+"->"                                    {yylval.myStruct.entero = yylineno;return FLECHA;}
 
 "\n"                                    {yylval.myStruct.entero = yylineno;}
 "\t"
@@ -106,13 +106,13 @@ extern                                  {return EXTERN;}
 sizeof                                  {return SIZEOF;}
 
 
-{CONSTANTE_OCTAL}                       {yylval.myStruct.entero = yylineno; return CONSTANTE_OCTAL;}
-{CONSTANTE_DECIMAL}                     {yylval.myStruct.entero = yylineno; return CONSTANTE_DECIMAL;}
-{CONSTANTE_HEXADECIMAL}                 {yylval.myStruct.entero = yylineno; return CONSTANTE_HEXADECIMAL;}
-{CONSTANTE_REAL}                        {yylval.myStruct.entero = yylineno; return CONSTANTE_REAL;}
-{CONSTANTE_CARACTER}                    {yylval.myStruct.entero = yylineno; return CONSTANTE_CARACTER;}
+{CONSTANTE_OCTAL}                       {yylval.myStruct.entero = yylineno; yylval.myStruct.esNumerico = 1; return CONSTANTE_OCTAL;}
+{CONSTANTE_DECIMAL}                     {yylval.myStruct.entero = yylineno; yylval.myStruct.esNumerico = 1; return CONSTANTE_DECIMAL;}
+{CONSTANTE_HEXADECIMAL}                 {yylval.myStruct.entero = yylineno; yylval.myStruct.esNumerico = 1; return CONSTANTE_HEXADECIMAL;}
+{CONSTANTE_REAL}                        {yylval.myStruct.entero = yylineno; yylval.myStruct.esNumerico = 1; return CONSTANTE_REAL;}
+{CONSTANTE_CARACTER}                    {yylval.myStruct.entero = yylineno; yylval.myStruct.esNumerico = 1; return CONSTANTE_CARACTER;}
 {IDENTIFICADOR}                         {yylval.myStruct.entero = yylineno; yylval.myStruct.cadena = strdup(yytext); return IDENTIFICADOR;}
-{LITERAL_CADENA}                        {yylval.myStruct.entero = yylineno; return LITERAL_CADENA;}
+{LITERAL_CADENA}                        {yylval.myStruct.entero = yylineno; yylval.myStruct.esNumerico = 0; return LITERAL_CADENA;}
 {COMENTARIO_UNA_LINEA}                  {return COMENTARIO_UNA_LINEA;}
 {COMENTARIO_VARIAS_LINEAS}              {return COMENTARIO_VARIAS_LINEAS;}
 

@@ -55,6 +55,7 @@ int yywrap(){
   struct {
     char* cadena;
     int entero;
+    int esNumerico;
   } myStruct;
 }
 
@@ -181,8 +182,8 @@ variasVariables:          inicializacion
 ;
 
 inicializacion:           IDENTIFICADOR ',' {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);} inicializacion
-		                    | IDENTIFICADOR '=' expresion ',' {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);} inicializacion
-		                    | IDENTIFICADOR '=' expresion {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);}
+		                    | IDENTIFICADOR '=' expresion ',' {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);if(!$<myStruct.esNumerico>1 || !$<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", $<myStruct.entero>2);} inicializacion
+		                    | IDENTIFICADOR '=' expresion {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);if(!$<myStruct.esNumerico>1 || !$<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", $<myStruct.entero>2);}
                         | IDENTIFICADOR {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros);}
 ;
 
@@ -277,28 +278,28 @@ expIgualdad:              expRelacional
 ;
 
 expRelacional:            expAditiva
-                        | expAditiva '<' expRelacional
-                        | expAditiva '>' expRelacional
-                        | expAditiva MAYORIGUAL expRelacional
-                        | expAditiva MENORIGUAL expRelacional
+                        | expAditiva '<' expRelacional  {if($<myStruct.esNumerico>1 != $<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", $<myStruct.entero>2);}
+                        | expAditiva '>' expRelacional  {if($<myStruct.esNumerico>1 != $<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", $<myStruct.entero>2);}
+                        | expAditiva MAYORIGUAL expRelacional {if($<myStruct.esNumerico>1 != $<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", $<myStruct.entero>2);}
+                        | expAditiva MENORIGUAL expRelacional {if($<myStruct.esNumerico>1 != $<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", $<myStruct.entero>2);}
 ;
 
 expAditiva:               expMultiplicativa
-                        | expMultiplicativa '+' expAditiva
-                        | expMultiplicativa '-' expAditiva
+                        | expMultiplicativa '+' expAditiva  {if(!$<myStruct.esNumerico>1 || !$<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una suma\n", $<myStruct.entero>2);}
+                        | expMultiplicativa '-' expAditiva  {if(!$<myStruct.esNumerico>1 || !$<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una resta\n", $<myStruct.entero>2);}
 ;
 
 expMultiplicativa:        expUnaria
-                        | expUnaria '*' expUnaria
-                        | expUnaria '/' expUnaria
-                        | expUnaria '%' expUnaria
+                        | expUnaria '*' expMultiplicativa {if(!$<myStruct.esNumerico>1 || !$<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una multiplicacion\n", $<myStruct.entero>2);}
+                        | expUnaria '/' expMultiplicativa {if(!$<myStruct.esNumerico>1 || !$<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una division \n", $<myStruct.entero>2);}
+                        | expUnaria '%' expMultiplicativa {if(!$<myStruct.esNumerico>1 || !$<myStruct.esNumerico>3) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un resto\n", $<myStruct.entero>2);}
 ;
 
 expUnaria:                expSufijo
-                        | MASMAS expUnaria
-                        | MENOSMENOS expUnaria
+                        | MASMAS expUnaria  {if(!$<myStruct.esNumerico>2) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un preincremento\n", $<myStruct.entero>1);}
+                        | MENOSMENOS expUnaria  {if(!$<myStruct.esNumerico>2) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un predecremento\n", $<myStruct.entero>1);}
                         | operUnario expUnaria
-                        | SIZEOF expUnaria
+                        | SIZEOF expUnaria  {$<myStruct.esNumerico>$ = 1;}
 ;
 
 operUnario:               '&'
@@ -314,15 +315,15 @@ expSufijo:                expPrimaria
                         | expSufijo '(' ')'
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
-                        | expSufijo MASMAS
-                        | expSufijo MENOSMENOS
+                        | expSufijo MASMAS  {if(!$<myStruct.esNumerico>1) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un posincremento\n", $<myStruct.entero>2);}
+                        | expSufijo MENOSMENOS  {if(!$<myStruct.esNumerico>1) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una posdecremento\n", $<myStruct.entero>2);}
 ;
 
 listaArgumentos:          expAsignacion
                         | expAsignacion ',' listaArgumentos
 ;
 
-expPrimaria:              IDENTIFICADOR
+expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>$)}
                         | constante
                         | LITERAL_CADENA
                         | '(' expresion ')'
@@ -358,9 +359,7 @@ int main (){
 
   fclose(yyin);
 
-  recorrerListaSentencias(ListaSentencias);
-  recorrerTablaDeSimbolos(TablaDeSimbolos);
-  
+  generarReporte(ListaSentencias, TablaDeSimbolos);
   getch();
 
 return 0;

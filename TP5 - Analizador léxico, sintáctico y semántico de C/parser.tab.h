@@ -108,12 +108,13 @@ typedef union YYSTYPE
   struct {
     char* cadena;
     int entero;
+    int esNumerico;
   } myStruct;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 117 "parser.tab.h"
+#line 118 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

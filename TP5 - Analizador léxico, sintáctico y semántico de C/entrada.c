@@ -1,3 +1,21 @@
+1+'h';
+'h'+3;
+2+3;
+1+2+3;
+1+"h";
+1+2+"f";
+1+3*4-3*3/2;
+"a"+2*3;
+prueba + 2;
+
+int prueba2;
+
+prueba2 + 2;
+
+int suma = 1+3*4-3*3/2;
+int resta = 'a'- 3;
+int multiplicacion = "a" * 3;
+
 int correcto (int, int);
 void incorrectoTipo (int);
 int incorrectoCantParametros (int);
@@ -6,7 +24,7 @@ int incorrectoParametros2 (int, char);
 
 int correcto (int a, int b){
     int c;
-    int while;
+    c = sinPrototipo(1, 3);
     return 0;
 }
 

@@ -60,3 +60,6 @@ void x(){
 void y(){
   int n;
 }
+
+int a;
+int a;

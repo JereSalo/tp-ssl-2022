@@ -828,42 +828,42 @@ YY_RULE_SETUP
 case 3:
 YY_RULE_SETUP
 #line 32 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '=';}
+{yylval.myStruct.entero = yylineno; return '=';}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 33 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '<';}
+{yylval.myStruct.entero = yylineno; return '<';}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 34 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '>';}
+{yylval.myStruct.entero = yylineno; return '>';}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 35 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '+';}
+{yylval.myStruct.entero = yylineno; return '+';}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 36 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '-';}
+{yylval.myStruct.entero = yylineno; return '-';}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 37 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '*';}
+{yylval.myStruct.entero = yylineno; return '*';}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 38 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '/';}
+{yylval.myStruct.entero = yylineno; return '/';}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 39 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '%';}
+{yylval.myStruct.entero = yylineno; return '%';}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
@@ -878,112 +878,112 @@ YY_RULE_SETUP
 case 13:
 YY_RULE_SETUP
 #line 42 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '(';}
+{yylval.myStruct.entero = yylineno; return '(';}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 43 "lexico.l"
-{yylval.myStruct.entero = yylineno;return ')';}
+{yylval.myStruct.entero = yylineno; return ')';}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 44 "lexico.l"
-{yylval.myStruct.entero = yylineno;return ',';}
+{yylval.myStruct.entero = yylineno; return ',';}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 45 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '.';}
+{yylval.myStruct.entero = yylineno; return '.';}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 46 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '?';}
+{yylval.myStruct.entero = yylineno; return '?';}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 47 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '!';}
+{yylval.myStruct.entero = yylineno; return '!';}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 48 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '[';}
+{yylval.myStruct.entero = yylineno; return '[';}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 49 "lexico.l"
-{yylval.myStruct.entero = yylineno;return ']';}
+{yylval.myStruct.entero = yylineno; return ']';}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 50 "lexico.l"
-{yylval.myStruct.entero = yylineno;return '&';}
+{yylval.myStruct.entero = yylineno; return '&';}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 52 "lexico.l"
-{yylval.myStruct.entero = yylineno;return IGUALIGUAL;}
+{yylval.myStruct.entero = yylineno; return IGUALIGUAL;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 53 "lexico.l"
-{yylval.myStruct.entero = yylineno;return DIFERENTE;}
+{yylval.myStruct.entero = yylineno; return DIFERENTE;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 54 "lexico.l"
-{yylval.myStruct.entero = yylineno;return MASIGUAL;}
+{yylval.myStruct.entero = yylineno; return MASIGUAL;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 55 "lexico.l"
-{yylval.myStruct.entero = yylineno;return MENOSIGUAL;}
+{yylval.myStruct.entero = yylineno; return MENOSIGUAL;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 56 "lexico.l"
-{yylval.myStruct.entero = yylineno;return PORIGUAL;}
+{yylval.myStruct.entero = yylineno; return PORIGUAL;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 57 "lexico.l"
-{yylval.myStruct.entero = yylineno;return DIVISIONGUAL;}
+{yylval.myStruct.entero = yylineno; return DIVISIONGUAL;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 58 "lexico.l"
-{yylval.myStruct.entero = yylineno;return MENORIGUAL;}
+{yylval.myStruct.entero = yylineno; return MENORIGUAL;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 59 "lexico.l"
-{yylval.myStruct.entero = yylineno;return MAYORIGUAL;}
+{yylval.myStruct.entero = yylineno; return MAYORIGUAL;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 60 "lexico.l"
-{yylval.myStruct.entero = yylineno;return MASMAS;}
+{yylval.myStruct.entero = yylineno; return MASMAS;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 61 "lexico.l"
-{yylval.myStruct.entero = yylineno;return MENOSMENOS;}
+{yylval.myStruct.entero = yylineno; return MENOSMENOS;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 62 "lexico.l"
-{yylval.myStruct.entero = yylineno;return AND;}
+{yylval.myStruct.entero = yylineno; return AND;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 63 "lexico.l"
-{yylval.myStruct.entero = yylineno;return OR;}
+{yylval.myStruct.entero = yylineno; return OR;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 64 "lexico.l"
-{yylval.myStruct.entero = yylineno;return FLECHA;}
+{yylval.myStruct.entero = yylineno; return FLECHA;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
@@ -1063,7 +1063,7 @@ YY_RULE_SETUP
 case 50:
 YY_RULE_SETUP
 #line 83 "lexico.l"
-{yylval.myStruct.cadena = strdup(yytext);return VOLATILE;}
+{yylval.myStruct.cadena = strdup(yytext); return VOLATILE;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
@@ -1208,7 +1208,7 @@ YY_RULE_SETUP
 case 79:
 YY_RULE_SETUP
 #line 119 "lexico.l"
-{printf("Error lexico: Caracter no valido %s en linea %d\n", yytext, yylineno);}
+{printf(" Error lexico en linea %d: Caracter no valido %s\n", yytext, yylineno);}
 	YY_BREAK
 case 80:
 YY_RULE_SETUP

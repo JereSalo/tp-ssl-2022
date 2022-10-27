@@ -31,15 +31,15 @@ typedef struct nodoSentenciasEncontradas {
 
 void imprimirSentencias(detalleSentencia * ListaSentencias) {
     // Para generar el reporte de sentencias
-    printf("\n+ ----------------------------------------------------------------------------- +\n");
-    printf("|                               S E N T E N C I A S                             |");
-    printf("\n+ ----------------------------------------------------------------------------- +\n\n");
+    printf("\n\n+ ---------------------------------------------------------------------------------------------------- +\n");
+    printf("|                                         S E N T E N C I A S                                          |");
+    printf("\n+ ---------------------------------------------------------------------------------------------------- +\n\n");
     if (ListaSentencias==NULL) {
-        printf("\nNo se han encontrado sentencias.\n");
+        printf("\n No se han encontrado sentencias.\n");
         return;
     } else {
         while (ListaSentencias!=NULL) {
-            printf("En linea %i: %s\n", ListaSentencias -> nroLinea, ListaSentencias -> tipoSentencia);
+            printf(" En linea %i: %s\n", ListaSentencias -> nroLinea, ListaSentencias -> tipoSentencia);
             ListaSentencias = ListaSentencias -> sig;
         }
     }
@@ -47,39 +47,39 @@ void imprimirSentencias(detalleSentencia * ListaSentencias) {
 
 void imprimirEstructura(detalleTablaDeSimbolos * Lista, char estructura){
     if (estructura == 'V') {
-        printf("\n+ ----------------------------------------------------------------------------- +\n");
-        printf("|               D E C L A R A C I O N E S     V A R I A B L E S                 |");
-        printf("\n+ ----------------------------------------------------------------------------- +\n\n");
+        printf("\n\n+ ---------------------------------------------------------------------------------------------------- +\n");
+        printf("|                           D E C L A R A C I O N E S     V A R I A B L E S                            |");
+        printf("\n+ ---------------------------------------------------------------------------------------------------- +\n\n");
 
         if (Lista == NULL) {
-            printf("\nNo se han encontrado declaraciones.\n");
+            printf("\n No se han encontrado declaraciones.\n");
             return;
         }
 
         while (Lista != NULL){
             // Formato para Variables
             if (Lista->estructura == 'V') {
-                printf("Nombre de variable: %s\n--Tipo: %s\n\n", Lista -> identificador, Lista -> tipoDato);
+                printf(" Nombre de variable: %s\n --Tipo: %s\n\n", Lista -> identificador, Lista -> tipoDato);
             }
             Lista = Lista -> sig;
         }
 
     } else {
-        printf("\n+ ----------------------------------------------------------------------------- +\n");
-        printf("|                               F U N C I O N E S                               |");
-        printf("\n+ ----------------------------------------------------------------------------- +\n\n");
+        printf("\n+ ---------------------------------------------------------------------------------------------------- +\n");
+        printf("|                                         F U N C I O N E S                                            |");
+        printf("\n+ ---------------------------------------------------------------------------------------------------- +\n\n");
 
         if (Lista == NULL) {
-            printf("\nNo se han encontrado funciones.\n");
+            printf("\n No se han encontrado funciones.\n");
             return;
         }
 
         while (Lista != NULL){
             // Formato para Funciones
             if (Lista -> estructura == 'F') {
-                printf("Nombre de Funcion: %s\n--Tipo: %s\n--Cantidad de parametros: %d\n", Lista -> identificador, Lista -> tipoDato, Lista -> cantidadDeParametros);
+                printf(" Nombre de Funcion: %s\n --Tipo: %s\n --Cantidad de parametros: %d\n", Lista -> identificador, Lista -> tipoDato, Lista -> cantidadDeParametros);
                 while(Lista -> parametros != NULL){
-                    printf("----Parametro: %s %s\n",Lista -> parametros -> tipoDato, Lista -> parametros -> identificador);
+                    printf(" ----Parametro: %s %s\n",Lista -> parametros -> tipoDato, Lista -> parametros -> identificador);
                     Lista -> parametros = Lista -> parametros -> sig;
                 }
                 printf("\n");
@@ -87,6 +87,12 @@ void imprimirEstructura(detalleTablaDeSimbolos * Lista, char estructura){
             Lista = Lista -> sig;
         }
     }
+}
+
+void imprimirErrores(){
+    printf("+ ---------------------------------------------------------------------------------------------------- +\n");
+    printf("|                                             E R R O R E S                                            |");
+    printf("\n+ ---------------------------------------------------------------------------------------------------- +\n\n");
 }
 
 void generarReporte(detalleSentencia * ListaSentencias, detalleTablaDeSimbolos * TablaDeSimbolos) {
@@ -163,7 +169,7 @@ int verificarParametrosYCambiar(detalleParametros * ListaAntParametros, detalleP
     return 1;
 }
 
-int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos * TablaDeSimbolos) {
+int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos * TablaDeSimbolos, int nroLinea) {
     detalleTablaDeSimbolos * aux = NULL;
     // Verificamos funcion
     for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
@@ -175,17 +181,17 @@ int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos 
                 if (aux -> cantidadDeParametros == nuevoNodo -> cantidadDeParametros) {
                     // Para comprobar que tengan los mismos tipos de parametros
                     if (verificarParametrosYCambiar(aux -> parametros, nuevoNodo -> parametros)) {
-                        return 1;
+                        return 2;
                     } else {
-                        printf("Error semantico: Validacion de tipos en parametros en funcion %s\n", aux -> identificador);
+                        printf(" Error semantico en linea %d: Validacion de tipos en parametros en funcion %s\n", nroLinea, aux -> identificador);
                         return 1;
                     }
                 } else {
-                    printf("Error semantico: Cantidad de parametros incorrecta en funcion %s\n", aux -> identificador);
+                    printf(" Error semantico en linea %d: Cantidad de parametros incorrecta en funcion %s\n", nroLinea, aux -> identificador);
                     return 1;
                 }
             } else {
-                printf("Error semantico: Validacion de tipos en funcion %s\n", aux -> identificador);
+                printf(" Error semantico en linea %d: Validacion de tipos en funcion %s\n", nroLinea, aux -> identificador);
                 return 1;
             }
         }
@@ -197,14 +203,14 @@ int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos 
 
 /* =====================    T A B L A S   D E   S I M B O L O S    ===================== */
 
-detalleTablaDeSimbolos * agregarAListaDeSimbolos(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador, char * tipoDato, char estructura, detalleParametros * ListaParametros, int cantidadDeParametros) {
+detalleTablaDeSimbolos * agregarAListaDeSimbolos(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador, char * tipoDato, char estructura, detalleParametros * ListaParametros, int cantidadDeParametros, int nroLinea) {
     detalleTablaDeSimbolos * aux = NULL;
 
     if (estructura == 'V'){ // Variables
         for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
             // Comprobamos si hay doble declaracion de variables
             if (strcmp(aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
-                printf("Error semantico: Doble declaracion del identificador %s\n", identificador);
+                printf(" Error semantico en linea %d: Doble declaracion del identificador %s\n", nroLinea, identificador);
                 return TablaDeSimbolos; // Hubo coincidencia
             }
         }
@@ -222,7 +228,7 @@ detalleTablaDeSimbolos * agregarAListaDeSimbolos(detalleTablaDeSimbolos * TablaD
 
     if (estructura == 'F') { // Funciones
         // Meto el nodo en la ListaFunciones
-        if(verificarFuncion (nuevoNodo, TablaDeSimbolos)){
+        if(verificarFuncion (nuevoNodo, TablaDeSimbolos, nroLinea)){
             return TablaDeSimbolos;
         } 
     }

@@ -79,8 +79,8 @@
 #define YYDEBUG 1
 
 FILE* yyin;
-detalleParametros *ListaParametros = NULL;
-detalleSentencia *ListaSentencias = NULL;
+detalleParametros * ListaParametros = NULL;
+detalleSentencia * ListaSentencias = NULL;
 detalleTablaDeSimbolos * TablaDeSimbolos = NULL;
 
 int contadorParametros = 0;
@@ -88,7 +88,7 @@ int nroLineaAnterior = 1;
 char tipo[20];
 
 int yylex();
-int yyerror (char *s);
+int yyerror (char * s);
 
 int yywrap(){
   return(1);
@@ -191,7 +191,7 @@ typedef union YYSTYPE
 #line 54 "parser.y"
 
   struct {
-    char* cadena;
+    char * cadena;
     int entero;
     int esNumerico;
   } myStruct;
@@ -1798,168 +1798,168 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 71 "parser.y"
-    {ListaParametros = NULL;contadorParametros=0;;}
+    {ListaParametros = NULL; contadorParametros=0;;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
 #line 72 "parser.y"
-    {ListaParametros = NULL;contadorParametros=0;;}
+    {ListaParametros = NULL; contadorParametros=0;;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
 #line 74 "parser.y"
-    {printf("Error sintactico en linea %d\n", (yyvsp[(1) - (2)].myStruct.entero));;}
+    {printf(" Error sintactico en linea %d\n", (yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
 #line 83 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros, nroLineaAnterior);;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
 #line 84 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (4)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (4)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros, nroLineaAnterior);;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
 #line 85 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'F', ListaParametros, contadorParametros, nroLineaAnterior);;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
 #line 86 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (4)].myStruct.cadena), (yyvsp[(1) - (4)].myStruct.cadena), 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (4)].myStruct.cadena), (yyvsp[(1) - (4)].myStruct.cadena), 'F', ListaParametros, contadorParametros, nroLineaAnterior);;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
 #line 89 "parser.y"
-    {ListaParametros=agregarListaParametros (ListaParametros, NULL, tipo);contadorParametros++;;}
+    {ListaParametros = agregarListaParametros (ListaParametros, NULL, tipo); contadorParametros++;;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
 #line 90 "parser.y"
-    {ListaParametros=agregarListaParametros (ListaParametros, NULL, tipo);contadorParametros++;;}
+    {ListaParametros = agregarListaParametros (ListaParametros, NULL, tipo); contadorParametros++;;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
 #line 93 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros, (yyvsp[(2) - (5)].myStruct.entero));;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
 #line 94 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (6)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (6)].myStruct.cadena), "void", 'F', ListaParametros, contadorParametros, (yyvsp[(2) - (6)].myStruct.entero));;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
 #line 95 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'F', ListaParametros, contadorParametros, (yyvsp[(2) - (5)].myStruct.entero));;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
 #line 96 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (6)].myStruct.cadena), (yyvsp[(1) - (6)].myStruct.cadena), 'F', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (6)].myStruct.cadena), (yyvsp[(1) - (6)].myStruct.cadena), 'F', ListaParametros, contadorParametros, (yyvsp[(2) - (6)].myStruct.entero));;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
 #line 99 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, 0);ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (2)].myStruct.cadena), tipo);contadorParametros++;;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, 0, (yyvsp[(2) - (2)].myStruct.entero)); ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (2)].myStruct.cadena), tipo);contadorParametros++;;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
 #line 100 "parser.y"
-    {TablaDeSimbolos=agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, 0);ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (3)].myStruct.cadena), tipo);contadorParametros++;;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, 0, (yyvsp[(2) - (3)].myStruct.entero)); ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (3)].myStruct.cadena), tipo);contadorParametros++;;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
 #line 107 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia de Expresion",(yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia de Expresion", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
 #line 108 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Inicio sentencia Compuesta",(yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
 #line 109 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Seleccion",(yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Seleccion", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
 #line 110 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Iteracion",(yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Iteracion", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
 #line 111 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Etiquetado",(yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Etiquetado", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
 #line 112 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Salto",(yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Salto", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
 #line 116 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Sentencia Vacia",(yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Vacia", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
 #line 119 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Fin sentencia Compuesta",(yyvsp[(3) - (3)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Fin sentencia Compuesta", (yyvsp[(3) - (3)].myStruct.entero));;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
 #line 120 "parser.y"
-    {ListaSentencias=agregarListaSentencias(ListaSentencias,"Fin sentencia Compuesta",(yyvsp[(2) - (2)].myStruct.entero));;}
+    {ListaSentencias = agregarListaSentencias(ListaSentencias, "Fin sentencia Compuesta", (yyvsp[(2) - (2)].myStruct.entero));;}
     break;
 
   case 67:
@@ -1980,28 +1980,28 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 184 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 76:
 
 /* Line 1455 of yacc.c  */
 #line 185 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (4)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros);if(!(yyvsp[(1) - (4)].myStruct.esNumerico) || !(yyvsp[(3) - (4)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (4)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (4)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (4)].myStruct.entero)); if(!(yyvsp[(1) - (4)].myStruct.esNumerico) || !(yyvsp[(3) - (4)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (4)].myStruct.entero));;}
     break;
 
   case 78:
 
 /* Line 1455 of yacc.c  */
 #line 186 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros);if(!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (3)].myStruct.entero)); if(!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (3)].myStruct.entero));;}
     break;
 
   case 79:
 
 /* Line 1455 of yacc.c  */
 #line 187 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 89:
@@ -2092,126 +2092,126 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 221 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', ListaParametros, contadorParametros, (yyvsp[(2) - (5)].myStruct.entero));;}
     break;
 
   case 103:
 
 /* Line 1455 of yacc.c  */
 #line 223 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', ListaParametros, contadorParametros, (yyvsp[(2) - (5)].myStruct.entero));;}
     break;
 
   case 109:
 
 /* Line 1455 of yacc.c  */
 #line 235 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 111:
 
 /* Line 1455 of yacc.c  */
 #line 236 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 112:
 
 /* Line 1455 of yacc.c  */
 #line 239 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), (yyvsp[(1) - (2)].myStruct.cadena), 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), (yyvsp[(1) - (2)].myStruct.cadena), 'V', ListaParametros, contadorParametros,(yyvsp[(2) - (2)].myStruct.entero));;}
     break;
 
   case 114:
 
 /* Line 1455 of yacc.c  */
 #line 242 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), "int", 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), "int", 'V', ListaParametros, contadorParametros,(yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 116:
 
 /* Line 1455 of yacc.c  */
 #line 243 "parser.y"
-    {TablaDeSimbolos= agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), "int", 'V', ListaParametros, contadorParametros);;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), "int", 'V', ListaParametros, contadorParametros,(yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 135:
 
 /* Line 1455 of yacc.c  */
 #line 281 "parser.y"
-    {if((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if ((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 136:
 
 /* Line 1455 of yacc.c  */
 #line 282 "parser.y"
-    {if((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if ((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 137:
 
 /* Line 1455 of yacc.c  */
 #line 283 "parser.y"
-    {if((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if ((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 138:
 
 /* Line 1455 of yacc.c  */
 #line 284 "parser.y"
-    {if((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if ((yyvsp[(1) - (3)].myStruct.esNumerico) != (yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 140:
 
 /* Line 1455 of yacc.c  */
 #line 288 "parser.y"
-    {if(!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una suma\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if (!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una suma\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 141:
 
 /* Line 1455 of yacc.c  */
 #line 289 "parser.y"
-    {if(!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una resta\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if (!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una resta\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 143:
 
 /* Line 1455 of yacc.c  */
 #line 293 "parser.y"
-    {if(!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una multiplicacion\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if (!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una multiplicacion\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 144:
 
 /* Line 1455 of yacc.c  */
 #line 294 "parser.y"
-    {if(!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una division \n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if (!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una division \n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 145:
 
 /* Line 1455 of yacc.c  */
 #line 295 "parser.y"
-    {if(!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un resto\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {if (!(yyvsp[(1) - (3)].myStruct.esNumerico) || !(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar un resto\n", (yyvsp[(2) - (3)].myStruct.entero)); else (yyvsp[(2) - (3)].myStruct.esNumerico) = 1;;}
     break;
 
   case 147:
 
 /* Line 1455 of yacc.c  */
 #line 299 "parser.y"
-    {if(!(yyvsp[(2) - (2)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un preincremento\n", (yyvsp[(1) - (2)].myStruct.entero));;}
+    {if (!(yyvsp[(2) - (2)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar un preincremento\n", (yyvsp[(1) - (2)].myStruct.entero)); else (yyvsp[(1) - (2)].myStruct.esNumerico) = 1;;}
     break;
 
   case 148:
 
 /* Line 1455 of yacc.c  */
 #line 300 "parser.y"
-    {if(!(yyvsp[(2) - (2)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un predecremento\n", (yyvsp[(1) - (2)].myStruct.entero));;}
+    {if (!(yyvsp[(2) - (2)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar un predecremento\n", (yyvsp[(1) - (2)].myStruct.entero)); else (yyvsp[(1) - (2)].myStruct.esNumerico) = 1;;}
     break;
 
   case 150:
@@ -2225,21 +2225,21 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 318 "parser.y"
-    {if(!(yyvsp[(1) - (2)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar un posincremento\n", (yyvsp[(2) - (2)].myStruct.entero));;}
+    {if (!(yyvsp[(1) - (2)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar un posincremento\n", (yyvsp[(2) - (2)].myStruct.entero)); else (yyvsp[(2) - (2)].myStruct.esNumerico) = 1;;}
     break;
 
   case 163:
 
 /* Line 1455 of yacc.c  */
 #line 319 "parser.y"
-    {if(!(yyvsp[(1) - (2)].myStruct.esNumerico)) printf("Error semantico en linea %d: Tipos de datos incorrectos para realizar una posdecremento\n", (yyvsp[(2) - (2)].myStruct.entero));;}
+    {if (!(yyvsp[(1) - (2)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una posdecremento\n", (yyvsp[(2) - (2)].myStruct.entero)); else (yyvsp[(2) - (2)].myStruct.esNumerico) = 1;;}
     break;
 
   case 166:
 
 /* Line 1455 of yacc.c  */
 #line 326 "parser.y"
-    {(yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyval.myStruct.cadena));}
+    {(yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena));}
     break;
 
 
@@ -2472,6 +2472,8 @@ int main (){
   #ifdef BISON_DEBUG
     yydebug = 1;
   #endif
+
+  imprimirErrores();
 
   yyin = fopen("entrada.c","r");
   yyparse();

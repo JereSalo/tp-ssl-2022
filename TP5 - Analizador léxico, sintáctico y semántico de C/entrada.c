@@ -40,7 +40,7 @@ int incorrectoCantParametros (int e, int f){
 int incorrectoParametros1 (int g, int h){/*da error en cantidad de parametros cuando deberia ser tipos*/
     int x;
     float y;
-    correcto(8,x);/*dice variable sin declarar cuando deberia fijarse en funciones*/
+    correcto(8,x);
     incorrectoTipo(g);
     incorrectoParametrosfsdl("d",5);
 

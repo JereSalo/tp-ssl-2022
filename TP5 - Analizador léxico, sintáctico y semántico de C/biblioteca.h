@@ -168,7 +168,7 @@ int verificarParametrosYCambiar(detalleParametros * ListaAntParametros, detalleP
         if (strcmp (aux -> tipoDato, aux2 -> tipoDato) == 0) {
             continue; // Parametro correcto
         } else {
-            return 0; // Parametro incorrecto
+            return 1; // Parametro incorrecto
         }
     }
 
@@ -179,7 +179,7 @@ int verificarParametrosYCambiar(detalleParametros * ListaAntParametros, detalleP
         aux -> identificador = aux2 -> identificador;
     }
 
-    return 1;
+    return 0;
 }
 
 int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos * TablaDeSimbolos, int nroLinea) {
@@ -193,10 +193,10 @@ int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos 
                 // Para comprobar que tengan la misma cantidad de parametros
                 if (aux -> cantidadDeParametros == nuevoNodo -> cantidadDeParametros) {
                     // Para comprobar que tengan los mismos tipos de parametros
-                    if (verificarParametrosYCambiar(aux -> parametros, nuevoNodo -> parametros)) {
+                    if (verificarParametrosYCambiar(aux -> parametros, nuevoNodo -> parametros) == 0) {
                         return 2;
                     } else {
-                        printf(" Error semantico en linea %d: Tipo de parametro incorrecto en funcion %s\n", nroLinea, aux -> identificador);
+                        printf(" Error semantico en linea %d: Tipos de parametros incorrectos en funcion %s\n", nroLinea, aux -> identificador);
                         return 1;
                     }
                 } else {
@@ -204,12 +204,11 @@ int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos 
                     return 1;
                 }
             } else {
-                printf(" Error semantico en linea %d: Tipo incorrecto de funcion %s\n", nroLinea, aux -> identificador);
+                printf(" Error semantico en linea %d: Tipo de funcion %s incorrecto\n", nroLinea, aux -> identificador);
                 return 1;
             }
         }
     }
-
     return 0;
 }
 
@@ -236,20 +235,18 @@ int verificarExistenciaFuncion (char * identificador, detalleParametros * ListaA
             if(aux -> cantidadDeParametros == cantidadDeParametros){
                 // Para comprobar que tengan los mismos tipos de parametros
                 if (verificarParametros(aux -> parametros, ListaArgumentos) == 0){
-
-                        return 1;
+                    return 1;
                 } else {
-                    printf(" Error semantico en linea %d: Tipo de parametro incorrecto en llamado a funcion %s\n", nroLinea, aux -> identificador);
+                    printf(" Error semantico en linea %d: Tipos de parametros incorrectos en llamada a funcion %s\n", nroLinea, aux -> identificador);
                     return 1;
                 }
             } else {
-                printf(" Error semantico en linea %d: Cantidad de parametros incorrecta en llamado a funcion %s\n", nroLinea, aux -> identificador);
+                printf(" Error semantico en linea %d: Cantidad de parametros incorrectos en llamada a funcion %s\n", nroLinea, aux -> identificador);
                 return 1;
             }
-            
         }
-        
     }
+    
     printf(" Error semantico en linea %d: No existe la funcion %s\n", nroLinea, identificador);
     return 1;
 }

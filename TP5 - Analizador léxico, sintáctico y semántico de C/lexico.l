@@ -116,7 +116,7 @@ sizeof                                  {return SIZEOF;}
 {COMENTARIO_UNA_LINEA}                  {return COMENTARIO_UNA_LINEA;}
 {COMENTARIO_VARIAS_LINEAS}              {return COMENTARIO_VARIAS_LINEAS;}
 
-.                                       {printf(" Error lexico en linea %d: Caracter no valido %s\n", yytext, yylineno);}
+.                                       {printf(" Error lexico en linea %d: Caracter no valido %s\n", yylineno, yytext);}
 
 
 %%

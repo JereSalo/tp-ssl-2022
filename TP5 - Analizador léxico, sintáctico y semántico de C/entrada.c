@@ -37,11 +37,12 @@ int incorrectoCantParametros (int e, int f){
     return 0;
 }
 
-int incorrectoParametros1 (int g, int h){/*da error en cantidad de parametros cuando deberia ser tipos*/
+
+int incorrectoParametros1 (int g, int h){ //da error en cantidad de parametros cuando deberia ser tipos
     int x;
     float y;
     correcto(8,x);
-    incorrectoTipo(g);
+    incorrectoTipo(x); // Tira Cantidad de parametros incorrectos en llamada a funcion incorrectoTipo. Pero la cantidad es 1, no está mal. (Arreglado)
     incorrectoParametrosfsdl("d",5);
 
     return 0;
@@ -61,14 +62,14 @@ int sinPrototipo (int k, int l){
     return 0;
 }
 
-int main (){ /*da error en cantidad parametrso*/
+int main (){ // Dice que la cantidad de parámetros es 3 (Arreglado)
     c = sinPrototipo(1, 3);
     sinPrototipo(k);
     return 0;
 }
 
 void x(){
-  int m;
+    sinPrototipo(1,2);
 }
 
 void y(){

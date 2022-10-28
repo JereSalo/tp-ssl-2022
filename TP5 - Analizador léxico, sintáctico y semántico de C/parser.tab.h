@@ -103,7 +103,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 56 "parser.y"
+#line 57 "parser.y"
 
   struct {
     char * cadena;

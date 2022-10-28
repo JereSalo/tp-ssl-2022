@@ -22,7 +22,7 @@ CONSTANTE_CARACTER              '.'
 LITERAL_CADENA                  \".*\"
 IDENTIFICADOR                   [_a-zA-Z][_a-zA-Z0-9]*
 COMENTARIO_UNA_LINEA            \/\/.*
-COMENTARIO_VARIAS_LINEAS        \/\*[^\*\/]*\*\/
+COMENTARIO_VARIAS_LINEAS        \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/
 
 /* =====================    R E G L A S    ===================== */
 

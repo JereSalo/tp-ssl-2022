@@ -14,6 +14,7 @@ detalleSentencia * ListaSentencias = NULL;
 detalleTablaDeSimbolos * TablaDeSimbolos = NULL;
 
 int contadorParametros = 0;
+int contadorParametrosLlamada = 0;
 int nroLineaAnterior = 1;
 char tipo[20];
 char tipoArgumento[20];
@@ -313,7 +314,7 @@ operUnario:               '&'
 
 expSufijo:                expPrimaria
                         | expSufijo '[' expresion ']'
-                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistenciaFuncion($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorParametros, $<myStruct.entero>1);}
+                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistenciaFuncion($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorParametrosLlamada, $<myStruct.entero>1); contadorParametrosLlamada = 0;}
                         | IDENTIFICADOR '(' ')' 
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
@@ -321,8 +322,8 @@ expSufijo:                expPrimaria
                         | expSufijo MENOSMENOS  {if (!$<myStruct.esNumerico>1) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una posdecremento\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
 ;
 
-listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametros++;}
-                        | expAsignacion ',' {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametros++;} listaArgumentos
+listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametrosLlamada++;}
+                        | expAsignacion ',' {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametrosLlamada++;} listaArgumentos
 ;
 
 expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1);

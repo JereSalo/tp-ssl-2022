@@ -36,11 +36,11 @@ int incorrectoCantParametros (int e, int f){
     return 0;
 }
 
-int incorrectoParametros1 (int g, int h){
+int incorrectoParametros1 (int g, int h){/*da error en cantidad de parametros cuando deberia ser tipos*/
     int x;
     float y;
-    correcto(8,x);
-    incorrectoTipo(y);
+    correcto(8,x);/*dice variable sin declarar cuando deberia fijarse en funciones*/
+    incorrectoTipo(g);
     incorrectoParametrosfsdl("d",5);
 
     return 0;
@@ -60,7 +60,7 @@ int sinPrototipo (int k, int l){
     return 0;
 }
 
-int main (){
+int main (){ /*da error en cantidad parametrso*/
     c = sinPrototipo(1, 3);
     sinPrototipo(k);
     return 0;

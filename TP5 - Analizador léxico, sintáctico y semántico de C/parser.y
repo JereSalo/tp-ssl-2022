@@ -313,7 +313,7 @@ operUnario:               '&'
 
 expSufijo:                expPrimaria
                         | expSufijo '[' expresion ']'
-                        | expSufijo '(' listaArgumentos ')' {verificarExistenciaFuncion($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorParametros);}
+                        | expSufijo '(' listaArgumentos ')' {verificarExistenciaFuncion($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorParametros, $<myStruct.entero>2);}
                         | expSufijo '(' ')' 
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
@@ -329,7 +329,7 @@ expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariabl
                                           if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1)){
                                               //strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1));
                                               }else{
-                                                printf(" Error semantico: No esta declarada la variable \n");
+                                                printf(" Error semantico en linea %d: No esta declarada la variable %s \n", $<myStruct.entero>1, $<myStruct.cadena>1);
                                               }
                                               
                                               }

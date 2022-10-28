@@ -2241,7 +2241,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 316 "parser.y"
-    {verificarExistenciaFuncion((yyvsp[(1) - (4)].myStruct.cadena), ListaArgumentos, TablaDeSimbolos, contadorParametros);;}
+    {verificarExistenciaFuncion((yyvsp[(1) - (4)].myStruct.cadena), ListaArgumentos, TablaDeSimbolos, contadorParametros, (yyvsp[(2) - (4)].myStruct.entero));;}
     break;
 
   case 162:
@@ -2280,7 +2280,7 @@ yyreduce:
                                           if(buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena))){
                                               //strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1));
                                               }else{
-                                                printf(" Error semantico: No esta declarada la variable \n");
+                                                printf(" Error semantico en linea %d: No esta declarada la variable %s \n", (yyvsp[(1) - (1)].myStruct.entero), (yyvsp[(1) - (1)].myStruct.cadena));
                                               }
                                               
                                               ;}

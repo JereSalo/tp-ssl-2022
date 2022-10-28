@@ -196,7 +196,7 @@ int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos 
                     if (verificarParametrosYCambiar(aux -> parametros, nuevoNodo -> parametros)) {
                         return 2;
                     } else {
-                        printf(" Error semantico en linea %d: Validacion de tipos en parametros en funcion %s\n", nroLinea, aux -> identificador);
+                        printf(" Error semantico en linea %d: Tipo de parametro incorrecto en funcion %s\n", nroLinea, aux -> identificador);
                         return 1;
                     }
                 } else {
@@ -204,7 +204,7 @@ int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos 
                     return 1;
                 }
             } else {
-                printf(" Error semantico en linea %d: Validacion de tipos en funcion %s\n", nroLinea, aux -> identificador);
+                printf(" Error semantico en linea %d: Tipo incorrecto de funcion %s\n", nroLinea, aux -> identificador);
                 return 1;
             }
         }
@@ -227,7 +227,7 @@ int verificarParametros(detalleParametros * ListaParametros, detalleParametros *
     return 0;
 }
 
-int verificarExistenciaFuncion (char * identificador, detalleParametros * ListaArgumentos, detalleTablaDeSimbolos * TablaDeSimbolos, int cantidadDeParametros) {
+int verificarExistenciaFuncion (char * identificador, detalleParametros * ListaArgumentos, detalleTablaDeSimbolos * TablaDeSimbolos, int cantidadDeParametros, int nroLinea) {
     detalleTablaDeSimbolos * aux = NULL;
     for(aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
         // strcmp: Para comprobar si dos identificadores son iguales
@@ -239,18 +239,18 @@ int verificarExistenciaFuncion (char * identificador, detalleParametros * ListaA
 
                         return 1;
                 } else {
-                    printf("Error semantico: Validacion de tipos en parametros en llamado a funcion %s\n", aux -> identificador);
+                    printf(" Error semantico en linea %d: Tipo de parametro incorrecto en llamado a funcion %s\n", nroLinea, aux -> identificador);
                     return 1;
                 }
             } else {
-                printf("Error semantico: Cantidad de parametros incorrecta en llamado a funcion %s\n", aux -> identificador);
+                printf(" Error semantico en linea %d: Cantidad de parametros incorrecta en llamado a funcion %s\n", nroLinea, aux -> identificador);
                 return 1;
             }
             
         }
         
     }
-    printf("Error semantico: No existe la funcion %s\n", identificador);
+    printf(" Error semantico en linea %d: No existe la funcion %s\n", nroLinea, identificador);
     return 1;
 }
 

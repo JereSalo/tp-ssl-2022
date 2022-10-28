@@ -1208,7 +1208,7 @@ YY_RULE_SETUP
 case 79:
 YY_RULE_SETUP
 #line 119 "lexico.l"
-{printf(" Error lexico en linea %d: Caracter no valido %s\n", yytext, yylineno);}
+{printf(" Error lexico en linea %d: Caracter no valido %s\n", yylineno, yytext);}
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
@@ -2100,3 +2100,4 @@ int main()
 	}
 #endif
 #line 122 "lexico.l"
+

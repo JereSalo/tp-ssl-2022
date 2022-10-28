@@ -71,7 +71,7 @@ input:                    /* vacio */
 line:                     sentencia
                         | declaracion                                            {ListaArgumentos = NULL;contadorParametros=0;}
                         | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;}
-                        | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;}
+                        | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", $<myStruct.entero>1);}
                         | noC
                         | error ';'                                             {printf(" Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;

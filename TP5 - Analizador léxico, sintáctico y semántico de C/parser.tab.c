@@ -1821,7 +1821,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 74 "parser.y"
-    {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;;}
+    {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 9:

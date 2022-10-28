@@ -20,14 +20,8 @@ int multiplicacion = "a" * 3;
 int correcto (int, int);
 void incorrectoTipo (int);
 int incorrectoCantParametros (int);
-int incorrectoParametros2 (int, char);
 int incorrectoParametros1 (char, int);
-
-int incorrectoParametros1 (int g, int h){ //da error en cantidad de parametros cuando deberia ser tipos (Solucionado)
-    int x; 
-    
-    return 0;
-}
+int incorrectoParametros2 (int, char);
 
 int correcto (int a, int b){
     int c;
@@ -39,13 +33,23 @@ int incorrectoTipo (int d){
     return 0;
 }
 
-
 int incorrectoCantParametros (int e, int f){
     return 0;
 }
 
-int incorrectoParametros2 (int i, int j){
 
+int incorrectoParametros1 (int g, int h){ //da error en cantidad de parametros cuando deberia ser tipos (Arreglado)
+    int x;
+    float y;
+    correcto(8,x);
+    incorrectoTipo(x); // Tira Cantidad de parametros incorrectos en llamada a funcion incorrectoTipo. Pero la cantidad es 1, no está mal. (Arreglado)
+    incorrectoParametrosfsdl("d",5);
+
+    return 0;
+}
+
+int incorrectoParametros2 (int i, int j){
+    
     return 0;
 }
 
@@ -74,6 +78,3 @@ void y(){
 
 int a;
 int a;
-
-
-

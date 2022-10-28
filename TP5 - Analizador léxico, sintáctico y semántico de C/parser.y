@@ -14,7 +14,7 @@ detalleSentencia * ListaSentencias = NULL;
 detalleTablaDeSimbolos * TablaDeSimbolos = NULL;
 
 int contadorParametros = 0;
-int contadorParametrosLlamada = 0;
+int contadorArgumentos = 0;
 int nroLineaAnterior = 1;
 char tipo[20];
 char tipoArgumento[20];
@@ -69,10 +69,10 @@ input:                    /* vacio */
                         | input line                                            {nroLineaAnterior = $<myStruct.entero>2}
 ;
 
-line:                     sentencia
-                        | declaracion                                           {ListaArgumentos = NULL; }//contadorParametros=0;}
-                        | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;}
-                        | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", $<myStruct.entero>1);}
+line:                     sentencia                                             {ListaArgumentos = NULL; contadorArgumentos = 0;}
+                        | declaracion
+                        | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0;}
+                        | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", $<myStruct.entero>1);}
                         | noC
                         | error ';'                                             {printf(" Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;
@@ -314,27 +314,24 @@ operUnario:               '&'
 
 expSufijo:                expPrimaria
                         | expSufijo '[' expresion ']'
-                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistenciaFuncion($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorParametrosLlamada, $<myStruct.entero>1); contadorParametrosLlamada = 0;}
-                        | IDENTIFICADOR '(' ')' 
+                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1);}
+                        | IDENTIFICADOR '(' ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1);}
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
                         | expSufijo MASMAS  {if (!$<myStruct.esNumerico>1) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar un posincremento\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
                         | expSufijo MENOSMENOS  {if (!$<myStruct.esNumerico>1) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una posdecremento\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
 ;
 
-listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametrosLlamada++;}
-                        | expAsignacion ',' {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametrosLlamada++;} listaArgumentos
+listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorArgumentos++;}
+                        | expAsignacion ',' {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorArgumentos++;} listaArgumentos
 ;
 
-expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1);
-                                          if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1)){
-                                            //strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1));
-                                          } else {
-                                            printf(" Error semantico en linea %d: No esta declarada la variable %s \n", $<myStruct.entero>1, $<myStruct.cadena>1);
-                                          }
+expPrimaria:              IDENTIFICADOR {
+                                          $<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1);
+                                          if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1) == 0) printf(" Error semantico en linea %d: No esta declarada la variable %s \n", $<myStruct.entero>1, $<myStruct.cadena>1);
                                         }
                         | constante
-                        | LITERAL_CADENA
+                        | LITERAL_CADENA {strcpy(tipoArgumento, "char *");}
                         | '(' expresion ')'
 ;
 

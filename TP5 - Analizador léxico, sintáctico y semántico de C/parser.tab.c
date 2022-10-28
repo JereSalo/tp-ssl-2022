@@ -85,7 +85,7 @@ detalleSentencia * ListaSentencias = NULL;
 detalleTablaDeSimbolos * TablaDeSimbolos = NULL;
 
 int contadorParametros = 0;
-int contadorParametrosLlamada = 0;
+int contadorArgumentos = 0;
 int nroLineaAnterior = 1;
 char tipo[20];
 char tipoArgumento[20];
@@ -590,8 +590,8 @@ static const yytype_uint16 yyrline[] =
      275,   278,   279,   280,   283,   284,   285,   286,   287,   290,
      291,   292,   295,   296,   297,   298,   301,   302,   303,   304,
      305,   308,   309,   310,   311,   312,   315,   316,   317,   318,
-     319,   320,   321,   322,   325,   326,   326,   329,   336,   337,
-     338,   341,   342,   343,   346,   347,   348
+     319,   320,   321,   322,   325,   326,   326,   329,   333,   334,
+     335,   338,   339,   340,   343,   344,   345
 };
 #endif
 
@@ -1804,25 +1804,25 @@ yyreduce:
     {nroLineaAnterior = (yyvsp[(2) - (2)].myStruct.entero);}
     break;
 
-  case 5:
+  case 4:
 
 /* Line 1455 of yacc.c  */
-#line 73 "parser.y"
-    {ListaArgumentos = NULL; ;}
+#line 72 "parser.y"
+    {ListaArgumentos = NULL; contadorArgumentos = 0;;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
 #line 74 "parser.y"
-    {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;;}
+    {ListaParametros = NULL; contadorParametros=0;;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
 #line 75 "parser.y"
-    {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", (yyvsp[(1) - (1)].myStruct.entero));;}
+    {ListaParametros = NULL; contadorParametros=0; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 9:
@@ -2242,7 +2242,14 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 317 "parser.y"
-    {verificarExistenciaFuncion((yyvsp[(1) - (4)].myStruct.cadena), ListaArgumentos, TablaDeSimbolos, contadorParametrosLlamada, (yyvsp[(1) - (4)].myStruct.entero)); contadorParametrosLlamada = 0;;}
+    {verificarExistencia((yyvsp[(1) - (4)].myStruct.cadena), ListaArgumentos, TablaDeSimbolos, contadorArgumentos, (yyvsp[(1) - (4)].myStruct.entero));;}
+    break;
+
+  case 159:
+
+/* Line 1455 of yacc.c  */
+#line 318 "parser.y"
+    {verificarExistencia((yyvsp[(1) - (3)].myStruct.cadena), ListaArgumentos, TablaDeSimbolos, contadorArgumentos, (yyvsp[(1) - (3)].myStruct.entero));;}
     break;
 
   case 162:
@@ -2263,54 +2270,58 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 325 "parser.y"
-    {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametrosLlamada++;;}
+    {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorArgumentos++;;}
     break;
 
   case 165:
 
 /* Line 1455 of yacc.c  */
 #line 326 "parser.y"
-    {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametrosLlamada++;;}
+    {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorArgumentos++;;}
     break;
 
   case 167:
 
 /* Line 1455 of yacc.c  */
 #line 329 "parser.y"
-    {(yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena));
-                                          if(buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena))){
-                                            //strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1));
-                                          } else {
-                                            printf(" Error semantico en linea %d: No esta declarada la variable %s \n", (yyvsp[(1) - (1)].myStruct.entero), (yyvsp[(1) - (1)].myStruct.cadena));
-                                          }
+    {
+                                          (yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena));
+                                          if(buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena)) == 0) printf(" Error semantico en linea %d: No esta declarada la variable %s \n", (yyvsp[(1) - (1)].myStruct.entero), (yyvsp[(1) - (1)].myStruct.cadena));
                                         ;}
+    break;
+
+  case 169:
+
+/* Line 1455 of yacc.c  */
+#line 334 "parser.y"
+    {strcpy(tipoArgumento, "char *");;}
     break;
 
   case 171:
 
 /* Line 1455 of yacc.c  */
-#line 341 "parser.y"
+#line 338 "parser.y"
     {strcpy(tipoArgumento, "int");;}
     break;
 
   case 172:
 
 /* Line 1455 of yacc.c  */
-#line 342 "parser.y"
+#line 339 "parser.y"
     {strcpy(tipoArgumento, "char");;}
     break;
 
   case 173:
 
 /* Line 1455 of yacc.c  */
-#line 343 "parser.y"
+#line 340 "parser.y"
     {strcpy(tipoArgumento, "float");;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2314 "parser.tab.c"
+#line 2325 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2522,7 +2533,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 351 "parser.y"
+#line 348 "parser.y"
 
 
 /* Llamada por yyparse ante un error */

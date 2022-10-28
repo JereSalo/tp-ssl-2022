@@ -27,7 +27,7 @@ typedef struct nodoSentenciasEncontradas {
 }detalleSentencia;
 
 
-/* =====================    F U N C I O N E S   G E N E R A L E S  ===================== */
+/* =====================    R E P O R T E  ===================== */
 
 void imprimirSentencias(detalleSentencia * ListaSentencias) {
     // Para generar el reporte de sentencias
@@ -104,31 +104,6 @@ void generarReporte(detalleSentencia * ListaSentencias, detalleTablaDeSimbolos *
     imprimirEstructura(TablaDeSimbolos, 'F');
 }
 
-int buscarVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador) {
-    detalleTablaDeSimbolos * aux = NULL;
-    // Comprobamos si esta en Tabla de Simbolos
-    for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
-        // strcmp: Para comprobar si dos identificadores son iguales
-        
-        if(strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
-            return 1; // Esta en Tabla
-        }  
-
-    }
-    return 0; // No esta en Tabla
-}
-
-char * buscarTipoDatoVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador){
-    detalleTablaDeSimbolos * aux = NULL;
-
-    for(aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
-        // strcmp: Para comprobar si dos Strings son iguales
-        if (strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
-            return aux -> tipoDato; // Hubo coincidencia
-        }
-    }
-}
-
 
 /* =====================    S E N T E N C I A S     ===================== */
 
@@ -160,95 +135,97 @@ detalleSentencia * agregarListaSentencias(detalleSentencia * ListaSentencias, ch
 
 /* =====================    C H E Q U E O S    ===================== */
 
-int verificarParametrosYCambiar(detalleParametros * ListaAntParametros, detalleParametros * ListaDefParametros) {
+int buscarVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador) {
+    detalleTablaDeSimbolos * aux = NULL;
+    // Comprobamos si esta en Tabla de Simbolos
+    for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
+        // strcmp: Para comprobar si dos identificadores son iguales
+        
+        if(strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
+            return 1; // Esta en Tabla
+        }  
+
+    }
+    return 0; // No esta en Tabla
+}
+
+int verificarParametros(detalleParametros * ListaVerificar, detalleParametros * ListaVerificador) {
     detalleParametros * aux = NULL;
     detalleParametros * aux2 = NULL;
     // Verificamos que los tipos de los parametros sean los correctos
-    for(aux = ListaAntParametros, aux2 = ListaDefParametros; aux != NULL && aux2 != NULL; aux = aux -> sig, aux2 = aux2 -> sig) {
+    for(aux = ListaVerificar, aux2 = ListaVerificador; aux != NULL && aux2 != NULL; aux = aux -> sig, aux2 = aux2 -> sig) {
         if (strcmp (aux -> tipoDato, aux2 -> tipoDato) == 0) {
             continue; // Parametro correcto
         } else {
             return 1; // Parametro incorrecto
         }
     }
+}
 
-    aux = NULL;
-    aux2 = NULL;
-    // Cambiamos el NULL por el identificador
+void agregarIdentificadoresFuncion(detalleParametros * ListaAntParametros, detalleParametros * ListaDefParametros) {
+    detalleParametros * aux = NULL;
+    detalleParametros * aux2 = NULL;
+
+    // Cambiamos el NULL por el identificador correspondiente
     for(aux = ListaAntParametros, aux2 = ListaDefParametros; aux != NULL && aux2 != NULL; aux = aux -> sig, aux2 = aux2 -> sig) {
         aux -> identificador = aux2 -> identificador;
     }
-
-    return 0;
 }
 
-int verificarFuncion(detalleTablaDeSimbolos * nuevoNodo, detalleTablaDeSimbolos * TablaDeSimbolos, int nroLinea) {
+int verificarFuncion(detalleTablaDeSimbolos * funcion, detalleTablaDeSimbolos * TablaDeSimbolos, int nroLinea) {
     detalleTablaDeSimbolos * aux = NULL;
-    // Verificamos funcion
+    // Verificamos que la funcion sea identica a su prototipo, si es que tiene
     for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
-        // Para comprobar que los dos identificadores sean iguales
-        if (strcmp (aux -> identificador, nuevoNodo -> identificador) == 0 && aux -> estructura == 'F') {
-            // Para comprobar que los tipos de funciones sean iguales
-            if (strcmp (aux -> tipoDato, nuevoNodo -> tipoDato) == 0) {
+        // Comprobar que los dos identificadores sean iguales
+        if (strcmp (aux -> identificador, funcion -> identificador) == 0 && aux -> estructura == 'F') {
+            // Comprobar que los tipos de funciones sean iguales
+            if (strcmp (aux -> tipoDato, funcion -> tipoDato) == 0) {
                 // Para comprobar que tengan la misma cantidad de parametros
-                if (aux -> cantidadDeParametros == nuevoNodo -> cantidadDeParametros) {
+                if (aux -> cantidadDeParametros == funcion -> cantidadDeParametros) {
                     // Para comprobar que tengan los mismos tipos de parametros
-                    if (verificarParametrosYCambiar(aux -> parametros, nuevoNodo -> parametros) == 0) {
-                        return 2;
-                    } else {
+                    if (verificarParametros(aux -> parametros, funcion -> parametros)) {
                         printf(" Error semantico en linea %d: Tipos de parametros incorrectos en funcion %s\n", nroLinea, aux -> identificador);
-                        return 1;
+                        return 0;
+                    } else {
+                        agregarIdentificadoresFuncion(aux -> parametros, funcion -> parametros);
+                        return 0; // Funcion correcta
                     }
                 } else {
                     printf(" Error semantico en linea %d: Cantidad de parametros incorrecta en funcion %s\n", nroLinea, aux -> identificador);
-                    return 1;
+                    return 0;
                 }
             } else {
                 printf(" Error semantico en linea %d: Tipo de funcion %s incorrecto\n", nroLinea, aux -> identificador);
-                return 1;
+                return 0;
             }
         }
     }
-    return 0;
+    return 1; // Funcion correcta (Caso especial para funciones sin prototipo)
 }
 
-// control de llamado de funciones
-int verificarParametros(detalleParametros * ListaParametros, detalleParametros * ListaArgumentos) {
-    detalleParametros * aux = NULL;
-    detalleParametros * aux2 = NULL;
-    for(aux = ListaParametros, aux2 = ListaArgumentos; aux != NULL && aux2 != NULL; aux = aux -> sig, aux2 = aux2 -> sig) {
-        if (strcmp (aux -> tipoDato, aux2 -> tipoDato) == 0) {
-            continue;
-        } else {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-int verificarExistenciaFuncion (char * identificador, detalleParametros * ListaArgumentos, detalleTablaDeSimbolos * TablaDeSimbolos, int cantidadDeParametros, int nroLinea) {
+int verificarExistencia(char * identificador, detalleParametros * ListaArgumentos, detalleTablaDeSimbolos * TablaDeSimbolos, int cantidadArgumentos, int nroLinea){
     detalleTablaDeSimbolos * aux = NULL;
-    for(aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
-        // strcmp: Para comprobar si dos identificadores son iguales
-        if (strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'F') {
-            // Para comprobar que tengan la misma cantidad de parametros
-            if(aux -> cantidadDeParametros == cantidadDeParametros){
-                // Para comprobar que tengan los mismos tipos de parametros
-                if (verificarParametros(aux -> parametros, ListaArgumentos) == 0){
-                    return 1;
+    // Verificamos que exista la funcion llamada
+    for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
+        // Comprobamos que sean las mismas funciones
+        if (strcmp(aux -> identificador, identificador) == 0 && aux -> estructura == 'F') {
+            // Comprobamos cantidad de parametros
+            if (aux -> cantidadDeParametros == cantidadArgumentos) {
+                // Comprobar que los tipos de argumentos sean los correctos
+                if (verificarParametros(ListaArgumentos, aux -> parametros)) {
+                    printf(" Error semantico en linea %d: Tipos de argumentos incorrectos en llamada de funcion %s\n", nroLinea, identificador);
+                    return 0;
                 } else {
-                    printf(" Error semantico en linea %d: Tipos de parametros incorrectos en llamada a funcion %s\n", nroLinea, aux -> identificador);
-                    return 1;
+                    return 1; // Funcion encontrada
                 }
             } else {
-                printf(" Error semantico en linea %d: Cantidad de parametros incorrectos en llamada a funcion %s\n", nroLinea, aux -> identificador);
-                return 1;
+                printf(" Error semantico en linea %d: Cantidad de argumentos incorrectos en llamada de funcion %s\n", nroLinea, identificador);
+                return 0;
             }
         }
     }
-    
     printf(" Error semantico en linea %d: No existe la funcion %s\n", nroLinea, identificador);
-    return 1;
+    return 0;
 }
 
 
@@ -258,7 +235,6 @@ detalleTablaDeSimbolos * agregarAListaDeSimbolos(detalleTablaDeSimbolos * TablaD
     detalleTablaDeSimbolos * aux = NULL;
 
     if (estructura == 'V'){ // Variables
-        cantidadDeParametros = 0;
         for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
             // Comprobamos si hay doble declaracion de variables
             if (strcmp(aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
@@ -280,7 +256,7 @@ detalleTablaDeSimbolos * agregarAListaDeSimbolos(detalleTablaDeSimbolos * TablaD
 
     if (estructura == 'F') { // Funciones
         // Meto el nodo en la ListaFunciones
-        if(verificarFuncion (nuevoNodo, TablaDeSimbolos, nroLinea)){
+        if(verificarFuncion (nuevoNodo, TablaDeSimbolos, nroLinea) == 0){
             return TablaDeSimbolos;
         } 
     }

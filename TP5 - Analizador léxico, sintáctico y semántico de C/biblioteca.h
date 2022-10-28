@@ -109,9 +109,11 @@ int buscarVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificado
     // Comprobamos si esta en Tabla de Simbolos
     for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
         // strcmp: Para comprobar si dos identificadores son iguales
-        if (strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
+        
+        if(strcmp (aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {
             return 1; // Esta en Tabla
-        }
+        }  
+
     }
     return 0; // No esta en Tabla
 }
@@ -248,7 +250,7 @@ int verificarExistenciaFuncion (char * identificador, detalleParametros * ListaA
         }
         
     }
-    printf("Error semantico: No existe la funcion %s\n", aux -> identificador);
+    printf("Error semantico: No existe la funcion %s\n", identificador);
     return 1;
 }
 

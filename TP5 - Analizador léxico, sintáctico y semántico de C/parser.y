@@ -325,7 +325,14 @@ listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametro
                         | expAsignacion ',' {ListaArgumentos = agregarListaParametros (ListaArgumentos, NULL, tipoArgumento); contadorParametros++;} listaArgumentos
 ;
 
-expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1); /* Bien hasta aca. Revisar -> */ if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1)) strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1)); else printf(" Error semantico: No esta declarada la variable \n");}
+expPrimaria:              IDENTIFICADOR {$<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1);
+                                          if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1)){
+                                              //strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1));
+                                              }else{
+                                                printf(" Error semantico: No esta declarada la variable \n");
+                                              }
+                                              
+                                              }
                         | constante
                         | LITERAL_CADENA
                         | '(' expresion ')'

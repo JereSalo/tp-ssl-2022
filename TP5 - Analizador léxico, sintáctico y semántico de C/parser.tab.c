@@ -589,8 +589,8 @@ static const yytype_uint16 yyrline[] =
      274,   277,   278,   279,   282,   283,   284,   285,   286,   289,
      290,   291,   294,   295,   296,   297,   300,   301,   302,   303,
      304,   307,   308,   309,   310,   311,   314,   315,   316,   317,
-     318,   319,   320,   321,   324,   325,   325,   328,   329,   330,
-     331,   334,   335,   336,   339,   340,   341
+     318,   319,   320,   321,   324,   325,   325,   328,   336,   337,
+     338,   341,   342,   343,   346,   347,   348
 };
 #endif
 
@@ -2276,34 +2276,41 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 328 "parser.y"
-    {(yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena)); /* Bien hasta aca. Revisar -> */ if(buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena))) strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena))); else printf(" Error semantico: No esta declarada la variable \n");;}
+    {(yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena));
+                                          if(buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena))){
+                                              //strcpy(tipoArgumento, buscarTipoDatoVariable(TablaDeSimbolos, $<myStruct.cadena>1));
+                                              }else{
+                                                printf(" Error semantico: No esta declarada la variable \n");
+                                              }
+                                              
+                                              ;}
     break;
 
   case 171:
 
 /* Line 1455 of yacc.c  */
-#line 334 "parser.y"
+#line 341 "parser.y"
     {strcpy(tipoArgumento, "int");;}
     break;
 
   case 172:
 
 /* Line 1455 of yacc.c  */
-#line 335 "parser.y"
+#line 342 "parser.y"
     {strcpy(tipoArgumento, "char");;}
     break;
 
   case 173:
 
 /* Line 1455 of yacc.c  */
-#line 336 "parser.y"
+#line 343 "parser.y"
     {strcpy(tipoArgumento, "float");;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2307 "parser.tab.c"
+#line 2314 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2515,7 +2522,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 344 "parser.y"
+#line 351 "parser.y"
 
 
 /* Llamada por yyparse ante un error */

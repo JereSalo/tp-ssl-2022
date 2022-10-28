@@ -37,10 +37,21 @@ int incorrectoCantParametros (int e, int f){
 }
 
 int incorrectoParametros1 (int g, int h){
+    int x;
+    float y;
+    correcto(8,x);
+    incorrectoTipo(y);
+    incorrectoParametrosfsdl("d",5);
+
     return 0;
 }
 
 int incorrectoParametros2 (int i, int j){
+    
+    return 0;
+}
+
+int hola (int i, int j){
     
     return 0;
 }
@@ -50,6 +61,8 @@ int sinPrototipo (int k, int l){
 }
 
 int main (){
+    c = sinPrototipo(1, 3);
+    sinPrototipo(k);
     return 0;
 }
 

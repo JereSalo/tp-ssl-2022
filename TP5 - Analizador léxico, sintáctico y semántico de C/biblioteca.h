@@ -258,6 +258,7 @@ detalleTablaDeSimbolos * agregarAListaDeSimbolos(detalleTablaDeSimbolos * TablaD
     detalleTablaDeSimbolos * aux = NULL;
 
     if (estructura == 'V'){ // Variables
+        cantidadDeParametros = 0;
         for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
             // Comprobamos si hay doble declaracion de variables
             if (strcmp(aux -> identificador, identificador) == 0 && aux -> estructura == 'V') {

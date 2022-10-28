@@ -70,7 +70,7 @@ input:                    /* vacio */
 ;
 
 line:                     sentencia
-                        | declaracion                                           {ListaArgumentos = NULL; contadorParametros=0;}
+                        | declaracion                                           {ListaArgumentos = NULL; }//contadorParametros=0;}
                         | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL;}
                         | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaArgumentos = NULL; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", $<myStruct.entero>1);}
                         | noC

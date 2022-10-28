@@ -1808,7 +1808,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 73 "parser.y"
-    {ListaArgumentos = NULL; contadorParametros=0;;}
+    {ListaArgumentos = NULL; ;}
     break;
 
   case 6:

@@ -26,6 +26,7 @@ int incorrectoParametros2 (int, char);
 int correcto (int a, int b){
     int c;
     c = sinPrototipo(1, 3);
+    c = "Hola";
     return 0;
 }
 
@@ -76,5 +77,52 @@ void y(){
   int n;
 }
 
+if(1){
+    return
+}
+
+if(1){
+    a > 3
+    return;
+}
+
+(3+1)1+3
+
+if(1>){
+    if(2){
+        return 0;
+    }
+}
+
+for (i; i < 2;){
+    continue;
+}
+
+for (int i; i < 2;){
+    continue;
+}
+
+for (i; i < 3; i>){
+    continue;
+}
+
+const signed int algo;
+typedef const signed int asdasdasd;
+
+typedef struct entrada{
+    int estructura;
+}hola;
+
+prueb(a) }
+
+typedef struct salida{
+    int TypeEstructura;
+}chau;
+
+1+3
+{}
+typedef int entero;
+
+extern int externo;
 int a;
 int a;

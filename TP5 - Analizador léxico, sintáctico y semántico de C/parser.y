@@ -66,11 +66,11 @@ int yywrap(){
 %%
 
 input:                    /* vacio */
-                        | input line                                            {nroLineaAnterior = $<myStruct.entero>2}
+                        | line {nroLineaAnterior = $<myStruct.entero>1;} input
 ;
 
 line:                     sentencia                                             {ListaArgumentos = NULL; contadorArgumentos = 0;}
-                        | declaracion
+                        | declaracion ';'
                         | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0;}
                         | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", $<myStruct.entero>1);}
                         | noC
@@ -113,6 +113,7 @@ sentencia:                sentExpresion                                         
                         | sentIteracion                                         {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Iteracion", $<myStruct.entero>1);}
                         | sentEtiquetado                                        {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Etiquetado", $<myStruct.entero>1);}
                         | sentSalto                                             {ListaSentencias = agregarListaSentencias(ListaSentencias, "Sentencia Salto", $<myStruct.entero>1);}
+                        | error ')'                                             {printf(" Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;
 
 sentExpresion:            expresion ';'
@@ -121,14 +122,15 @@ sentExpresion:            expresion ';'
 
 sentCompuesta:            '{' listaSentencias '}'                               {ListaSentencias = agregarListaSentencias(ListaSentencias, "Fin sentencia Compuesta", $<myStruct.entero>3);}
                         | '{' '}'                                               {ListaSentencias = agregarListaSentencias(ListaSentencias, "Fin sentencia Compuesta", $<myStruct.entero>2);}
+                        | error '}'                                             {printf(" Error sintactico en linea %d\n", $<myStruct.entero>1);}
 ;
 
 listaSentencias:          line
-                        | listaSentencias line
+                        | line listaSentencias 
 ;
 
 sentSeleccion:            IF '(' expresion ')' sentencia sentElse                        
-                        | SWITCH '(' expresion ')' sentencia                    
+                        | SWITCH '(' expresion ')' sentencia
 ;
 
 sentElse:                 /* vacio */                                                                                   
@@ -137,7 +139,7 @@ sentElse:                 /* vacio */
 
 sentIteracion:            WHILE '(' expresion ')' sentencia                     
                         | DO line WHILE '(' expresion ')' ';'                   
-                        | FOR '(' cuerpoFor ')' sentencia                       
+                        | FOR '(' cuerpoFor ')' sentencia
 ;
 
 cuerpoFor:                declaracionFor ';' expresion ';' expresion
@@ -150,7 +152,7 @@ cuerpoFor:                declaracionFor ';' expresion ';' expresion
 ;
 
 declaracionFor:           tipoDeDato variasVariables
-                        | variasVariables
+                        | expresion
 ;
 
 sentEtiquetado:           CASE constante ':' sentencia
@@ -168,20 +170,20 @@ sentSalto:                BREAK ';'
 /*=========================================   D E C L A R A C I O N E S  ===============================================*/
 /* No hay conflictos */
 
-declaracion:              espAlmacenamiento tipoDeDato IDENTIFICADOR ';'
-                        | espAlmacenamiento calificadorTipo tipoDeDato IDENTIFICADOR ';'
-                        | espAlmacenamiento espStructUnion IDENTIFICADOR ';'
-                        | espAlmacenamiento espEnum IDENTIFICADOR ';'
-                        | espDeclaracion
+declaracion:              espAlmacenamiento tipoDeDato IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
+                        | espAlmacenamiento espDeclaracion IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
+                        | espAlmacenamiento espStructUnion IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
+                        | espAlmacenamiento espEnum IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
+                        | espDeclaracion variasVariables
+                        | declaraciones
 ;
 
-espDeclaracion:           calificadorTipo tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);} variasVariables ';'
-                        | calificadorTipo espSigno {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, $<myStruct.cadena>2); strcpy(tipo, $<myStruct.cadena>1);} variasVariables ';'
-                        | declaraciones ';'
+espDeclaracion:           calificadorTipo tipoDeDato {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, tipo); strcpy(tipo, $<myStruct.cadena>1);}
+                        | calificadorTipo espSigno {strcat($<myStruct.cadena>1, " "); strcat($<myStruct.cadena>1, $<myStruct.cadena>2); strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
 variasVariables:          inicializacion
-                        | variasVariables inicializacion
+                        | inicializacion variasVariables
 ;
 
 inicializacion:           IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1);} inicializacion
@@ -221,10 +223,10 @@ calificadorTipo:          CONST                                                 
                         | VOLATILE                                              {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
-espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros, $<myStruct.entero>2);}
-                        | STRUCT '{' declaracionesStruct '}'
-                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros, $<myStruct.entero>2);}
-                        | UNION '{' declaracionesStruct '}'
+espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros, $<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);}
+                        | STRUCT '{' declaracionesStruct '}'                    {strcpy(tipo, $<myStruct.cadena>1);}
+                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros, $<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);}
+                        | UNION '{' declaracionesStruct '}'                     {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
 declaracionesStruct:      tipoDeDato variasVariablesStruct ';'
@@ -239,7 +241,7 @@ inicializacionStruct:     IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSi
                         | IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1);}
 ;
 
-espEnum:                  ENUM IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros,$<myStruct.entero>2);} '{' listaIdentificadores '}'       
+espEnum:                  ENUM IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros,$<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);} '{' listaIdentificadores '}'       
 ;
 
 listaIdentificadores:     IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, "int", 'V', ListaParametros, contadorParametros,$<myStruct.entero>1);} listaIdentificadores
@@ -253,7 +255,7 @@ expresion:                expAsignacion
 ;
 
 expAsignacion:            expCondicional
-                        | expUnaria operAsig expAsignacion
+                        | expUnaria operAsig expAsignacion  {if (!$<myStruct.esNumerico>3) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
 ;
 
 operAsig:                 '='
@@ -276,8 +278,8 @@ expAnd:                   expIgualdad
 ;
 
 expIgualdad:              expRelacional
-                        | expRelacional IGUALIGUAL expIgualdad
-                        | expRelacional DIFERENTE expIgualdad
+                        | expRelacional IGUALIGUAL expIgualdad  {if ($<myStruct.esNumerico>1 != $<myStruct.esNumerico>3) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
+                        | expRelacional DIFERENTE expIgualdad {if ($<myStruct.esNumerico>1 != $<myStruct.esNumerico>3) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una comparacion\n", $<myStruct.entero>2); else $<myStruct.esNumerico>2 = 1;}
 ;
 
 expRelacional:            expAditiva

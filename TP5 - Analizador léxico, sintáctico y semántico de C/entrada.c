@@ -64,7 +64,7 @@ int sinPrototipo (int k, int l){
 
 int main (){ // Dice que la cantidad de parámetros es 3 (Arreglado)
     c = sinPrototipo(1, 3);
-    sinPrototipo(k);
+    sinPrototipo("sds","sds");
     return 0;
 }
 

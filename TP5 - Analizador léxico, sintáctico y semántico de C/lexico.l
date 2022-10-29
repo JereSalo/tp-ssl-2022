@@ -19,7 +19,9 @@ CONSTANTE_OCTAL                 0[0-7]*
 CONSTANTE_HEXADECIMAL           0[xX][0-9A-Fa-f]+
 CONSTANTE_REAL                  [0-9]*\.[0-9]+([eE][\+\-]?[0-9]+)?|[0-9]+\.([eE][\+\-]?[0-9]+)?|[0-9]([eE][\+\-]?[0-9]+)?
 CONSTANTE_CARACTER              '.'
-LITERAL_CADENA                  \".*\"
+LITERAL_CADENA              L?\"{s_char}*\"
+s_char                      [^\"\\\n]|{escape_simple}
+escape_simple               \\[abfnrtv\'\"\?\\]
 IDENTIFICADOR                   [_a-zA-Z][_a-zA-Z0-9]*
 COMENTARIO_UNA_LINEA            \/\/.*
 COMENTARIO_VARIAS_LINEAS        \/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/

@@ -69,7 +69,7 @@ input:                    /* vacio */
                         | line {nroLineaAnterior = $<myStruct.entero>1;} input
 ;
 
-line:                     sentencia                                             {ListaArgumentos = NULL; contadorArgumentos = 0;}
+line:                     sentencia                                             {ListaArgumentos = NULL;}
                         | declaracion ';'
                         | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0;}
                         | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", $<myStruct.entero>1);}
@@ -99,8 +99,8 @@ funciones:                VOID IDENTIFICADOR '(' ')' sentCompuesta              
                         | tipoDeDato IDENTIFICADOR '(' parametrosFuncion ')' sentCompuesta  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'F', ListaParametros, contadorParametros, $<myStruct.entero>2);}    
 ;
 
-parametrosFuncion:        tipoDeDato IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, tipo, 'V', ListaParametros, 0, $<myStruct.entero>2); ListaParametros=agregarListaParametros (ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;}
-                        | tipoDeDato IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, tipo, 'V', ListaParametros, 0, $<myStruct.entero>2); ListaParametros=agregarListaParametros (ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;} parametrosFuncion
+parametrosFuncion:        tipoDeDato IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, tipo, 'V', NULL, 0, $<myStruct.entero>2); ListaParametros=agregarListaParametros (ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;}
+                        | tipoDeDato IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, tipo, 'V', NULL, 0, $<myStruct.entero>2); ListaParametros=agregarListaParametros (ListaParametros, $<myStruct.cadena>2, tipo);contadorParametros++;} parametrosFuncion
 ;
 
 
@@ -170,10 +170,10 @@ sentSalto:                BREAK ';'
 /*=========================================   D E C L A R A C I O N E S  ===============================================*/
 /* No hay conflictos */
 
-declaracion:              espAlmacenamiento tipoDeDato IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
-                        | espAlmacenamiento espDeclaracion IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
-                        | espAlmacenamiento espStructUnion IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
-                        | espAlmacenamiento espEnum IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>3);}
+declaracion:              espAlmacenamiento tipoDeDato IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', NULL, 0, $<myStruct.entero>3);}
+                        | espAlmacenamiento espDeclaracion IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', NULL, 0, $<myStruct.entero>3);}
+                        | espAlmacenamiento espStructUnion IDENTIFICADOR  {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', NULL, 0, $<myStruct.entero>3);}
+                        | espAlmacenamiento espEnum IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>3, tipo, 'V', NULL, 0, $<myStruct.entero>3);}
                         | espDeclaracion variasVariables
                         | declaraciones
 ;
@@ -186,10 +186,10 @@ variasVariables:          inicializacion
                         | inicializacion variasVariables
 ;
 
-inicializacion:           IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1);} inicializacion
-                        | IDENTIFICADOR '=' expresion ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1); if(!$<myStruct.esNumerico>3) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", $<myStruct.entero>2);} inicializacion
-                        | IDENTIFICADOR '=' expresion {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1); if(!$<myStruct.esNumerico>3) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", $<myStruct.entero>2);}
-                        | IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1);}
+inicializacion:           IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', NULL, 0, $<myStruct.entero>1);} inicializacion
+                        | IDENTIFICADOR '=' expresion ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', NULL, 0, $<myStruct.entero>1); if(!$<myStruct.esNumerico>3) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", $<myStruct.entero>2);} inicializacion
+                        | IDENTIFICADOR '=' expresion {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', NULL, 0, $<myStruct.entero>1); if(!$<myStruct.esNumerico>3) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", $<myStruct.entero>2);}
+                        | IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', NULL, 0, $<myStruct.entero>1);}
 ;
 
 espAlmacenamiento:        TYPEDEF
@@ -223,9 +223,9 @@ calificadorTipo:          CONST                                                 
                         | VOLATILE                                              {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
-espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros, $<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);}
+espStructUnion:           STRUCT IDENTIFICADOR '{' declaracionesStruct '}'      {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', NULL, 0, $<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);}
                         | STRUCT '{' declaracionesStruct '}'                    {strcpy(tipo, $<myStruct.cadena>1);}
-                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros, $<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);}
+                        | UNION IDENTIFICADOR '{' declaracionesStruct '}'       {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', NULL, 0, $<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);}
                         | UNION '{' declaracionesStruct '}'                     {strcpy(tipo, $<myStruct.cadena>1);}
 ;
 
@@ -237,15 +237,15 @@ variasVariablesStruct:    inicializacionStruct
                         | variasVariablesStruct inicializacionStruct
 ;
 
-inicializacionStruct:     IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1);} inicializacionStruct
-                        | IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', ListaParametros, contadorParametros, $<myStruct.entero>1);}
+inicializacionStruct:     IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', NULL, 0, $<myStruct.entero>1);} inicializacionStruct
+                        | IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, tipo, 'V', NULL, 0, $<myStruct.entero>1);}
 ;
 
-espEnum:                  ENUM IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', ListaParametros, contadorParametros,$<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);} '{' listaIdentificadores '}'       
+espEnum:                  ENUM IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>2, $<myStruct.cadena>1, 'V', NULL, 0,$<myStruct.entero>2); strcpy(tipo, $<myStruct.cadena>1);} '{' listaIdentificadores '}'       
 ;
 
-listaIdentificadores:     IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, "int", 'V', ListaParametros, contadorParametros,$<myStruct.entero>1);} listaIdentificadores
-                        | IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, "int", 'V', ListaParametros, contadorParametros,$<myStruct.entero>1);}
+listaIdentificadores:     IDENTIFICADOR ',' {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, "int", 'V', NULL, 0,$<myStruct.entero>1);} listaIdentificadores
+                        | IDENTIFICADOR {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, $<myStruct.cadena>1, "int", 'V', NULL, 0,$<myStruct.entero>1);}
 ;
 
 /*=============================================   E X P R E S I O N E S   =============================================*/
@@ -316,7 +316,7 @@ operUnario:               '&'
 
 expSufijo:                expPrimaria
                         | expSufijo '[' expresion ']'
-                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1);}
+                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1); contadorArgumentos = 0;}
                         | IDENTIFICADOR '(' ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1);}
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
@@ -329,7 +329,7 @@ listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametro
 ;
 
 expPrimaria:              IDENTIFICADOR {
-                                          $<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1);
+                                          $<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1); // Para decir si está en la tabla
                                           if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1) == 0) printf(" Error semantico en linea %d: No esta declarada la variable %s \n", $<myStruct.entero>1, $<myStruct.cadena>1);
                                         }
                         | constante

@@ -78,9 +78,11 @@ void imprimirEstructura(detalleTablaDeSimbolos * Lista, char estructura){
             // Formato para Funciones
             if (Lista -> estructura == 'F') {
                 printf(" Nombre de Funcion: %s\n --Tipo: %s\n --Cantidad de parametros: %d\n", Lista -> identificador, Lista -> tipoDato, Lista -> cantidadDeParametros);
+                int i= 1;
                 while(Lista -> parametros != NULL){
-                    printf(" ----Parametro: %s %s\n",Lista -> parametros -> tipoDato, Lista -> parametros -> identificador);
+                    printf(" ----Parametro %d: %s\n",i, Lista -> parametros -> tipoDato);
                     Lista -> parametros = Lista -> parametros -> sig;
+                    i++;
                 }
                 printf("\n");
             }
@@ -160,6 +162,7 @@ int verificarParametros(detalleParametros * ListaVerificar, detalleParametros * 
             return 1; // Parametro incorrecto
         }
     }
+    return 0;
 }
 
 void agregarIdentificadoresFuncion(detalleParametros * ListaAntParametros, detalleParametros * ListaDefParametros) {
@@ -187,7 +190,7 @@ int verificarFuncion(detalleTablaDeSimbolos * funcion, detalleTablaDeSimbolos * 
                         printf(" Error semantico en linea %d: Tipos de parametros incorrectos en funcion %s\n", nroLinea, aux -> identificador);
                         return 0;
                     } else {
-                        agregarIdentificadoresFuncion(aux -> parametros, funcion -> parametros);
+                        // agregarIdentificadoresFuncion(aux -> parametros, funcion -> parametros);
                         return 0; // Funcion correcta
                     }
                 } else {

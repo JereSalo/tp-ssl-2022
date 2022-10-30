@@ -1809,7 +1809,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 72 "parser.y"
-    {ListaArgumentos = NULL; contadorArgumentos = 0;;}
+    {ListaArgumentos = NULL;;}
     break;
 
   case 7:
@@ -1907,14 +1907,14 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 102 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, 0, (yyvsp[(2) - (2)].myStruct.entero)); ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (2)].myStruct.cadena), tipo);contadorParametros++;;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(2) - (2)].myStruct.entero)); ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (2)].myStruct.cadena), tipo);contadorParametros++;;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
 #line 103 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, 0, (yyvsp[(2) - (3)].myStruct.entero)); ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (3)].myStruct.cadena), tipo);contadorParametros++;;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (3)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(2) - (3)].myStruct.entero)); ListaParametros=agregarListaParametros (ListaParametros, (yyvsp[(2) - (3)].myStruct.cadena), tipo);contadorParametros++;;}
     break;
 
   case 27:
@@ -1998,28 +1998,28 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 173 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(3) - (3)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(3) - (3)].myStruct.entero));;}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
 #line 174 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(3) - (3)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(3) - (3)].myStruct.entero));;}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
 #line 175 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(3) - (3)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(3) - (3)].myStruct.entero));;}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
 #line 176 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(3) - (3)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(3) - (3)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(3) - (3)].myStruct.entero));;}
     break;
 
   case 71:
@@ -2040,28 +2040,28 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 189 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (2)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 77:
 
 /* Line 1455 of yacc.c  */
 #line 190 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (4)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (4)].myStruct.entero)); if(!(yyvsp[(3) - (4)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (4)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (4)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(1) - (4)].myStruct.entero)); if(!(yyvsp[(3) - (4)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (4)].myStruct.entero));;}
     break;
 
   case 79:
 
 /* Line 1455 of yacc.c  */
 #line 191 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (3)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (3)].myStruct.entero)); if(!(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (3)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (3)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(1) - (3)].myStruct.entero)); if(!(yyvsp[(3) - (3)].myStruct.esNumerico)) printf(" Error semantico en linea %d: Tipos de datos incorrectos para realizar una asignacion de variable\n", (yyvsp[(2) - (3)].myStruct.entero));;}
     break;
 
   case 80:
 
 /* Line 1455 of yacc.c  */
 #line 192 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (1)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 90:
@@ -2152,7 +2152,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 226 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', ListaParametros, contadorParametros, (yyvsp[(2) - (5)].myStruct.entero)); strcpy(tipo, (yyvsp[(1) - (5)].myStruct.cadena));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', NULL, 0, (yyvsp[(2) - (5)].myStruct.entero)); strcpy(tipo, (yyvsp[(1) - (5)].myStruct.cadena));;}
     break;
 
   case 103:
@@ -2166,7 +2166,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 228 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', ListaParametros, contadorParametros, (yyvsp[(2) - (5)].myStruct.entero)); strcpy(tipo, (yyvsp[(1) - (5)].myStruct.cadena));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (5)].myStruct.cadena), (yyvsp[(1) - (5)].myStruct.cadena), 'V', NULL, 0, (yyvsp[(2) - (5)].myStruct.entero)); strcpy(tipo, (yyvsp[(1) - (5)].myStruct.cadena));;}
     break;
 
   case 105:
@@ -2180,35 +2180,35 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 240 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (2)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 112:
 
 /* Line 1455 of yacc.c  */
 #line 241 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', ListaParametros, contadorParametros, (yyvsp[(1) - (1)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), tipo, 'V', NULL, 0, (yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 113:
 
 /* Line 1455 of yacc.c  */
 #line 244 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), (yyvsp[(1) - (2)].myStruct.cadena), 'V', ListaParametros, contadorParametros,(yyvsp[(2) - (2)].myStruct.entero)); strcpy(tipo, (yyvsp[(1) - (2)].myStruct.cadena));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(2) - (2)].myStruct.cadena), (yyvsp[(1) - (2)].myStruct.cadena), 'V', NULL, 0,(yyvsp[(2) - (2)].myStruct.entero)); strcpy(tipo, (yyvsp[(1) - (2)].myStruct.cadena));;}
     break;
 
   case 115:
 
 /* Line 1455 of yacc.c  */
 #line 247 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), "int", 'V', ListaParametros, contadorParametros,(yyvsp[(1) - (2)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (2)].myStruct.cadena), "int", 'V', NULL, 0,(yyvsp[(1) - (2)].myStruct.entero));;}
     break;
 
   case 117:
 
 /* Line 1455 of yacc.c  */
 #line 248 "parser.y"
-    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), "int", 'V', ListaParametros, contadorParametros,(yyvsp[(1) - (1)].myStruct.entero));;}
+    {TablaDeSimbolos = agregarAListaDeSimbolos(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena), "int", 'V', NULL, 0,(yyvsp[(1) - (1)].myStruct.entero));;}
     break;
 
   case 120:
@@ -2320,7 +2320,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 319 "parser.y"
-    {verificarExistencia((yyvsp[(1) - (4)].myStruct.cadena), ListaArgumentos, TablaDeSimbolos, contadorArgumentos, (yyvsp[(1) - (4)].myStruct.entero));;}
+    {verificarExistencia((yyvsp[(1) - (4)].myStruct.cadena), ListaArgumentos, TablaDeSimbolos, contadorArgumentos, (yyvsp[(1) - (4)].myStruct.entero)); contadorArgumentos = 0;;}
     break;
 
   case 160:
@@ -2363,7 +2363,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 331 "parser.y"
     {
-                                          (yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena));
+                                          (yyval.myStruct.esNumerico) = buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena)); // Para decir si está en la tabla
                                           if(buscarVariable(TablaDeSimbolos, (yyvsp[(1) - (1)].myStruct.cadena)) == 0) printf(" Error semantico en linea %d: No esta declarada la variable %s \n", (yyvsp[(1) - (1)].myStruct.entero), (yyvsp[(1) - (1)].myStruct.cadena));
                                         ;}
     break;

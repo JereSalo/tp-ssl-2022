@@ -54,6 +54,8 @@ int yywrap(){
 
 %start input
 
+%expect 1
+
 %union{
   struct {
     char * cadena;
@@ -69,7 +71,7 @@ input:                    /* vacio */
                         | line {nroLineaAnterior = $<myStruct.entero>1;} input
 ;
 
-line:                     sentencia                                             {ListaArgumentos = NULL;}
+line:                     sentencia                                             
                         | declaracion ';'
                         | prototipo ';'                                         {ListaParametros = NULL; contadorParametros=0;}
                         | funciones                                             {ListaParametros = NULL; contadorParametros=0; ListaSentencias = agregarListaSentencias(ListaSentencias, "Inicio sentencia Compuesta", $<myStruct.entero>1);}
@@ -316,7 +318,7 @@ operUnario:               '&'
 
 expSufijo:                expPrimaria
                         | expSufijo '[' expresion ']'
-                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1); contadorArgumentos = 0;}
+                        | IDENTIFICADOR '(' listaArgumentos ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1); contadorArgumentos = 0; ListaArgumentos = NULL}
                         | IDENTIFICADOR '(' ')' {verificarExistencia($<myStruct.cadena>1, ListaArgumentos, TablaDeSimbolos, contadorArgumentos, $<myStruct.entero>1);}
                         | expSufijo '.' IDENTIFICADOR
                         | expSufijo FLECHA IDENTIFICADOR
@@ -329,8 +331,8 @@ listaArgumentos:          expAsignacion {ListaArgumentos = agregarListaParametro
 ;
 
 expPrimaria:              IDENTIFICADOR {
-                                          $<myStruct.esNumerico>$ = buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1); // Para decir si está en la tabla
-                                          if(buscarVariable(TablaDeSimbolos, $<myStruct.cadena>1) == 0) printf(" Error semantico en linea %d: No esta declarada la variable %s \n", $<myStruct.entero>1, $<myStruct.cadena>1);
+                                          $<myStruct.esNumerico>$ = existeVariable(TablaDeSimbolos, $<myStruct.cadena>1); // Para decir si está en la tabla.
+                                          if(!$<myStruct.esNumerico>$) printf(" Error semantico en linea %d: No esta declarada la variable %s \n", $<myStruct.entero>1, $<myStruct.cadena>1);
                                         }
                         | constante
                         | LITERAL_CADENA {strcpy(tipoArgumento, "char *");}

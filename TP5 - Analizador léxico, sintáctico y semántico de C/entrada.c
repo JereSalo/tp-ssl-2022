@@ -1,3 +1,4 @@
+const int rf;
 $
 1+'h';
 'h'+3;

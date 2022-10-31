@@ -137,7 +137,7 @@ detalleSentencia * agregarListaSentencias(detalleSentencia * ListaSentencias, ch
 
 /* =====================    C H E Q U E O S    ===================== */
 
-int buscarVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador) {
+int existeVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificador) {
     detalleTablaDeSimbolos * aux = NULL;
     // Comprobamos si esta en Tabla de Simbolos
     for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
@@ -151,7 +151,7 @@ int buscarVariable(detalleTablaDeSimbolos * TablaDeSimbolos, char * identificado
     return 0; // No esta en Tabla
 }
 
-int verificarParametros(detalleParametros * ListaVerificar, detalleParametros * ListaVerificador) {
+int tiposParametrosCorrectos(detalleParametros * ListaVerificar, detalleParametros * ListaVerificador) {
     detalleParametros * aux = NULL;
     detalleParametros * aux2 = NULL;
     // Verificamos que los tipos de los parametros sean los correctos
@@ -159,12 +159,13 @@ int verificarParametros(detalleParametros * ListaVerificar, detalleParametros * 
         if (strcmp (aux -> tipoDato, aux2 -> tipoDato) == 0) {
             continue; // Parametro correcto
         } else {
-            return 1; // Parametro incorrecto
+            return 0; // Parametro incorrecto
         }
     }
-    return 0;
+    return 1;
 }
 
+// No la estamos usando actualmente.
 void agregarIdentificadoresFuncion(detalleParametros * ListaAntParametros, detalleParametros * ListaDefParametros) {
     detalleParametros * aux = NULL;
     detalleParametros * aux2 = NULL;
@@ -175,7 +176,7 @@ void agregarIdentificadoresFuncion(detalleParametros * ListaAntParametros, detal
     }
 }
 
-int verificarFuncion(detalleTablaDeSimbolos * funcion, detalleTablaDeSimbolos * TablaDeSimbolos, int nroLinea) {
+int tienePrototipo(detalleTablaDeSimbolos * funcion, detalleTablaDeSimbolos * TablaDeSimbolos, int nroLinea) {
     detalleTablaDeSimbolos * aux = NULL;
     // Verificamos que la funcion sea identica a su prototipo, si es que tiene
     for (aux = TablaDeSimbolos; aux != NULL; aux = aux -> sig) {
@@ -186,24 +187,24 @@ int verificarFuncion(detalleTablaDeSimbolos * funcion, detalleTablaDeSimbolos * 
                 // Para comprobar que tengan la misma cantidad de parametros
                 if (aux -> cantidadDeParametros == funcion -> cantidadDeParametros) {
                     // Para comprobar que tengan los mismos tipos de parametros
-                    if (verificarParametros(aux -> parametros, funcion -> parametros)) {
+                    if (!tiposParametrosCorrectos(aux -> parametros, funcion -> parametros)) {
                         printf(" Error semantico en linea %d: Tipos de parametros incorrectos en funcion %s\n", nroLinea, aux -> identificador);
-                        return 0;
+                        return 1;
                     } else {
                         // agregarIdentificadoresFuncion(aux -> parametros, funcion -> parametros);
-                        return 0; // Funcion correcta
+                        return 1; // Funcion correcta, pero no la agrego a la TS porque ya existe.
                     }
                 } else {
                     printf(" Error semantico en linea %d: Cantidad de parametros incorrecta en funcion %s\n", nroLinea, aux -> identificador);
-                    return 0;
+                    return 1;
                 }
             } else {
                 printf(" Error semantico en linea %d: Tipo de funcion %s incorrecto\n", nroLinea, aux -> identificador);
-                return 0;
+                return 1;
             }
         }
     }
-    return 1; // Funcion correcta (Caso especial para funciones sin prototipo)
+    return 0; // Funcion correcta (Caso especial para funciones sin prototipo)
 }
 
 int verificarExistencia(char * identificador, detalleParametros * ListaArgumentos, detalleTablaDeSimbolos * TablaDeSimbolos, int cantidadArgumentos, int nroLinea){
@@ -215,7 +216,7 @@ int verificarExistencia(char * identificador, detalleParametros * ListaArgumento
             // Comprobamos cantidad de parametros
             if (aux -> cantidadDeParametros == cantidadArgumentos) {
                 // Comprobar que los tipos de argumentos sean los correctos
-                if (verificarParametros(ListaArgumentos, aux -> parametros)) {
+                if (!tiposParametrosCorrectos(ListaArgumentos, aux -> parametros)) {
                     printf(" Error semantico en linea %d: Tipos de argumentos incorrectos en llamada de funcion %s\n", nroLinea, identificador);
                     return 0;
                 } else {
@@ -259,7 +260,7 @@ detalleTablaDeSimbolos * agregarAListaDeSimbolos(detalleTablaDeSimbolos * TablaD
 
     if (estructura == 'F') { // Funciones
         // Meto el nodo en la ListaFunciones
-        if(verificarFuncion (nuevoNodo, TablaDeSimbolos, nroLinea) == 0){
+        if(tienePrototipo (nuevoNodo, TablaDeSimbolos, nroLinea)){
             return TablaDeSimbolos;
         } 
     }
